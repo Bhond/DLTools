@@ -1,0 +1,1 @@
+COPYRIGHT &copy; 2019 Charles MERINO. All rights reserved.
