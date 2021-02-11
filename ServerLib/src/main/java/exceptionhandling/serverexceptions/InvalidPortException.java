@@ -8,25 +8,25 @@
  *                        PP       OO  OO   PP          SS
  *                        PP        OOOO    PP       SSSS
  *
- * Name: Main.java
+ * Name: InvalidPortException.java
  *
- * Description: Class starting Pops
+ * Description: Class defining an error thrown when an invalid port has been selected
  *
  * Author: Charles MERINO
  *
- * Date: 10/02/2021
+ * Date: 11/02/2021
  *
  ******************************************************************************/
-package main;
+package exceptionhandling.serverexceptions;
 
-import server.Server;
-import serverlibcst.IntCst;
+public class InvalidPortException extends Exception {
 
-public class Main {
-    
-    public static void main(String[] args) {
-        // Instantiate the server
-        Server popsServer = new Server(IntCst.SERVER_PORT);
+    /*****************************************
+     *
+     * Ctor
+     *
+     *****************************************/
+        public InvalidPortException(int port){
+            super("Invalid port " + port);
     }
-    
 }

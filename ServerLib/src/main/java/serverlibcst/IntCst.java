@@ -8,25 +8,25 @@
  *                        PP       OO  OO   PP          SS
  *                        PP        OOOO    PP       SSSS
  *
- * Name: Main.java
+ * Name: IntCst.java
  *
- * Description: Class starting Pops
+ * Description: Abstract class storing Constant Integer values.
  *
  * Author: Charles MERINO
  *
- * Date: 10/02/2021
+ * Date: 11/02/2021
  *
  ******************************************************************************/
-package main;
+package serverlibcst;
 
-import server.Server;
-import serverlibcst.IntCst;
+public abstract class IntCst {
 
-public class Main {
-    
-    public static void main(String[] args) {
-        // Instantiate the server
-        Server popsServer = new Server(IntCst.SERVER_PORT);
-    }
-    
+    /*****************************************
+     *
+     * Server
+     *
+     *****************************************/
+    public static final int SERVER_PORT = 8163;
+    public static final int SERVER_POOL_SIZE = 5;
+
 }
