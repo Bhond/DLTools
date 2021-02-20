@@ -102,6 +102,7 @@ public class FlattenLayer extends Layer {
      * @param weight The weight to update
      * @param sigma The error passed through the previous layers
      */
+    @Deprecated
     @Override
     public INDArray computeSigmaUnsafe(Weight weight, INDArray sigma) {
         INDArray eta = Activator.dActivate(this.dActivationFunction, this.z);

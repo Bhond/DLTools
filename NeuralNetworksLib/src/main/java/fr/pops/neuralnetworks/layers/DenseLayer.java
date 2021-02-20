@@ -90,7 +90,7 @@ public class DenseLayer extends Layer {
         // Initialize the weights
         initializeWeights(previousLayer.getNOut());
 
-        // Initialize the main structures of the layer
+        // Initialize the fr.pops.main structures of the layer
         this.activations = new BaseNDArray.BaseNDArrayBuilder().zeros(nOut).build();
         this.bias = new Bias(nOut);
         this.z = new BaseNDArray.BaseNDArrayBuilder().zeros(nOut).build();

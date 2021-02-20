@@ -90,6 +90,7 @@ public abstract class StrCst {
      * Paths
      *
      *****************************************/
+    // TODO: remove unnecessary csts
     // FXML
     public static final String PATH_MAIN_PANE_FXML = "/fxml/MainApp.fxml";
     public static final String PATH_MAIN_ICON = "/media/images/icon.jpg";

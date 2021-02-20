@@ -1,0 +1,22 @@
+/*****************************************
+*
+* Stylesheet for the main view
+*
+*****************************************/
+@import "Colors.css"
+@import "Fonts.css"
+
+/* Root */
+.root
+{
+	-fx-background-color: -fx-palette-fogra39;
+}
+
+/* Buttons */
+.controlWindowButton
+{   	-fx-background-color: transparent;
+    	-fx-font-size: 12pt;
+    	-fx-text-fill: -fx-palette-orange;
+        -fx-effect: dropshadow(gaussian, -fx-palette-orange, 8, 0.3, 0, 0);
+    	-fx-font-family: 'Elianto';
+}

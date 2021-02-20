@@ -1,0 +1,20 @@
+/*****************************************
+*
+* Stylesheet for the server info view
+*
+*****************************************/
+@import "Colors.css"
+@import "Fonts.css"
+
+/* Root */
+.root
+{
+	-fx-background-color: -fx-palette-orange;
+}
+
+/* Root layout */
+.rootLayout
+{
+	-fx-background-color: -fx-palette-fogra39;
+	-fx-background-radius:5px;
+}

@@ -19,7 +19,7 @@
  ******************************************************************************/
 package fr.pops.popscst.cst;
 
-public abstract class IntCst extends EnumCst {
+public abstract class IntCst {
 
     /*****************************************
      *

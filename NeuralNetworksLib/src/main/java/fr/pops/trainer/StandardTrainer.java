@@ -81,7 +81,7 @@ public class StandardTrainer implements ITrainer {
                 double achieved = PopsMath.round( (double)(neuralNetwork.getCurrentEpoch()+1) / (neuralNetwork.getNeuralNetworkConfiguration().getNbIterations()), 2);
                 ConsoleDisplay.progressBar("Training in progress ", achieved, Arrays.asList("Error"), Arrays.asList(1 - (double)wellGuessed / (neuralNetwork.getCurrentEpoch()+1)));
 
-                // Increase step to control main loop
+                // Increase step to control fr.pops.main loop
                 // TODO: Check infinite loop when else
                 neuralNetwork.setCurrentEpoch(neuralNetwork.getCurrentEpoch() == neuralNetwork.getNeuralNetworkConfiguration().getDataReader().getNbOfTrainingSamples() ? 0 : neuralNetwork.getCurrentEpoch() + 1);
             }

@@ -2,5 +2,11 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/IhmLib/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/NeuralNetworksLib/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/NeuralNetworksLib/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/PopsCommon/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/PopsCommon/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ServerLib/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ServerLib/src/main/resources" charset="UTF-8" />
   </component>
 </project>

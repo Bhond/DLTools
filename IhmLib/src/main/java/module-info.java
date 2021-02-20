@@ -1,4 +1,5 @@
 module fr.pops {
     requires javafx.controls;
-    exports fr.pops;
+    requires java.desktop;
+    exports fr.pops.main;
 }
