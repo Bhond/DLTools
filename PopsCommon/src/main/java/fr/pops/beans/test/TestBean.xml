@@ -1,4 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bean>
+<root>
     <Parent>Bean</Parent>
-</bean>
+    <Properties>
+        <Property>
+            <Name>name</Name>
+            <Type>String</Type>
+            <Default>Test</Default>
+        </Property>
+        <Property>
+            <Name>speed</Name>
+            <Type>double</Type>
+            <Default>0.5</Default>
+        </Property>
+        <Property>
+            <Name>positionX</Name>
+            <Type>double</Type>
+            <Default>0</Default>
+        </Property>
+        <Property>
+            <Name>positionY</Name>
+            <Type>double</Type>
+            <Default>0</Default>
+        </Property>
+        <Property>
+            <Name>directionX</Name>
+            <Type>double</Type>
+            <Default>-0.5</Default>
+        </Property>
+        <Property>
+            <Name>directionY</Name>
+            <Type>double</Type>
+            <Default>0.5</Default>
+        </Property>
+        <Property>
+            <Name>isRunning</Name>
+            <Type>boolean</Type>
+            <Default>true</Default>
+        </Property>
+    </Properties>
+</root>

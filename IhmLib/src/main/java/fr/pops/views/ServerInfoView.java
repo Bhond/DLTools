@@ -31,6 +31,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.Sphere;
 
 public class ServerInfoView extends View {
 
@@ -94,6 +97,17 @@ public class ServerInfoView extends View {
         Button test = new Button("This is a test");
         test.setOnAction(actionEvent -> Client.getInstance().sendMessageToServer("Clicked"));
         this.rootLayout.getChildren().add(test);
+
+        Sphere sphere = new Sphere();
+        sphere.radiusProperty().set(10);
+        PhongMaterial mat = new PhongMaterial();
+        mat.setDiffuseColor(Color.RED);
+        sphere.materialProperty().setValue(mat);
+        System.out.println(this.root.getWidth() + " ; " +this.root.getHeight());
+        sphere.setTranslateX( - 50);
+        sphere.setTranslateY( - 50);
+
+        this.rootLayout.getChildren().add(sphere);
         /** TEMP **/
 
         // Build hierarchy

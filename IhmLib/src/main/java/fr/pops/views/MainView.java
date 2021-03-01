@@ -19,8 +19,7 @@
  ******************************************************************************/
 package fr.pops.views;
 
-import fr.pops.client.Client;
-import fr.pops.controllers.MainController;
+import fr.pops.controllers.main.MainController;
 import fr.pops.ihmlibcst.DblCst;
 import fr.pops.ihmlibcst.IntCst;
 import fr.pops.ihmlibcst.StrCst;

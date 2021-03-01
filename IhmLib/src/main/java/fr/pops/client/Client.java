@@ -31,7 +31,6 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.EventListener;
 import java.util.Scanner;
 
 public class Client {
@@ -45,7 +44,7 @@ public class Client {
     private final static Client instance = new Client();
 
     // Ihm
-    private boolean isStandalone = false;
+    private boolean isStandalone = true;
     private Stage stage;
     private MainView mainView;
     private Parent root;
@@ -143,10 +142,12 @@ public class Client {
      *
      *****************************************/
     public void sendMessageToServer(String msg){
-        this.out.println(msg);
-        if (this.in.hasNextLine()){
-            System.out.println(in.nextLine());
-        }
+        // TODO: Correct this part to make a dedicated thread that handles requests
+//        this.out.println(msg);
+//        if (this.in.hasNextLine()){
+//            System.out.println(in.nextLine());
+//        }
+        System.out.println(msg);
 
     }
 
