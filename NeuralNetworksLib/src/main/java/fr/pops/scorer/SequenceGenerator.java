@@ -19,7 +19,7 @@
  ******************************************************************************/
 package fr.pops.scorer;
 
-import fr.pops.neuralnetworks.networks.NeuralNetwork;
+import fr.pops.nn.networks.NeuralNetwork;
 import fr.pops.ndarray.INDArray;
 import fr.pops.popsmath.PopsMath;
 import fr.pops.popsmath.Vector;

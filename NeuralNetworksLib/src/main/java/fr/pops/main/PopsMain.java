@@ -19,22 +19,6 @@
  ******************************************************************************/
 package fr.pops.main;
 
-import fr.pops.datareader.CifarDataset;
-import fr.pops.datareader.DataReader;
-import fr.pops.datareader.MNISTDataset;
-import fr.pops.neuralnetworks.layers.ConvolutionLayer;
-import fr.pops.neuralnetworks.layers.DenseLayer;
-import fr.pops.neuralnetworks.layers.PoolingLayer;
-import fr.pops.neuralnetworks.networks.CNN;
-import fr.pops.neuralnetworks.networks.Classifier;
-import fr.pops.neuralnetworks.networks.NeuralNetworkConfiguration;
-import fr.pops.popscst.cst.EnumCst;
-import fr.pops.popscst.cst.StrCst;
-import fr.pops.xmlparser.neuralnetworks.NeuralNetworkToXMLParser;
-
-import java.io.File;
-import java.io.InputStream;
-
 public class PopsMain {
 
     public static void main(String[] args) throws Exception {

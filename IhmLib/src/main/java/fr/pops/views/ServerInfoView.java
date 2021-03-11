@@ -12,38 +12,24 @@
  *
  * Description: Class defining the server view used to display
  *              info from the server
- *              Singleton
  *
  * Author: Charles MERINO
  *
- * Date: 15/002/2021
+ * Date: 15/02/2021
  *
  ******************************************************************************/
 package fr.pops.views;
 
 import fr.pops.client.Client;
-import fr.pops.ihmlibcst.DblCst;
 import fr.pops.ihmlibcst.StrCst;
 import fr.pops.utils.Utils;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
+import javafx.stage.Stage;
 
 public class ServerInfoView extends View {
-
-    /*****************************************
-     *
-     * Attributes
-     *
-     *****************************************/
-    // Instance
-    private final static ServerInfoView instance = new ServerInfoView();
 
     /*****************************************
      *
@@ -53,7 +39,11 @@ public class ServerInfoView extends View {
     /**
      * Standard ctor
      */
-    private ServerInfoView(){
+    public ServerInfoView(Stage stage, double height, double width){
+        // Parent
+        super(stage, height, width);
+
+        // Initialization
         this.onInit();
     }
 
@@ -65,33 +55,21 @@ public class ServerInfoView extends View {
     /**
      * Initialize the view
      */
+    @Override
     protected void onInit(){
-        // Root
-        configureRoot();
+        // Set root stylesheet
+        // Root pane
+        this.root.getStylesheets().add(Utils.getResource(StrCst.PATH_SERVER_INFO_VIEW_CSS));
+
+        // Content
+        this.configureContentPane();
     }
 
     /**
-     * Build the root pane
+     * Build the content pane
      */
     @Override
-    protected void configureRoot(){
-        // Root pane
-        this.root = new AnchorPane();
-        this.root.getStylesheets().add(Utils.getResource(StrCst.PATH_SERVER_INFO_VIEW_CSS));
-        this.root.getStyleClass().add(StrCst.STYLE_CLASS_ROOT);
-        HBox.setHgrow(this.root, Priority.ALWAYS);
-        VBox.setVgrow(this.root, Priority.ALWAYS);
-
-        // Root layout
-        this.rootLayout = new VBox();
-        this.rootLayout.setAlignment(Pos.CENTER);
-        this.rootLayout.getStyleClass().add(StrCst.STYLE_CLASS_ROOT_LAYOUT);
-
-        // Resize the root layout
-        AnchorPane.setTopAnchor(this.rootLayout, DblCst.ROOT_LAYOUT_ANCHOR_SIZE);
-        AnchorPane.setBottomAnchor(this.rootLayout, DblCst.ROOT_LAYOUT_ANCHOR_SIZE);
-        AnchorPane.setLeftAnchor(this.rootLayout, DblCst.ROOT_LAYOUT_ANCHOR_SIZE);
-        AnchorPane.setRightAnchor(this.rootLayout, DblCst.ROOT_LAYOUT_ANCHOR_SIZE);
+    protected void configureContentPane(){
 
         /** TEMP **/
         Button test = new Button("This is a test");
@@ -103,27 +81,17 @@ public class ServerInfoView extends View {
         PhongMaterial mat = new PhongMaterial();
         mat.setDiffuseColor(Color.RED);
         sphere.materialProperty().setValue(mat);
-        System.out.println(this.root.getWidth() + " ; " +this.root.getHeight());
         sphere.setTranslateX( - 50);
         sphere.setTranslateY( - 50);
 
         this.rootLayout.getChildren().add(sphere);
         /** TEMP **/
 
-        // Build hierarchy
-        this.root.getChildren().add(this.rootLayout);
     }
 
     /*****************************************
      *
-     * Getter
+     * Update
      *
      *****************************************/
-    /**
-     * ServerInfoView is a singleton
-     * @return The instance
-     */
-    public static ServerInfoView getInstance(){
-        return instance;
-    }
 }

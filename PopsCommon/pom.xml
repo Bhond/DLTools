@@ -26,9 +26,8 @@
     <dependencies>
         <dependency>
             <groupId>fr.pops</groupId>
-            <artifactId>NeuralNetworksLib</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
+            <artifactId>Pops</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

@@ -25,7 +25,7 @@ package fr.pops.trainer;
 
 import fr.pops.consoledisplay.ConsoleDisplay;
 import fr.pops.ndarray.INDArray;
-import fr.pops.neuralnetworks.networks.NeuralNetwork;
+import fr.pops.nn.networks.NeuralNetwork;
 import fr.pops.popsmath.ArrayUtil;
 import fr.pops.popsmath.PopsMath;
 import fr.pops.popsmath.Vector;

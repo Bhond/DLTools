@@ -82,7 +82,7 @@ public class Client {
         this.stage = stage;
 
         // Set main view
-        this.mainView = new MainView();
+        this.mainView = new MainView(stage);
 
         // Set the root
         this.root = this.mainView.asParent();

@@ -19,7 +19,7 @@
  ******************************************************************************/
 package fr.pops.trainer;
 
-import fr.pops.neuralnetworks.networks.NeuralNetwork;
+import fr.pops.nn.networks.NeuralNetwork;
 
 public interface ITrainer {
 

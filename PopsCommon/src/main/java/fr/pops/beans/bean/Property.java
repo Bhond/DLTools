@@ -21,23 +21,21 @@
  ******************************************************************************/
 package fr.pops.beans.bean;
 
+import fr.pops.beanobservable.BeanObservable;
 import fr.pops.cst.EnumCst;
+import fr.pops.cst.GeneratorCst;
 import fr.pops.cst.GeneratorDefaultValues;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
+import java.beans.PropertyChangeEvent;
 import java.io.Serializable;
 
-public class Property  implements Serializable {
+public class Property extends BeanObservable implements Serializable {
 
     /*****************************************
      *
      * Attributes
      *
      *****************************************/
-    // Listeners
-    protected final PropertyChangeSupport support = new PropertyChangeSupport(this);
-
     // Info
     private int id;
     private String name;
@@ -57,9 +55,26 @@ public class Property  implements Serializable {
      * @param value The value of the property
      */
     private Property(String name, EnumCst.PropertyTypes type, Object value){
+        // Initialisation
+        onInit(name, type, value);
+    }
+
+    /*****************************************
+     *
+     * Initialisation
+     *
+     *****************************************/
+    /**
+     * Initialisation
+     */
+    private void onInit(String name, EnumCst.PropertyTypes type, Object value){
+        // Attributes
         this.name= name;
         this.type = type;
         this.value = value;
+
+        // Listeners
+        this.support.addPropertyChangeListener(this::onListenersChanged);
     }
 
     /*****************************************
@@ -68,19 +83,16 @@ public class Property  implements Serializable {
      *
      *****************************************/
     /**
-     * Add a property change listener
-     * @param listener The listener
+     * Handles the changes fired by the listeners.
+     * One can only change the value of the property,
+     * neither the name nor the type.
+     * @param event The event
      */
-    public void addPropertyChangeListener(PropertyChangeListener listener){
-        this.support.addPropertyChangeListener(listener);
-    }
-
-    /**
-     * Add a property change listener
-     * @param listener The listener
-     */
-    public void removePropertyChangeListener(PropertyChangeListener listener){
-        this.support.removePropertyChangeListener(listener);
+    private void onListenersChanged(PropertyChangeEvent event){
+        // Observe changes on the value
+        if (event.getPropertyName().equals(GeneratorCst.PROPERTY_VALUE)){
+            System.out.println("New value: " + event.getNewValue() + " for: " + this.name);
+        }
     }
 
     /*****************************************
@@ -88,6 +100,13 @@ public class Property  implements Serializable {
      * Getter
      *
      *****************************************/
+    /**
+     * @return The name
+     */
+    public Object getName() {
+        return this.name;
+    }
+
     /**
      * @return The value
      */
@@ -103,10 +122,12 @@ public class Property  implements Serializable {
     /**
      * Set the value to the given input
      * Fires a property changed listener
-     * @param value The new value
+     * @param newValue The new value
      */
-    public void setValue(Object value) {
-        this.value = value;
+    public void setValue(Object newValue) {
+        Object oldValue = this.value;
+        this.value = newValue;
+        this.support.firePropertyChange(GeneratorCst.PROPERTY_VALUE, oldValue, newValue);
     }
 
     /*****************************************

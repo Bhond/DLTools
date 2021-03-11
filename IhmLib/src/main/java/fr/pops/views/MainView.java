@@ -11,6 +11,7 @@
  * Name: MainView.java
  *
  * Description: Class defining the main view of the IHM
+ *              Singleton
  *
  * Author: Charles MERINO
  *
@@ -20,18 +21,24 @@
 package fr.pops.views;
 
 import fr.pops.controllers.main.MainController;
-import fr.pops.ihmlibcst.DblCst;
+import fr.pops.ihmlibcst.EnumCst;
 import fr.pops.ihmlibcst.IntCst;
 import fr.pops.ihmlibcst.StrCst;
 import fr.pops.systeminfo.DisplayInfo;
 import fr.pops.utils.Utils;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+
+import java.util.HashSet;
 
 public class MainView extends View {
 
@@ -46,21 +53,40 @@ public class MainView extends View {
     // Controller
     private MainController controller = MainController.getInstance();
 
+    // Sizes
+    private Insets contentLayoutInsets;
+    private double contentWidth;
+    private double contentHeight;
+
     /*****************************************
      *
      * JavaFX objects
      *
      *****************************************/
-    // Menu bar
-    private HBox menuBar;
+    // Top bar
+    private HBox topBar;
     private Button minimizeWindowButton;
     private Button closeWindowButton;
+    // Menu bar
+    private HBox menuBarLayout;
+    private MenuBar menuBar;
+    private Menu viewsMenu;
+
+    private MenuItem serverViewMenuItem;
+    private MenuItem neuralNetworkViewMenuItem;
+    private MenuItem plotViewMenuItem;
+    // Temp
+    private MenuItem testViewMenuItem;
 
     // Main layout, contains all of the objects
-    private HBox mainLayout;
+    private GridPane mainLayout;
 
-    // Misc Views
-    private ServerInfoView serverInfoView = ServerInfoView.getInstance();
+    // Active Views
+    private HashSet<View> activeViews = new HashSet<>();
+    private int nbRows;
+    private int currentRowIdx;
+    private int nbColumns;
+    private int  currentColumnIdx;
 
     /*****************************************
      *
@@ -69,8 +95,12 @@ public class MainView extends View {
      *****************************************/
     /**
      * Standard ctor
+     * Singleton
      */
-    public MainView(){
+    public MainView(Stage stage){
+        // Parent
+        super(stage);
+
         // Initialize the view
         this.onInit();
     }
@@ -88,85 +118,288 @@ public class MainView extends View {
         // Root
         this.configureRoot();
 
+        // Content pane
+        this.configureContentPane();
+
         // Add content views
         this.configureContentViews();
     }
 
     /**
-     * Build the root pane
+     * Configure content pane
+     * TODO: Configure content depending on user's preferences
      */
     @Override
-    protected void configureRoot(){
-        // Root pane
-        this.root = new AnchorPane();
-        this.root.setPrefHeight(800); //this.displayInfo.getHeight());
-        this.root.setPrefWidth(800); //this.displayInfo.getWidth());
-        this.root.getStylesheets().add(Utils.getResource(StrCst.PATH_MAIN_VIEW_CSS));
-        this.root.getStyleClass().add(StrCst.STYLE_CLASS_ROOT);
-
-        // Root layout
-        this.rootLayout = new VBox();
-        this.rootLayout.setAlignment(Pos.TOP_CENTER);
-
-        // Resize the root layout
-        AnchorPane.setTopAnchor(this.rootLayout, DblCst.ROOT_LAYOUT_ANCHOR_SIZE);
-        AnchorPane.setBottomAnchor(this.rootLayout, DblCst.ROOT_LAYOUT_ANCHOR_SIZE);
-        AnchorPane.setLeftAnchor(this.rootLayout, DblCst.ROOT_LAYOUT_ANCHOR_SIZE);
-        AnchorPane.setRightAnchor(this.rootLayout, DblCst.ROOT_LAYOUT_ANCHOR_SIZE);
-
-        // Menu bar
-        this.configureMenuBar();
+    protected void configureContentPane() {
+        // Top bar
+        this.configureTopBar();
 
         // Main layout
         this.configureMainLayout();
 
         // Build hierarchy
-        this.rootLayout.getChildren().addAll(this.menuBar,
-                                             this.mainLayout);
-        this.root.getChildren().add(this.rootLayout);
+        this.rootLayout.getChildren().addAll(this.topBar,
+                this.mainLayout);
+
+        // Update sizes
+        this.updateContentSizes();
     }
 
     /**
-     *  Build menu bar
+     * Build the root pane
      */
-    private void configureMenuBar(){
+    protected void configureRoot(){
+        // Root pane
+        this.height = IntCst.DEFAULT_MAIN_WINDOW_HEIGHT_TEST;
+        this.width = IntCst.DEFAULT_MAIN_WINDOW_WIDTH_TEST;
+        this.root.setPrefHeight(IntCst.DEFAULT_MAIN_WINDOW_HEIGHT_TEST); //this.displayInfo.getHeight());
+        this.root.setPrefWidth(IntCst.DEFAULT_MAIN_WINDOW_WIDTH_TEST); //this.displayInfo.getWidth());
+        this.root.getStylesheets().add(Utils.getResource(StrCst.PATH_MAIN_VIEW_CSS));
+
+        // Controller
+        this.controller.setMainView(this);
+        this.controller.onWindowDragged(this.root, this.stage);
+        this.controller.onWindowResized(this.root, this.stage);
+    }
+
+    /**
+     *  Build top bar
+     */
+    private void configureTopBar(){
         // Parent HBox
-        this.menuBar = new HBox();
-        this.menuBar.setAlignment(Pos.CENTER_RIGHT);
-        this.menuBar.setPrefHeight(IntCst.DEFAULT_MENU_BAR_HEIGHT);
+        this.topBar = new HBox();
+        this.topBar.setAlignment(Pos.CENTER_RIGHT);
+        this.topBar.setPrefHeight(IntCst.DEFAULT_MENU_BAR_HEIGHT);
+
+        // MenuBar
+        this.menuBarLayout = new HBox();
+        this.menuBarLayout.setAlignment(Pos.CENTER_LEFT);
+        this.menuBarLayout.setPrefHeight(IntCst.DEFAULT_MENU_BAR_HEIGHT);
+        this.menuBarLayout.setMinHeight(IntCst.DEFAULT_MENU_BAR_HEIGHT);
+        this.menuBarLayout.setMaxHeight(IntCst.DEFAULT_MENU_BAR_HEIGHT);
+        HBox.setHgrow(this.menuBarLayout, Priority.ALWAYS);
+        this.configureMenuBar();
 
         // Buttons
         // Reduce window
         this.minimizeWindowButton = new Button(StrCst.LABEL_MINIMIZE_WINDOW_BUTTON);
         this.minimizeWindowButton.getStyleClass().add(StrCst.STYLE_CLASS_CONTROL_WINDOW_BUTTON);
         this.minimizeWindowButton.rotateProperty().set(180);
-        this.minimizeWindowButton.setOnAction(a -> this.controller.minimizeWindow(a));
+        this.minimizeWindowButton.setOnAction(a -> this.controller.onMinimizeWindow(a));
 
         // Close window
         this.closeWindowButton = new Button(StrCst.LABEL_CLOSE_WINDOW_BUTTON);
         this.closeWindowButton.getStyleClass().add(StrCst.STYLE_CLASS_CONTROL_WINDOW_BUTTON);
-        this.closeWindowButton.setOnAction(a -> this.controller.closeWindow(a));
+        this.closeWindowButton.setOnAction(a -> this.controller.onCloseWindow(a));
 
         // Add buttons to the menu bar
-        this.menuBar.getChildren().addAll(this.minimizeWindowButton,
+        this.topBar.getChildren().addAll(this.menuBarLayout,
+                                          this.minimizeWindowButton,
                                           this.closeWindowButton);
+    }
+
+    /**
+     * Configure the menu bar
+     */
+    private void configureMenuBar(){
+        // Menu bar
+        this.menuBar = new MenuBar();
+        this.menuBar.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR);
+
+        // Menus
+        this.viewsMenu = new Menu(StrCst.MENUBAR_LABEL_VIEWS);
+        this.viewsMenu.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR_MENU);
+
+        // Menu items
+        // Tool menu
+        this.serverViewMenuItem = new MenuItem(StrCst.MENUBAR_LABEL_SERVER_VIEW_ITEM);
+        this.serverViewMenuItem.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR_MENU_ITEM);
+        this.serverViewMenuItem.setOnAction(a -> this.controller.onServerViewMenuItemClicked(a));
+        this.neuralNetworkViewMenuItem = new MenuItem(StrCst.MENUBAR_LABEL_NEURAL_NETWORK_VIEW_ITEM);
+        this.neuralNetworkViewMenuItem.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR_MENU_ITEM);
+        this.neuralNetworkViewMenuItem.setOnAction(a -> this.controller.onNeuralNetworkViewMenuItemClicked(a));
+        this.plotViewMenuItem = new MenuItem(StrCst.MENUBAR_LABEL_PLOT_VIEW_ITEM);
+        this.plotViewMenuItem.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR_MENU_ITEM);
+        this.plotViewMenuItem.setOnAction(a -> this.controller.onPlotViewMenuItemClicked(a));
+
+        /**
+         *
+         * TEMP
+         *
+         */
+        this.testViewMenuItem = new MenuItem("Test");
+        this.testViewMenuItem.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR_MENU_ITEM);
+        this.testViewMenuItem.setOnAction(a -> this.controller.onTestViewMenuItemClicked(a));
+        /**
+         *
+         * TEMP
+         *
+         */
+
+
+        // Build hierarchy
+        this.viewsMenu.getItems().addAll(this.serverViewMenuItem, this.neuralNetworkViewMenuItem, this.plotViewMenuItem, this.testViewMenuItem);
+        this.menuBar.getMenus().add(viewsMenu);
+        this.menuBarLayout.getChildren().add(this.menuBar);
     }
 
     /**
      * Build main pane
      */
     private void configureMainLayout(){
-        // Parent HBox
-        this.mainLayout = new HBox();
+        // Content Grid pane
+        this.mainLayout = new GridPane();
         VBox.setVgrow(this.mainLayout, Priority.ALWAYS);
+        HBox.setHgrow(this.mainLayout, Priority.ALWAYS);
+        this.mainLayout.setHgap(IntCst.DEFAULT_MAIN_VIEW_CONTENT_SPACING);
+        this.mainLayout.setVgap(IntCst.DEFAULT_MAIN_VIEW_CONTENT_SPACING);
+        this.mainLayout.setAlignment(Pos.CENTER);
+        this.contentLayoutInsets = new Insets(IntCst.DEFAULT_MAIN_VIEW_CONTENT_MARGIN,
+                IntCst.DEFAULT_MAIN_VIEW_CONTENT_MARGIN,
+                IntCst.DEFAULT_MAIN_VIEW_CONTENT_MARGIN,
+                IntCst.DEFAULT_MAIN_VIEW_CONTENT_MARGIN);
+        this.mainLayout.setPadding(this.contentLayoutInsets);
+
+        // Constraints
+        ColumnConstraints columnConstraints = new ColumnConstraints();
+        columnConstraints.setHgrow(Priority.ALWAYS);
+        columnConstraints.setHalignment(HPos.CENTER);
+        this.mainLayout.getColumnConstraints().add(columnConstraints);
+
+        RowConstraints rowConstraints = new RowConstraints();
+        rowConstraints.setVgrow(Priority.ALWAYS);
+        rowConstraints.setValignment(VPos.CENTER);
+        this.mainLayout.getRowConstraints().add(rowConstraints);
+
+        // Store layout current state
+        this.nbRows = 1;
+        this.nbColumns = 0;
+        this.currentRowIdx = 0;
+        this.currentColumnIdx = -1;
     }
 
     /**
      * Add content views
+     * Nothing to be done
+     * TODO: Configure content depending on user's preferences
      */
     private void configureContentViews(){
-        // ServerInfoView
-        this.mainLayout.getChildren().add(this.serverInfoView.getRoot());
+        // Nothing to be done
+    }
+
+    /*****************************************
+     *
+     * Add views
+     *
+     *****************************************/
+    /**
+     * Add a view
+     * @param viewType The type of the view to display
+     */
+    public void addView(EnumCst.VIEWS viewType){
+        // Update grid
+        this.updateGrid();
+
+        // Update content sizes
+        this.updateContentSizes();
+
+        // Update active views sizes
+        this.updateActiveViewsSizes();
+
+        // Switch on the type of the view to add
+        View view = null;
+        switch (viewType){
+            case SERVER:
+                view = new ServerInfoView(this.stage, this.contentHeight, this.contentWidth);
+                break;
+            case NEURAL_NETWORK:
+                System.out.println("Not implemented yet...");
+                break;
+            case PLOT:
+                view = new PlotView(this.stage, this.contentHeight, this.contentWidth);
+                break;
+            case TEST:
+                view = new TestView(this.stage, this.contentHeight, this.contentWidth);
+                break;
+            default:
+                System.out.println("Unknown view");
+                break;
+        }
+
+        // Add view to active views
+        if (view != null){
+            this.mainLayout.add(view.getRoot(), this.currentColumnIdx, this.currentRowIdx);
+            this.activeViews.add(view);
+        }
+    }
+
+    /*****************************************
+     *
+     * Update
+     *
+     *****************************************/
+    /**
+     * Update the grid
+     * TODO: Implement the case where a view is deleted
+     */
+    private void updateGrid(){
+        // Update the indices and the number of columns and rows
+        if (this.currentColumnIdx == IntCst.DEFAULT_MAX_NB_COLUMNS - 1){
+            this.nbRows++;
+            this.currentRowIdx++;
+            this.currentColumnIdx = 0;
+        } else {
+            if (!(this.nbColumns == IntCst.DEFAULT_MAX_NB_COLUMNS)){
+                this.nbColumns++;
+            }
+            this.currentColumnIdx++;
+        }
+    }
+
+    /**
+     * Update the content sizes
+     */
+    public void updateContentSizes(){
+        this.contentHeight = (this.mainLayout.getHeight()
+                - this.contentLayoutInsets.getTop()
+                - this.contentLayoutInsets.getBottom()
+                - (this.nbRows - 1) * this.mainLayout.getVgap()) /
+                (this.nbRows == 0 ? 1 : this.nbRows);
+
+        this.contentWidth = (this.mainLayout.getHeight()
+                - this.contentLayoutInsets.getLeft()
+                - this.contentLayoutInsets.getRight()
+                - (this.nbColumns - 1) * this.mainLayout.getHgap()) /
+                (this.nbColumns == 0 ? 1 : this.nbColumns);
+    }
+
+    /**
+     * Update active views sizes
+     */
+    private void updateActiveViewsSizes(){
+        // Loop over all the active view
+//        for (View view : this.activeViews){
+//            view.updateSize(this.contentHeight, this.contentWidth);
+//        }
+    }
+
+    /*****************************************
+     *
+     * Getters
+     *
+     *****************************************/
+    /**
+     * @return The current height of the root
+     */
+    public double getHeight() {
+        return this.contentHeight;
+    }
+
+    /**
+     * @return The current width of the root
+     */
+    public double getWidth() {
+        return this.contentWidth;
     }
 
     /*****************************************

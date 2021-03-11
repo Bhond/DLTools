@@ -34,8 +34,15 @@ public abstract class StrCst {
      * String constants
      *
      *****************************************/
+    // Buttons
     public final static String LABEL_CLOSE_WINDOW_BUTTON = "C";
     public final static String LABEL_MINIMIZE_WINDOW_BUTTON = "A";
+
+    // Menu bar
+    public final static String MENUBAR_LABEL_VIEWS = "Views";
+    public final static String MENUBAR_LABEL_SERVER_VIEW_ITEM = "Server";
+    public final static String MENUBAR_LABEL_NEURAL_NETWORK_VIEW_ITEM = "Neural Network";
+    public final static String MENUBAR_LABEL_PLOT_VIEW_ITEM = "Plot";
 
     /*****************************************
      *
@@ -45,6 +52,8 @@ public abstract class StrCst {
     public final static String PATH_CSS_DIRECTORY = "/resources/css/";
     public final static String PATH_MAIN_VIEW_CSS = StrCst.PATH_CSS_DIRECTORY + "MainView.css";
     public final static String PATH_SERVER_INFO_VIEW_CSS = StrCst.PATH_CSS_DIRECTORY + "ServerInfoView.css";
+    public final static String PATH_TEST_VIEW_CSS = StrCst.PATH_CSS_DIRECTORY + "TestView.css";
+    public final static String PATH_PLOT_VIEW_CSS = StrCst.PATH_CSS_DIRECTORY + "PlotView.css";
 
     /*****************************************
      *
@@ -54,4 +63,7 @@ public abstract class StrCst {
     public final static String STYLE_CLASS_ROOT = "root";
     public final static String STYLE_CLASS_ROOT_LAYOUT = "rootLayout";
     public final static String STYLE_CLASS_CONTROL_WINDOW_BUTTON = "controlWindowButton";
+    public final static String STYLE_CLASS_MENUBAR = "menuBar";
+    public final static String STYLE_CLASS_MENUBAR_MENU = "menuBarMenu";
+    public final static String STYLE_CLASS_MENUBAR_MENU_ITEM = "menuBarMenuItem";
 }

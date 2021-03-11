@@ -20,8 +20,8 @@
 package fr.pops.scorer;
 
 import fr.pops.datareader.DataReader;
-import fr.pops.neuralnetworks.layers.Layer;
-import fr.pops.neuralnetworks.networks.NeuralNetworkProperties;
+import fr.pops.nn.layers.Layer;
+import fr.pops.nn.networks.NeuralNetworkProperties;
 import fr.pops.popsmath.Matrix;
 import fr.pops.popsmath.PopsMath;
 import fr.pops.popsmath.Vector;

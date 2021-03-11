@@ -42,7 +42,6 @@ public abstract class Bean {
     /**
      * Standard ctor
      * Initialize the id and add this bean to the bean manager
-     * TODO: Find a model.class and if exists, instantiate it
      */
     protected Bean(){
         // Set id
@@ -53,7 +52,7 @@ public abstract class Bean {
 
         // Get model if the class exists
         // instantiate it and store it
-        BeanModel<Bean> model = FindModelIfExists(this);
+        BeanModel<Bean> model = FindModelAndInstantiateItIfExists(this);
         if (model != null){
             BeanManager.getInstance().addModel(model);
         }
@@ -71,11 +70,15 @@ public abstract class Bean {
      * Must be named xxxModel with xxx the bean's name without the word "Bean".
      * ej.: public class FooModel extends BeanModel<FooBean>{}.
      * Ignore ClassNotFoundException since not every bean has an implemented model
+     * Suppress warning: "unchecked" because the ClassCastExceptions exception raised
+     * if the cast cannot be done should not appear unless the implementation of the
+     * model does not satisfy the rules described above.
      * @param bean The bean used by the model
      * @param <T> The Bean type
      * @return If found, the model ; else, null
      */
-    private <T extends Bean> BeanModel<T> FindModelIfExists(T bean){
+    @SuppressWarnings("unchecked")
+    private <T extends Bean> BeanModel<T> FindModelAndInstantiateItIfExists(T bean){
         // Initialisation
         String classpath = bean.getClass().toString();
         String beanName = classpath.substring(classpath.lastIndexOf('.')+1);
@@ -94,7 +97,12 @@ public abstract class Bean {
             model.setBean(bean);
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException ignored) {}
+        } catch (ClassCastException e){
+            System.out.println("Error raised when trying to cast the model: " + fullName + ". Check that the model's class implementation respects " +
+                               "the rules specified in the description of the method Bean::FindModelAndInstantiateItIfExists.");
+        } catch (ClassNotFoundException ignored) {
+            // Error ignored since a bean does not necessarily have a model
+        }
         return model;
     }
 

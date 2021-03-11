@@ -16,5 +16,5 @@
 .rootLayout
 {
 	-fx-background-color: -fx-palette-fogra39;
-	-fx-background-radius:5px;
+	-fx-background-radius:10px;
 }

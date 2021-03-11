@@ -20,8 +20,8 @@
  ******************************************************************************/
 package fr.pops.updater;
 
-import fr.pops.neuralnetworks.networks.NeuralNetwork;
-import fr.pops.neuralnetworks.layers.Layer;
+import fr.pops.nn.networks.NeuralNetwork;
+import fr.pops.nn.layers.Layer;
 
 public abstract class Updater {
 

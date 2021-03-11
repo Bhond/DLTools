@@ -52,8 +52,8 @@ public class TestModel extends BeanModel<TestBean> {
         bean.setPositionX(bean.getSpeed() * bean.getDirectionX() * dt);
         bean.setPositionY(bean.getSpeed() * bean.getDirectionY() * dt);
 
-        System.out.println("Test position X: " + bean.getPositionX());
-        System.out.println("Test position Y: " + bean.getPositionY());
+//        System.out.println("Test position X: " + bean.getPositionX());
+//        System.out.println("Test position Y: " + bean.getPositionY());
 
     }
 

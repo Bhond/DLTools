@@ -20,13 +20,12 @@
  ******************************************************************************/
 package fr.pops.solver;
 
-import fr.pops.neuralnetworks.bias.Bias;
-import fr.pops.neuralnetworks.networks.CNN;
-import fr.pops.neuralnetworks.networks.Classifier;
-import fr.pops.neuralnetworks.networks.NeuralNetworkConfiguration;
+import fr.pops.nn.bias.Bias;
+import fr.pops.nn.networks.CNN;
+import fr.pops.nn.networks.Classifier;
+import fr.pops.nn.networks.NeuralNetworkConfiguration;
 import fr.pops.ndarray.INDArray;
-import fr.pops.neuralnetworks.weights.weight.Weight;
-import fr.pops.popscst.cst.EnumCst;
+import fr.pops.nn.weights.weight.Weight;
 
 public class StochasticGradientDescent implements ISolver {
 

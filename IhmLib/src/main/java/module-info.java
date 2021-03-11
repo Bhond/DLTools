@@ -1,5 +1,8 @@
-module fr.pops {
+module IhmLib {
     requires javafx.controls;
     requires java.desktop;
-    exports fr.pops.main;
+    requires PopsCommon;
+
+    exports fr.pops.ihmmain;
+
 }

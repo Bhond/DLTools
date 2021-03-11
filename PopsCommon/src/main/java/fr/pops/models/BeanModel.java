@@ -73,6 +73,10 @@ public abstract class BeanModel<T extends Bean> {
      * Setters
      *
      *****************************************/
+    /**
+     * Set the bean used by the model
+     * @param bean The bean used by the model
+     */
     public final void setBean(T bean){
         this.bean = bean;
     }

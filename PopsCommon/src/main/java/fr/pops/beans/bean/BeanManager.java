@@ -20,14 +20,13 @@
  ******************************************************************************/
 package fr.pops.beans.bean;
 
+import fr.pops.beanobservable.BeanObservable;
 import fr.pops.models.BeanModel;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.HashSet;
 
-public final class BeanManager implements Serializable {
+public final class BeanManager extends BeanObservable implements Serializable {
 
     /*****************************************
      *
@@ -42,9 +41,6 @@ public final class BeanManager implements Serializable {
      * Attributes
      *
      *****************************************/
-    // Listeners
-    protected final PropertyChangeSupport support = new PropertyChangeSupport(this);
-
     // Beans
     private HashSet<Bean> beans = new HashSet<>();
 
@@ -61,28 +57,20 @@ public final class BeanManager implements Serializable {
      * Singleton
      */
     private BeanManager(){
-        // TODO: connect a listener to listen to the hashsets holding the beans and the models
+        // Initialisation
+        this.onInit();
     }
 
     /*****************************************
      *
-     * Listeners
+     * Initialisation
      *
      *****************************************/
     /**
-     * Add a property change listener
-     * @param listener The listener
+     * Initialize the BeanManager
      */
-    public void addPropertyChangeListener(PropertyChangeListener listener){
-        this.support.addPropertyChangeListener(listener);
-    }
-
-    /**
-     * Add a property change listener
-     * @param listener The listener
-     */
-    public void removePropertyChangeListener(PropertyChangeListener listener){
-        this.support.removePropertyChangeListener(listener);
+    private void onInit(){
+        // Nothing to do now
     }
 
     /*****************************************
@@ -97,7 +85,6 @@ public final class BeanManager implements Serializable {
      * @param bean The bean to add
      */
     public void addBean(Bean bean){
-        // TODO: fire a change listener
         this.beans.add(bean);
     }
 
@@ -107,6 +94,20 @@ public final class BeanManager implements Serializable {
      */
     public <T extends Bean> void addModel(BeanModel<T> model){
         this.models.add(model);
+    }
+
+    /*****************************************
+     *
+     * Update beans
+     *
+     *****************************************/
+    /**
+     * Method called when a bean has changed
+     * and a request should be sent to the server
+     * to be displayed on the ihm if required
+     */
+    public void onBeanUpdate(){
+
     }
 
     /*****************************************
@@ -121,6 +122,13 @@ public final class BeanManager implements Serializable {
     public int getId(){
         currentBeanId++;
         return currentBeanId;
+    }
+
+    /**
+     * @return The models
+     */
+    public HashSet<BeanModel<? extends Bean>> getModels() {
+        return models;
     }
 
     /**

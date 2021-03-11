@@ -14,9 +14,65 @@
 
 /* Buttons */
 .controlWindowButton
-{   	-fx-background-color: transparent;
-    	-fx-font-size: 12pt;
-    	-fx-text-fill: -fx-palette-orange;
-        -fx-effect: dropshadow(gaussian, -fx-palette-orange, 8, 0.3, 0, 0);
-    	-fx-font-family: 'Elianto';
+{
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-palette-ghost-white;
+    -fx-font-size: 12pt;
+    -fx-font-family: 'Elianto';
 }
+
+.controlWindowButton:hover
+{
+    -fx-background-color: transparent;
+    -fx-font-size: 12pt;
+    -fx-text-fill: -fx-palette-ghost-white;
+    -fx-effect: dropshadow(gaussian, -fx-palette-orange, 8, 0.3, 0, 0);
+    -fx-font-family: 'Elianto';
+}
+
+/* Menu bar */
+.menuBar
+{
+    -fx-background-color: transparent;
+}
+
+.menu-bar .menu-button:hover, .menu-bar .menu-button:focused, .menu-bar .menu-button:showing {
+    -fx-background: transparent ;
+}
+
+.menuBar .label
+{
+    -fx-font-size: 10pt;
+    -fx-text-fill: -fx-palette-ghost-white;
+    -fx-font-family: 'Stellar';
+}
+
+.menuBar .label:hover
+{
+    -fx-effect: dropshadow(gaussian, -fx-palette-orange, 8, 0.3, 0, 0);
+}
+
+.context-menu
+{
+    -fx-background-color: -fx-palette-fogra39;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 0 6 6 6, 0 5 5 5, 0 4 4 4;
+    -fx-padding: 0.333333em 0.083333em 0.666667em 0.083333em;
+}
+
+/* Menu bar Menu Item */
+.menuBarMenuItem
+{
+    -fx-background-color: transparent;
+}
+
+.menuBarMenuItem:hover
+{
+    -fx-effect: dropshadow(gaussian, -fx-palette-orange, 8, 0.3, 0, 0);
+}
+
+.menuBarMenuItem:focused
+{
+    -fx-background-color: transparent;
+}
+

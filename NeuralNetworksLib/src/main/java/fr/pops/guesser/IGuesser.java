@@ -20,7 +20,7 @@
  ******************************************************************************/
 package fr.pops.guesser;
 
-import fr.pops.neuralnetworks.networks.NeuralNetwork;
+import fr.pops.nn.networks.NeuralNetwork;
 
 public interface IGuesser {
 

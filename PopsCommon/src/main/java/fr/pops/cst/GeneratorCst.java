@@ -82,6 +82,7 @@ public abstract class GeneratorCst {
     public static final String PROPERTY_NAME = "Name";
     public static final String PROPERTY_TYPE = "Type";
     public static final String PROPERTY_DEFAULT = "Default";
+    public static final String PROPERTY_VALUE = "value";
     public static final String PROPERTY_TOKENIZER_DELIMITER = ";";
     public static final String PROPERTY_BUILDER_DECLARATION = "new Property.PropertyBuilder()";
     public static final String PROPERTY_BUILDER_WITH_NAME = ".withName";

@@ -1,0 +1,74 @@
+/* Root */
+.root
+{
+    -fx-background-color: transparent; /* transparent */
+}
+
+.chart
+{
+    -fx-background-color: transparent;
+}
+
+.chart-legend
+{
+    -fx-background-color: transparent;
+}
+
+.chart-plot-background
+{
+    -fx-background-color: transparent;
+}
+
+.chart-series-line
+{
+    -fx-stroke-width: 2px;
+}
+
+.chart-horizontal-grid-lines
+{
+    -fx-stroke: transparent;
+}
+
+.chart-vertical-grid-lines
+{
+    -fx-stroke: transparent;
+}
+
+.axis:left
+{
+    -fx-tick-label-fill: -fx-palette-ghost-white;
+    -fx-font-family: 'Stellar';
+    -fx-minor-tick-visible: false;
+    -fx-border-color: transparent -fx-palette-ghost-white transparent transparent;
+}
+
+.axis:left .axis-tick-mark
+{
+    -fx-stroke: -fx-palette-ghost-white;
+}
+
+.axis:bottom
+{
+    -fx-tick-label-fill: -fx-palette-ghost-white;
+    -fx-font-family: 'Stellar';
+    -fx-tick-mark-visible: false;
+    -fx-minor-tick-visible: false;
+    -fx-border-color: -fx-palette-ghost-white transparent transparent transparent;
+}
+
+.axis:bottom .axis-tick-mark
+{
+    -fx-stroke: -fx-palette-ghost-white;
+}
+
+.axis-label
+{
+    -fx-background-color: transparent;
+    -fx-text-fill: transparent;
+}
+
+/* Default colors */
+/* Serie 0 */
+.default-color0.chart-series-line { -fx-stroke: -fx-palette-ghost-white; }
+.default-color0.chart-line-symbol { -fx-background-color: -fx-palette-ghost-white; -fx-effect: dropshadow(gaussian, -fx-palette-ghost-white, 8, 0.3, 0, 0); }
+.default-color0.chart-series-fill { -fx-fill: -fx-palette-ghost-white; }

@@ -19,9 +19,9 @@
  ******************************************************************************/
 package fr.pops.solver;
 
-import fr.pops.neuralnetworks.networks.CNN;
-import fr.pops.neuralnetworks.networks.Classifier;
-import fr.pops.neuralnetworks.networks.RNN;
+import fr.pops.nn.networks.CNN;
+import fr.pops.nn.networks.Classifier;
+import fr.pops.nn.networks.RNN;
 import fr.pops.ndarray.INDArray;
 
 public interface ISolver {

@@ -19,10 +19,10 @@
  ******************************************************************************/
 package fr.pops.beanloop;
 
+import fr.pops.beans.bean.Bean;
+import fr.pops.beans.bean.BeanManager;
 import fr.pops.cst.IntCst;
 import fr.pops.models.BeanModel;
-
-import java.util.HashSet;
 
 public class BeanLoop extends Thread implements Runnable {
 
@@ -38,11 +38,13 @@ public class BeanLoop extends Thread implements Runnable {
      * Attributes
      *
      *****************************************/
+    // Thread
     private Thread thread;
     protected boolean running = false;
     private final double UPDATE_CAP = 1.0d / IntCst.BEAN_LOOP_MAX_FPS;
 
-    private HashSet<BeanModel> beanModels = new HashSet<BeanModel>();
+    // Bean manager
+    private BeanManager beanManager = BeanManager.getInstance();
 
     /*****************************************
      *
@@ -67,6 +69,7 @@ public class BeanLoop extends Thread implements Runnable {
      */
     public void start(){
         this.thread = new Thread(this);
+        this.thread.start();
     }
 
     /**
@@ -74,7 +77,7 @@ public class BeanLoop extends Thread implements Runnable {
      */
     @Override
     public final void run(){
-// Initialize the loop
+        // Initialize the loop
         running = true;
         boolean render = false;
         double firstTime = 0;
@@ -87,7 +90,7 @@ public class BeanLoop extends Thread implements Runnable {
         int fps = 0;
 
         // Call the setup method
-        for (BeanModel beanModel : beanModels){
+        for (BeanModel<? extends Bean> beanModel : beanManager.getModels()){
             beanModel.setup();
         }
 
@@ -114,7 +117,7 @@ public class BeanLoop extends Thread implements Runnable {
             if (render){
                 frames++;
                 // Call the update method
-                for (BeanModel beanModel : beanModels){
+                for (BeanModel<? extends Bean> beanModel : beanManager.getModels()){
                     beanModel.update(elapsedTime);
                 }
             } else {
@@ -127,14 +130,14 @@ public class BeanLoop extends Thread implements Runnable {
 
         }
 
-        for (BeanModel beanModel : beanModels){
+        for (BeanModel<? extends Bean> beanModel : beanManager.getModels()){
             beanModel.dispose();
         }
     }
 
     /*****************************************
      *
-     * Getter
+     * Getters
      *
      *****************************************/
     /**
