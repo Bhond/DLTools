@@ -1,0 +1,8 @@
+fr\pops\serverlibcst\IntCst.class
+fr\pops\main\Main.class
+fr\pops\server\Server.class
+fr\pops\resquesthandler\RequestDispatcher.class
+fr\pops\serverexceptions\InvalidPortException.class
+fr\pops\resquesthandler\Request.class
+fr\pops\resquesthandler\Request$DataTypes.class
+fr\pops\client\ClientStreamHandler.class

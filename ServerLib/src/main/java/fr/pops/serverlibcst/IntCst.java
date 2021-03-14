@@ -29,4 +29,12 @@ public abstract class IntCst {
     public static final int SERVER_PORT = 8163;
     public static final int SERVER_POOL_SIZE = 5;
 
+    /*****************************************
+     *
+     * Byte sizes
+     *
+     *****************************************/
+    public static final int BYTE_SIZE_INTEGER = 4;
+    public static final int BYTE_SIZE_DOUBLE = 8;
+
 }
