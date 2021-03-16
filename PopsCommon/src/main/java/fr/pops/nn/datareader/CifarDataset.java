@@ -20,8 +20,8 @@
 package fr.pops.nn.datareader;
 
 import fr.pops.nn.ndarray.BaseNDArray;
-import fr.pops.nn.popscst.cst.EnumCst;
-import fr.pops.nn.popscst.cst.StrCst;
+import fr.pops.nn.nncst.cst.EnumCst;
+import fr.pops.nn.nncst.cst.StrCst;
 
 import java.io.DataInputStream;
 import java.io.IOException;

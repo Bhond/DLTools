@@ -20,7 +20,7 @@
 package fr.pops.nn.neuralnetworks.weights.weight;
 
 import fr.pops.nn.ndarray.INDArray;
-import fr.pops.nn.popscst.cst.EnumCst;
+import fr.pops.nn.nncst.cst.EnumCst;
 
 public abstract class Weight {
 

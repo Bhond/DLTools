@@ -22,7 +22,7 @@ package fr.pops.nn.neuralnetworks.weights.weightInit;
 
 import fr.pops.nn.ndarray.INDArray;
 import fr.pops.nn.ndarray.Shape;
-import fr.pops.nn.popscst.cst.EnumCst;
+import fr.pops.nn.nncst.cst.EnumCst;
 
 public abstract class WeightInitUtil {
 

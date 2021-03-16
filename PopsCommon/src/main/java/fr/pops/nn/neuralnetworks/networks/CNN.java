@@ -24,7 +24,7 @@ import fr.pops.nn.guesser.FeedForward;
 import fr.pops.nn.ndarray.INDArray;
 import fr.pops.nn.ndarray.Shape;
 import fr.pops.nn.neuralnetworks.layers.FlattenLayer;
-import fr.pops.nn.popscst.cst.EnumCst;
+import fr.pops.nn.nncst.cst.EnumCst;
 import fr.pops.nn.solver.StochasticGradientDescent;
 import fr.pops.nn.trainer.StandardTrainer;
 

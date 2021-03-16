@@ -6,4 +6,6 @@ module PopsCommon {
 
     // Test
     exports fr.pops.beans.test;
+    exports fr.pops.sockets.streamhandler;
+    exports fr.pops.sockets.resquesthandler;
 }

@@ -10,6 +10,7 @@ C:\Users\Charles\Documents\WorkspaceJava\Pops\IhmLib\src\main\java\fr\pops\ihmli
 C:\Users\Charles\Documents\WorkspaceJava\Pops\IhmLib\src\main\java\fr\pops\controllers\toolcontrolers\ToolController.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\IhmLib\src\main\java\fr\pops\views\View.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\IhmLib\src\main\java\fr\pops\ihmlibcst\IntCst.java
+C:\Users\Charles\Documents\WorkspaceJava\Pops\IhmLib\src\main\java\fr\pops\client\IhmStreamHandler.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\IhmLib\src\main\java\fr\pops\customnodes\panes\CorneredPane.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\IhmLib\src\main\java\fr\pops\customnodes\misc\BeveledCorner.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\IhmLib\src\main\java\fr\pops\utils\Utils.java
@@ -19,3 +20,4 @@ C:\Users\Charles\Documents\WorkspaceJava\Pops\IhmLib\src\main\java\fr\pops\ihmma
 C:\Users\Charles\Documents\WorkspaceJava\Pops\IhmLib\src\main\java\fr\pops\ihmlibcst\EnumCst.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\IhmLib\src\main\java\fr\pops\views\PlotView.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\IhmLib\src\main\java\module-info.java
+C:\Users\Charles\Documents\WorkspaceJava\Pops\IhmLib\src\main\java\fr\pops\client\IhmRequestHandler.java

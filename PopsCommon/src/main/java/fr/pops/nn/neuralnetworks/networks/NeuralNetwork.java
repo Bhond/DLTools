@@ -21,7 +21,7 @@ package fr.pops.nn.neuralnetworks.networks;
 
 import fr.pops.nn.guesser.IGuesser;
 import fr.pops.nn.ndarray.INDArray;
-import fr.pops.nn.popscst.cst.EnumCst;
+import fr.pops.nn.nncst.cst.EnumCst;
 import fr.pops.nn.solver.ISolver;
 import fr.pops.nn.trainer.ITrainer;
 

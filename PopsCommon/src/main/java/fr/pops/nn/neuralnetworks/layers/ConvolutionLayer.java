@@ -28,8 +28,8 @@ import fr.pops.nn.neuralnetworks.bias.Bias;
 import fr.pops.nn.neuralnetworks.weights.weight.KernelFilter;
 import fr.pops.nn.neuralnetworks.weights.weight.Weight;
 import fr.pops.nn.optimizer.Optimizer;
-import fr.pops.nn.popscst.cst.EnumCst;
-import fr.pops.nn.popscst.defaultvalues.LayerDefaultValues;
+import fr.pops.nn.nncst.cst.EnumCst;
+import fr.pops.nn.nncst.defaultvalues.LayerDefaultValues;
 import fr.pops.nn.popsmath.ArrayUtil;
 
 @SuppressWarnings("unused")

@@ -19,7 +19,7 @@
  ******************************************************************************/
 package fr.pops.nn.ndarray;
 
-import fr.pops.nn.popscst.cst.StrCst;
+import fr.pops.nn.nncst.cst.StrCst;
 import fr.pops.nn.popsmath.ArrayUtil;
 import fr.pops.nn.popsmath.PopsMath;
 

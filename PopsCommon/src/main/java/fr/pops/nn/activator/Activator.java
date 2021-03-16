@@ -21,7 +21,7 @@
 package fr.pops.nn.activator;
 
 import fr.pops.nn.ndarray.INDArray;
-import fr.pops.nn.popscst.cst.EnumCst;
+import fr.pops.nn.nncst.cst.EnumCst;
 import fr.pops.nn.popsmath.ArrayUtil;
 import fr.pops.nn.popsmath.PopsMath;
 

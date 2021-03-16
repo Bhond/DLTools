@@ -23,7 +23,7 @@ import fr.pops.nn.ndarray.BaseNDArray;
 import fr.pops.nn.ndarray.INDArray;
 import fr.pops.nn.ndarray.Shape;
 import fr.pops.nn.neuralnetworks.weights.weightInit.WeightInitUtil;
-import fr.pops.nn.popscst.cst.EnumCst;
+import fr.pops.nn.nncst.cst.EnumCst;
 import fr.pops.nn.popsmath.ArrayUtil;
 
 import java.util.ArrayList;

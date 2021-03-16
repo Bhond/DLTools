@@ -1,6 +1,6 @@
 package fr.pops.nn.plotfactory;
 
-import fr.pops.nn.popscst.cst.IntCst;
+import fr.pops.nn.nncst.cst.IntCst;
 
 public enum PlotConfig {
 

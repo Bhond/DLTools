@@ -10,12 +10,14 @@ fr\pops\ihmlibcst\DblCst.class
 fr\pops\ihmmain\Main.class
 fr\pops\utils\Utils.class
 module-info.class
+fr\pops\client\IhmStreamHandler.class
 fr\pops\customnodes\misc\BeveledCorner$1.class
 fr\pops\ihmlibcst\EnumCst$VIEWS.class
 fr\pops\views\View.class
 fr\pops\views\ServerInfoView.class
 fr\pops\systeminfo\DisplayInfo.class
 fr\pops\views\MainView$1.class
+fr\pops\client\IhmRequestHandler.class
 fr\pops\views\PlotView.class
 fr\pops\ihmlibcst\EnumCst.class
 fr\pops\customnodes\misc\BeveledCorner$Position.class

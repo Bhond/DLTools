@@ -29,9 +29,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class Client {
 
@@ -44,7 +42,7 @@ public class Client {
     private final static Client instance = new Client();
 
     // Ihm
-    private boolean isStandalone = true;
+    private boolean isStandalone = false;
     private Stage stage;
     private MainView mainView;
     private Parent root;
@@ -54,8 +52,8 @@ public class Client {
     private Socket socket;
 
     // Communication pipeline
-    private Scanner in;
-    private PrintWriter out;
+    private IhmInputStreamHandler inputStreamHandler;
+    private IhmOutputStreamHandler outputStreamHandler;
 
     /*****************************************
      *
@@ -97,18 +95,6 @@ public class Client {
         this.stage.setScene(this.scene);
     }
 
-    /**
-     * Build the communication between the server and the client
-     */
-    private void buildCommunicationPipeline(){
-        try {
-            this.in = new Scanner(socket.getInputStream());
-            this.out = new PrintWriter(socket.getOutputStream(), true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     /*****************************************
      *
      * Start the client
@@ -125,7 +111,10 @@ public class Client {
                 this.socket = new Socket("127.0.0.1", 8163);
 
                 // Build communication pipeline
-                this.buildCommunicationPipeline();
+                this.inputStreamHandler = new IhmInputStreamHandler(this.socket);
+                this.inputStreamHandler.start();
+                this.outputStreamHandler = new IhmOutputStreamHandler(this.socket);
+                this.outputStreamHandler.start();
             }
 
             // Display the main view
@@ -142,13 +131,7 @@ public class Client {
      *
      *****************************************/
     public void sendMessageToServer(String msg){
-        // TODO: Correct this part to make a dedicated thread that handles requests
-//        this.out.println(msg);
-//        if (this.in.hasNextLine()){
-//            System.out.println(in.nextLine());
-//        }
         System.out.println(msg);
-
     }
 
     /*****************************************

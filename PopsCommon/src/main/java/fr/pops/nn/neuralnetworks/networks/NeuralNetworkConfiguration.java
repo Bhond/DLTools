@@ -24,9 +24,9 @@ package fr.pops.nn.neuralnetworks.networks;
 import fr.pops.nn.datareader.DataReader;
 import fr.pops.nn.neuralnetworks.layers.InputLayer;
 import fr.pops.nn.neuralnetworks.layers.Layer;
-import fr.pops.nn.popscst.cst.EnumCst;
-import fr.pops.nn.popscst.cst.StrCst;
-import fr.pops.nn.popscst.defaultvalues.NeuralNetworkDefaultValues;
+import fr.pops.nn.nncst.cst.EnumCst;
+import fr.pops.nn.nncst.cst.StrCst;
+import fr.pops.nn.nncst.defaultvalues.NeuralNetworkDefaultValues;
 
 import java.util.ArrayList;
 import java.util.List;

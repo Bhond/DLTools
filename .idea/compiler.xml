@@ -24,7 +24,7 @@
         <module name="StockLib" />
         <module name="NeuralNetworksLib" />
         <module name="PopsCommon" />
-        <module name="ServerLib" />
+        <module name="MasterServerLib" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="15" />

@@ -22,7 +22,7 @@ package fr.pops.nn.neuralnetworks.layers;
 import fr.pops.nn.ndarray.BaseNDArray;
 import fr.pops.nn.ndarray.INDArray;
 import fr.pops.nn.neuralnetworks.weights.weight.Weight;
-import fr.pops.nn.popscst.cst.EnumCst;
+import fr.pops.nn.nncst.cst.EnumCst;
 
 public class InputLayer extends Layer {
 

@@ -24,8 +24,8 @@ import fr.pops.nn.ndarray.BaseNDArray;
 import fr.pops.nn.ndarray.INDArray;
 import fr.pops.nn.ndarray.Shape;
 import fr.pops.nn.neuralnetworks.weights.weight.Weight;
-import fr.pops.nn.popscst.cst.EnumCst;
-import fr.pops.nn.popscst.defaultvalues.LayerDefaultValues;
+import fr.pops.nn.nncst.cst.EnumCst;
+import fr.pops.nn.nncst.defaultvalues.LayerDefaultValues;
 import fr.pops.nn.popsmath.ArrayUtil;
 import fr.pops.nn.popsmath.PopsMath;
 

@@ -19,7 +19,7 @@
 
     <modules>
         <module>IhmLib</module>
-        <module>ServerLib</module>
+        <module>MasterServerLib</module>
         <module>NeuralNetworksLib</module>
         <module>PopsCommon</module>
     </modules>
