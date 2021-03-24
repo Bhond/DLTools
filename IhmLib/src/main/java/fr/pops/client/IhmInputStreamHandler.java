@@ -31,9 +31,9 @@ public class IhmInputStreamHandler extends InputStreamHandler {
      * Ctor
      * @param socket The socket
      */
-    public IhmInputStreamHandler(Socket socket){
+    public IhmInputStreamHandler(Socket socket, IhmRequestHandler ihmRequestHandler){
         // Parent
-        super(socket, IhmRequestHandler.getInstance());
+        super(socket, ihmRequestHandler);
     }
 
     /*****************************************

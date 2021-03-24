@@ -20,7 +20,6 @@
  ******************************************************************************/
 package fr.pops.client;
 
-import fr.pops.requesthandler.ServerRequestHandler;
 import fr.pops.sockets.streamhandler.InputStreamHandler;
 
 import java.net.Socket;
@@ -54,8 +53,7 @@ public class ServerInputStreamHandler extends InputStreamHandler {
      */
     public ServerInputStreamHandler(Socket socket) {
         // Call parent
-        super(socket, ServerRequestHandler.getInstance());
-        System.out.println(socket);
+        super(socket);
     }
 
     /*****************************************
@@ -79,18 +77,6 @@ public class ServerInputStreamHandler extends InputStreamHandler {
     @Override
     protected  void setup(){
 
-    }
-
-    @Override
-    public void run(){
-        while(inputStream.hasNextLine()){
-            //outputStream.println((inputStream.nextLine().toUpperCase()));
-        }
-
-
-//        while(this.isRunning){
-//            this.outputStream.print("hello");
-//        }
     }
 
     /*****************************************

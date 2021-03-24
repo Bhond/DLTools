@@ -28,5 +28,7 @@ public class EnumCst {
      *****************************************/
     public enum CommandTypes {CLOSE_CONNECTION, GET, SET, TRANSMIT}
 
+    private static long ID_IHM = 7596087841016572405L;
+
 
 }

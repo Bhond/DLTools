@@ -1,6 +1,5 @@
 package fr.pops.client;
 
-import fr.pops.requesthandler.ServerRequestHandler;
 import fr.pops.sockets.streamhandler.OutputStreamHandler;
 
 import java.net.Socket;
@@ -12,7 +11,7 @@ public class ServerOutputStreamHandler extends OutputStreamHandler {
      }
 
      public ServerOutputStreamHandler(Socket socket){
-         super(socket, ServerRequestHandler.getInstance());
+         super(socket);
      }
 
     @Override

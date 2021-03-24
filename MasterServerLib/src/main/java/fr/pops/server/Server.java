@@ -19,8 +19,8 @@
  ******************************************************************************/
 package fr.pops.server;
 
+import fr.pops.client.Client;
 import fr.pops.client.ClientManager;
-import fr.pops.client.ServerInputStreamHandler;
 import fr.pops.serverlibcst.IntCst;
 
 import java.io.IOException;
@@ -127,9 +127,9 @@ public class Server {
             try {
                 Socket clientSocket = this.serverSocket.accept();
                 System.out.println("Client connected: " + clientSocket);
-                ServerInputStreamHandler client = new ServerInputStreamHandler(clientSocket);
+                Client client = new Client(clientSocket);
                 this.clientManager.addClient(client);
-                this.pool.execute(client);
+                this.pool.execute(client.getRequestHandler());
             } catch (IOException e) {
                 e.printStackTrace();
             }

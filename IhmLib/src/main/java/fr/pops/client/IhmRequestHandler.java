@@ -1,6 +1,5 @@
 package fr.pops.client;
 
-import fr.pops.sockets.resquesthandler.Request;
 import fr.pops.sockets.resquesthandler.RequestHandler;
 
 public class IhmRequestHandler extends RequestHandler {
@@ -10,7 +9,6 @@ public class IhmRequestHandler extends RequestHandler {
      * Attributes
      *
      *****************************************/
-    private static final IhmRequestHandler instance = new IhmRequestHandler();
 
     /*****************************************
      *
@@ -20,9 +18,9 @@ public class IhmRequestHandler extends RequestHandler {
     /**
      * Standard ctor
      */
-    private IhmRequestHandler(){
+    public IhmRequestHandler(IhmOutputStreamHandler ihmOutputStreamHandler){
         // Parent
-        super();
+        super(ihmOutputStreamHandler);
     }
 
     /*****************************************
@@ -35,7 +33,7 @@ public class IhmRequestHandler extends RequestHandler {
      * @param request The request to handle
      */
     @Override
-    protected void handle(Request request) {
+    protected void handle(String request) {
 
     }
 
@@ -44,7 +42,4 @@ public class IhmRequestHandler extends RequestHandler {
      * Getter
      *
      *****************************************/
-    public static IhmRequestHandler getInstance() {
-        return instance;
-    }
 }

@@ -20,6 +20,9 @@
  ******************************************************************************/
 package fr.pops.sockets.resquesthandler;
 
+import fr.pops.sockets.streamhandler.InputStreamHandler;
+import fr.pops.sockets.streamhandler.OutputStreamHandler;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -34,6 +37,10 @@ public abstract class RequestHandler extends Thread implements Runnable {
     private Thread thread = new Thread(this);
     private Queue<Request> requestQueue = new LinkedList<>();
 
+    private Queue<String> tmpStrQueue = new LinkedList<>();
+
+    protected InputStreamHandler inputStreamHandler;
+    protected OutputStreamHandler outputStreamHandler;
     /*****************************************
      *
      * Ctor
@@ -41,9 +48,20 @@ public abstract class RequestHandler extends Thread implements Runnable {
      *****************************************/
     /**
      * Standard ctor
-     * Singleton
+     * Nothing to be done
      */
     protected RequestHandler(){
+        // Nothing to be done
+    }
+
+    /**
+     * Ctor to call
+     * @param outputStreamHandler The output stream handler to send messages
+     */
+    protected RequestHandler(InputStreamHandler inputStreamHandler, OutputStreamHandler outputStreamHandler){
+        this.inputStreamHandler = inputStreamHandler;
+        this.outputStreamHandler = outputStreamHandler;
+
         this.isRunning = true;
         this.thread.start();
     }
@@ -60,6 +78,11 @@ public abstract class RequestHandler extends Thread implements Runnable {
     public void enqueueRequest(Request request){
         this.requestQueue.add(request);
     }
+
+    public void send(String msg){
+        this.outputStreamHandler.addRequest(msg);
+    }
+
     /*****************************************
      *
      * Methods to override
@@ -68,7 +91,7 @@ public abstract class RequestHandler extends Thread implements Runnable {
     /**
      * Handle the requests
      */
-    protected abstract void handle(Request request);
+    protected abstract void handle(String request);
 
     /*****************************************
      *
@@ -79,9 +102,16 @@ public abstract class RequestHandler extends Thread implements Runnable {
     public void run() {
         // Loop to handle requests
         while (this.isRunning){
-            while (!this.requestQueue.isEmpty()){
-                this.handle(requestQueue.remove());
+
+            // Priority to the request created
+            String msg = tmpStrQueue.poll();
+            if (msg != null){
+                this.handle(msg);
             }
+
+            // Retrieve new msg
+            this.tmpStrQueue.offer(this.inputStreamHandler.pull());
+
             // TEMP
             try {
                 sleep(1000);

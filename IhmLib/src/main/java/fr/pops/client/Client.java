@@ -22,6 +22,7 @@
 package fr.pops.client;
 
 import fr.pops.ihmlibcst.StrCst;
+import fr.pops.sockets.cst.IdCst;
 import fr.pops.views.MainView;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -41,8 +42,11 @@ public class Client {
     // Instance
     private final static Client instance = new Client();
 
-    // Ihm
+    // General parameters
+    private final static long id = IdCst.ID_IHM;
     private boolean isStandalone = false;
+
+    // Ihm
     private Stage stage;
     private MainView mainView;
     private Parent root;
@@ -52,6 +56,7 @@ public class Client {
     private Socket socket;
 
     // Communication pipeline
+    private IhmRequestHandler requestHandler;
     private IhmInputStreamHandler inputStreamHandler;
     private IhmOutputStreamHandler outputStreamHandler;
 
@@ -111,10 +116,11 @@ public class Client {
                 this.socket = new Socket("127.0.0.1", 8163);
 
                 // Build communication pipeline
-                this.inputStreamHandler = new IhmInputStreamHandler(this.socket);
-                this.inputStreamHandler.start();
                 this.outputStreamHandler = new IhmOutputStreamHandler(this.socket);
                 this.outputStreamHandler.start();
+                this.requestHandler = new IhmRequestHandler(this.outputStreamHandler);
+                this.inputStreamHandler = new IhmInputStreamHandler(this.socket, this.requestHandler);
+                this.inputStreamHandler.start();
             }
 
             // Display the main view

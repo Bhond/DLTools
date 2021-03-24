@@ -1,10 +1,13 @@
 package fr.pops.sockets.streamhandler;
 
-import fr.pops.sockets.resquesthandler.RequestHandler;
+import fr.pops.sockets.cst.IdCst;
+import fr.pops.sockets.resquesthandler.Request;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public abstract class OutputStreamHandler extends Thread implements Runnable {
 
@@ -21,9 +24,12 @@ public abstract class OutputStreamHandler extends Thread implements Runnable {
     private Thread thread;
     protected boolean isRunning;
 
-    // Input / output streams
-    protected RequestHandler requestHandler;
+    // Output stream
     protected PrintWriter outputStream;
+
+    // FIFO
+    private Queue<Request> requestToSendQueue = new LinkedList<>();
+    private Queue<String> tmpToSend = new LinkedList<>();
 
     /*****************************************
      *
@@ -42,9 +48,9 @@ public abstract class OutputStreamHandler extends Thread implements Runnable {
      * Instantiate a new fr.pops.client thread
      * @param socket The socket used by the fr.pops.client
      */
-    protected OutputStreamHandler(Socket socket, RequestHandler requestHandler) {
+    protected OutputStreamHandler(Socket socket) {
         // Initialize the socket
-        onInit(socket, requestHandler);
+        onInit(socket);
     }
 
     /*****************************************
@@ -56,12 +62,9 @@ public abstract class OutputStreamHandler extends Thread implements Runnable {
      * Initialize the client thread
      * @param socket The socket used by the client
      */
-    private void onInit(Socket socket, RequestHandler requestDispatcher){
+    private void onInit(Socket socket){
         // Store the socket
         this.socket = socket;
-
-        // Store the request dispatcher
-        this.requestHandler = requestDispatcher;
 
         // Build input / output streams
         try {
@@ -88,8 +91,16 @@ public abstract class OutputStreamHandler extends Thread implements Runnable {
     /**
      * Write message to output stream
      */
-    protected void write(String msg){
-        this.outputStream.print(msg);
+    protected void write(Request request){
+//        this.outputStream.print(request.toString());
+        this.outputStream.print("Id: " + IdCst.ID_STOCK);
+    }
+
+    /**
+     * Write message to output stream
+     */
+    protected void write(String request){
+        this.outputStream.println(request);
     }
 
 
@@ -117,7 +128,12 @@ public abstract class OutputStreamHandler extends Thread implements Runnable {
             this.onConnectionOpened();
             while (this.isRunning){
                 // Write new messages
-                this.write("Test");
+                String msg = this.tmpToSend.poll();
+
+                if (msg != null) {
+                    this.write(msg);
+                    System.out.println("done");
+                }
             }
         } finally {
             try {
@@ -134,4 +150,7 @@ public abstract class OutputStreamHandler extends Thread implements Runnable {
      * Setter
      *
      *****************************************/
+    public void addRequest(String msg){
+        this.tmpToSend.offer(msg);
+    }
 }

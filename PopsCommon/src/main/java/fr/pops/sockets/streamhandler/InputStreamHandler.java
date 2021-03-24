@@ -1,9 +1,9 @@
 package fr.pops.sockets.streamhandler;
 
-import fr.pops.sockets.resquesthandler.RequestHandler;
-
 import java.io.IOException;
 import java.net.Socket;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
 public abstract class InputStreamHandler extends Thread implements Runnable {
@@ -21,10 +21,9 @@ public abstract class InputStreamHandler extends Thread implements Runnable {
     private Thread thread;
     protected boolean isRunning;
 
-    // Input / output streams
-    protected RequestHandler requestHandler;
+    // Input stream
     protected Scanner inputStream;
-    //protected PrintWriter outputStream;
+    protected Queue<String> incomingMsg = new LinkedList<>();
 
     /*****************************************
      *
@@ -43,9 +42,9 @@ public abstract class InputStreamHandler extends Thread implements Runnable {
      * Instantiate a new fr.pops.client thread
      * @param socket The socket used by the fr.pops.client
      */
-    protected InputStreamHandler(Socket socket, RequestHandler requestHandler) {
+    protected InputStreamHandler(Socket socket) {
         // Initialize the socket
-        onInit(socket, requestHandler);
+        onInit(socket);
     }
 
     /*****************************************
@@ -57,20 +56,17 @@ public abstract class InputStreamHandler extends Thread implements Runnable {
      * Initialize the client thread
      * @param socket The socket used by the client
      */
-    private void onInit(Socket socket, RequestHandler requestDispatcher){
+    private void onInit(Socket socket){
         // Store the socket
         this.socket = socket;
 
         // Store the request dispatcher
-        this.requestHandler = requestDispatcher;
+        //this.requestHandler = requestDispatcher;
 
         // Build input / output streams
         try {
             // Build the input stream
             this.inputStream = new Scanner(this.socket.getInputStream());
-
-            // Build the output stream
-            //this.outputStream = new PrintWriter(this.socket.getOutputStream(), true);
 
             // Run
             this.isRunning = true;
@@ -93,11 +89,12 @@ public abstract class InputStreamHandler extends Thread implements Runnable {
      * Listen to incoming messages
      */
     protected void listen(){
-        System.out.println(this.inputStream);
-//        if (this.inputStream.hasNextLine()) {
-//            //System.out.println(this.inputStream.nextLine());
-//            //this.requestHandler.enqueueRequest(new Request(this.socket, this.inputStream.nextLine()));
-//        }
+        if (this.inputStream.hasNextLine()) {
+            System.out.println("Msg received");
+            String msg = this.inputStream.nextLine();
+            this.incomingMsg.offer(msg.toUpperCase());
+            System.out.println("Response sent");
+        }
 //        else {
 //            System.out.println("End listening");
 //        }
@@ -128,9 +125,6 @@ public abstract class InputStreamHandler extends Thread implements Runnable {
             while (this.isRunning){
                 // Listen for incoming requests
                 this.listen();
-
-                System.out.println("Thread running");
-
             }
         } finally {
             try {
@@ -140,6 +134,15 @@ public abstract class InputStreamHandler extends Thread implements Runnable {
             }
             System.out.println("Closed: " + this.socket);
         }
+    }
+
+    /*****************************************
+     *
+     * Getter
+     *
+     *****************************************/
+    public String pull(){
+        return this.incomingMsg.poll();
     }
 
     /*****************************************

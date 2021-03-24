@@ -11,7 +11,7 @@ public class IhmOutputStreamHandler extends OutputStreamHandler {
     }
 
     public IhmOutputStreamHandler(Socket socket){
-        super(socket, IhmRequestHandler.getInstance());
+        super(socket);
     }
 
     @Override

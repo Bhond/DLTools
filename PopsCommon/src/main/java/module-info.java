@@ -8,4 +8,5 @@ module PopsCommon {
     exports fr.pops.beans.test;
     exports fr.pops.sockets.streamhandler;
     exports fr.pops.sockets.resquesthandler;
+    exports fr.pops.sockets.cst;
 }
