@@ -1,8 +1,8 @@
 package fr.pops.requesthandler;
 
-import fr.pops.client.ServerInputStreamHandler;
-import fr.pops.client.ServerOutputStreamHandler;
-import fr.pops.sockets.resquesthandler.RequestHandler;
+import fr.pops.sockets.resquesthandler.handler.RequestHandler;
+import fr.pops.sockets.resquesthandler.request.Request;
+import fr.pops.sockets.resquesthandler.request.RequestQueue;
 
 public class ServerRequestHandler extends RequestHandler {
 
@@ -27,11 +27,12 @@ public class ServerRequestHandler extends RequestHandler {
 
     /**
      * Ctor to call
-     * @param outputStreamHandler The output stream handler to send messages
+     * @param inputRequestQueue The input request queue to receive request from
+     * @param outputRequestQueue The output request queue to send request to
      */
-    public ServerRequestHandler(ServerInputStreamHandler inputStreamHandler, ServerOutputStreamHandler outputStreamHandler){
+    public ServerRequestHandler(RequestQueue inputRequestQueue, RequestQueue outputRequestQueue){
         // Parent
-        super(inputStreamHandler, outputStreamHandler);
+        super(inputRequestQueue, outputRequestQueue);
     }
 
     /*****************************************
@@ -44,8 +45,8 @@ public class ServerRequestHandler extends RequestHandler {
      * @param request The request to handle
      */
     @Override
-    public void handle(String request) {
-        super.send(request);
+    public void handle(Request request) {
+        super.handle(request);
     }
 
     /*****************************************

@@ -18,10 +18,10 @@
  * Date: 17/02/2021
  *
  ******************************************************************************/
-package fr.pops.sockets.resquesthandler;
+package fr.pops.sockets.resquesthandler.handler;
 
-import fr.pops.sockets.streamhandler.InputStreamHandler;
-import fr.pops.sockets.streamhandler.OutputStreamHandler;
+import fr.pops.sockets.resquesthandler.request.Request;
+import fr.pops.sockets.resquesthandler.request.RequestQueue;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -37,10 +37,8 @@ public abstract class RequestHandler extends Thread implements Runnable {
     private Thread thread = new Thread(this);
     private Queue<Request> requestQueue = new LinkedList<>();
 
-    private Queue<String> tmpStrQueue = new LinkedList<>();
-
-    protected InputStreamHandler inputStreamHandler;
-    protected OutputStreamHandler outputStreamHandler;
+    protected RequestQueue inputRequestQueue;
+    protected RequestQueue outputRequestQueue;
     /*****************************************
      *
      * Ctor
@@ -56,14 +54,13 @@ public abstract class RequestHandler extends Thread implements Runnable {
 
     /**
      * Ctor to call
-     * @param outputStreamHandler The output stream handler to send messages
+     * @param inputRequestQueue The input request queue to receive request from
+     * @param outputRequestQueue The output request queue to send request to
      */
-    protected RequestHandler(InputStreamHandler inputStreamHandler, OutputStreamHandler outputStreamHandler){
-        this.inputStreamHandler = inputStreamHandler;
-        this.outputStreamHandler = outputStreamHandler;
-
+    protected RequestHandler(RequestQueue inputRequestQueue, RequestQueue outputRequestQueue){
+        this.inputRequestQueue = inputRequestQueue;
+        this.outputRequestQueue = outputRequestQueue;
         this.isRunning = true;
-        this.thread.start();
     }
 
     /*****************************************
@@ -79,10 +76,6 @@ public abstract class RequestHandler extends Thread implements Runnable {
         this.requestQueue.add(request);
     }
 
-    public void send(String msg){
-        this.outputStreamHandler.addRequest(msg);
-    }
-
     /*****************************************
      *
      * Methods to override
@@ -91,7 +84,9 @@ public abstract class RequestHandler extends Thread implements Runnable {
     /**
      * Handle the requests
      */
-    protected abstract void handle(String request);
+    protected void handle(Request request){
+        request.toUpper();
+    }
 
     /*****************************************
      *
@@ -103,28 +98,21 @@ public abstract class RequestHandler extends Thread implements Runnable {
         // Loop to handle requests
         while (this.isRunning){
 
-            // Priority to the request created
-            String msg = tmpStrQueue.poll();
-            if (msg != null){
-                this.handle(msg);
-            }
+            /*
+             * TODO: Might have to refactor this
+             */
+            // Receive new message
+            for (Request request = this.inputRequestQueue.receive();
+                 request != null;
+                 request = this.inputRequestQueue.receive()){
 
-            // Retrieve new msg
-            this.tmpStrQueue.offer(this.inputStreamHandler.pull());
+                // Write new messages
+                this.handle(request);
+                System.out.println("Handling: " + request.toString());
 
-            // TEMP
-            try {
-                sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                // Send request to the output stream
+                this.outputRequestQueue.send(request);
             }
-            // TEMP
         }
     }
-
-    /*****************************************
-     *
-     * Getter
-     *
-     *****************************************/
 }

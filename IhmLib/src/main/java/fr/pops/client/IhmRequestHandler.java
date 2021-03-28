@@ -1,6 +1,6 @@
 package fr.pops.client;
 
-import fr.pops.sockets.resquesthandler.RequestHandler;
+import fr.pops.sockets.resquesthandler.handler.RequestHandler;
 
 public class IhmRequestHandler extends RequestHandler {
 
@@ -18,9 +18,9 @@ public class IhmRequestHandler extends RequestHandler {
     /**
      * Standard ctor
      */
-    public IhmRequestHandler(IhmOutputStreamHandler ihmOutputStreamHandler){
+    public IhmRequestHandler(IhmInputStreamHandler inputStreamHandler, IhmOutputStreamHandler outputStreamHandler){
         // Parent
-        super(ihmOutputStreamHandler);
+        super(inputStreamHandler, outputStreamHandler);
     }
 
     /*****************************************

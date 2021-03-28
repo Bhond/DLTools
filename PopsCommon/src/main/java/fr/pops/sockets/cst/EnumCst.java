@@ -19,16 +19,13 @@
  ******************************************************************************/
 package fr.pops.sockets.cst;
 
-public class EnumCst {
+public abstract class EnumCst {
 
     /*****************************************
      *
-     * Command types
+     * Request types
      *
      *****************************************/
-    public enum CommandTypes {CLOSE_CONNECTION, GET, SET, TRANSMIT}
-
-    private static long ID_IHM = 7596087841016572405L;
-
+    public enum RequestTypes { PING }
 
 }

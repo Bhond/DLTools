@@ -117,9 +117,9 @@ public class Client {
 
                 // Build communication pipeline
                 this.outputStreamHandler = new IhmOutputStreamHandler(this.socket);
+                this.inputStreamHandler = new IhmInputStreamHandler(this.socket);
+                this.requestHandler = new IhmRequestHandler(this.inputStreamHandler, this.outputStreamHandler);
                 this.outputStreamHandler.start();
-                this.requestHandler = new IhmRequestHandler(this.outputStreamHandler);
-                this.inputStreamHandler = new IhmInputStreamHandler(this.socket, this.requestHandler);
                 this.inputStreamHandler.start();
             }
 

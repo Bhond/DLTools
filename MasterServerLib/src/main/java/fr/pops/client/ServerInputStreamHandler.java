@@ -20,18 +20,12 @@
  ******************************************************************************/
 package fr.pops.client;
 
+import fr.pops.sockets.resquesthandler.request.RequestQueue;
 import fr.pops.sockets.streamhandler.InputStreamHandler;
 
 import java.net.Socket;
 
 public class ServerInputStreamHandler extends InputStreamHandler {
-
-    /*****************************************
-     *
-     * Attributes
-     *
-     *****************************************/
-    private static final ServerInputStreamHandler instance = new ServerInputStreamHandler();
 
     /*****************************************
      *
@@ -51,9 +45,9 @@ public class ServerInputStreamHandler extends InputStreamHandler {
      * Instantiate a new fr.pops.client thread
      * @param socket The socket used by the fr.pops.client
      */
-    public ServerInputStreamHandler(Socket socket) {
+    public ServerInputStreamHandler(Socket socket, RequestQueue inputRequestQueue) {
         // Call parent
-        super(socket);
+        super(socket, inputRequestQueue);
     }
 
     /*****************************************
@@ -77,18 +71,6 @@ public class ServerInputStreamHandler extends InputStreamHandler {
     @Override
     protected  void setup(){
 
-    }
-
-    /*****************************************
-     *
-     * Getter
-     *
-     *****************************************/
-    /**
-     * @return The instance of ServerStreamHandler
-     */
-    public static ServerInputStreamHandler getInstance(){
-        return instance;
     }
 
     /*****************************************

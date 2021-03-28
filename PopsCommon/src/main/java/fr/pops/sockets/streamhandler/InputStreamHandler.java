@@ -1,9 +1,10 @@
 package fr.pops.sockets.streamhandler;
 
+import fr.pops.sockets.resquesthandler.request.RequestFactory;
+import fr.pops.sockets.resquesthandler.request.RequestQueue;
+
 import java.io.IOException;
 import java.net.Socket;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Scanner;
 
 public abstract class InputStreamHandler extends Thread implements Runnable {
@@ -23,7 +24,8 @@ public abstract class InputStreamHandler extends Thread implements Runnable {
 
     // Input stream
     protected Scanner inputStream;
-    protected Queue<String> incomingMsg = new LinkedList<>();
+    private RequestFactory requestFactory;
+    private RequestQueue requestQueue;
 
     /*****************************************
      *
@@ -42,9 +44,9 @@ public abstract class InputStreamHandler extends Thread implements Runnable {
      * Instantiate a new fr.pops.client thread
      * @param socket The socket used by the fr.pops.client
      */
-    protected InputStreamHandler(Socket socket) {
+    protected InputStreamHandler(Socket socket, RequestQueue requestQueue) {
         // Initialize the socket
-        onInit(socket);
+        onInit(socket, requestQueue);
     }
 
     /*****************************************
@@ -56,21 +58,23 @@ public abstract class InputStreamHandler extends Thread implements Runnable {
      * Initialize the client thread
      * @param socket The socket used by the client
      */
-    private void onInit(Socket socket){
+    private void onInit(Socket socket, RequestQueue requestQueue){
         // Store the socket
         this.socket = socket;
 
-        // Store the request dispatcher
-        //this.requestHandler = requestDispatcher;
+        // Store request factory
+        this.requestFactory = new RequestFactory();
+
+        // Store request queue
+        this.requestQueue = requestQueue;
+
+        // Run
+        this.isRunning = true;
 
         // Build input / output streams
         try {
             // Build the input stream
             this.inputStream = new Scanner(this.socket.getInputStream());
-
-            // Run
-            this.isRunning = true;
-
         } catch (IOException e) {
             System.out.println("Error: " + this.socket);
             e.printStackTrace();
@@ -90,14 +94,11 @@ public abstract class InputStreamHandler extends Thread implements Runnable {
      */
     protected void listen(){
         if (this.inputStream.hasNextLine()) {
-            System.out.println("Msg received");
             String msg = this.inputStream.nextLine();
-            this.incomingMsg.offer(msg.toUpperCase());
+            System.out.println("Msg received: " + msg);
+            this.requestQueue.send(this.requestFactory.getRequest(msg));
             System.out.println("Response sent");
         }
-//        else {
-//            System.out.println("End listening");
-//        }
     }
 
     /*****************************************
@@ -138,19 +139,11 @@ public abstract class InputStreamHandler extends Thread implements Runnable {
 
     /*****************************************
      *
-     * Getter
-     *
-     *****************************************/
-    public String pull(){
-        return this.incomingMsg.poll();
-    }
-
-    /*****************************************
-     *
      * Setter
      *
      *****************************************/
     /**
+     * TODO: Change this
      * Set the id of the client
      * @param id The id configured by the ClientStreamHandler
      */
