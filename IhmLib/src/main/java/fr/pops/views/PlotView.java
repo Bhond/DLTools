@@ -1,13 +1,14 @@
 package fr.pops.views;
 
-import fr.pops.ihmlibcst.StrCst;
+import fr.pops.cst.StrCst;
 import fr.pops.utils.Utils;
+import fr.pops.viewmodels.ServerInfoModel;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 
-public class PlotView extends View {
+public class PlotView extends BaseView<PlotView, ServerInfoModel> { // TODO: change model
 
     /*****************************************
      *

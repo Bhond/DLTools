@@ -19,14 +19,17 @@
  ******************************************************************************/
 package fr.pops.main;
 
+import fr.pops.cst.IntCst;
 import fr.pops.server.Server;
-import fr.pops.serverlibcst.IntCst;
+
+import java.net.InetSocketAddress;
 
 public class Main {
     
     public static void main(String[] args) {
         // Instantiate the server
-        Server popsServer = new Server(IntCst.SERVER_PORT);
+        Server server = new Server(new InetSocketAddress(IntCst.SERVER_PORT));
+        server.run();
     }
     
 }

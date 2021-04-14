@@ -6,7 +6,10 @@ module PopsCommon {
 
     // Test
     exports fr.pops.beans.test;
-    exports fr.pops.sockets.streamhandler;
+    exports fr.pops.sockets.communicationpipeline;
     exports fr.pops.sockets.cst;
-    exports fr.pops.sockets.resquesthandler.handler;
+    exports fr.pops.sockets.client;
+    exports fr.pops.sockets.resquest;
+    exports fr.pops.sockets.resquesthandler;
+    exports fr.pops.commoncst;
 }

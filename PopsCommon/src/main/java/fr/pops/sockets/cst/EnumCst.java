@@ -23,9 +23,56 @@ public abstract class EnumCst {
 
     /*****************************************
      *
+     * Available client types
+     *
+     *****************************************/
+    public enum ClientTypes {
+        // Client types
+        IHM(7596087841016572405L),
+        STOCK(390208358890556977L);
+
+        // Attributes
+        private long id;
+
+        /**
+         * Ctor
+         * Convenient to store the client's id
+         * inside the enum
+         * @param id
+         */
+        private ClientTypes(long id){
+            this.id = id;
+        }
+
+        /**
+         * @return The client's ID
+         */
+        public long getId() {
+            return id;
+        }
+
+        /**
+         * Find out witch type is associated with the input id
+         * @param id The id of the client to look for
+         * @return The type of the client corresponding to the given id
+         */
+        public ClientTypes getType(long id){
+            ClientTypes type = null;
+            for (ClientTypes t : ClientTypes.values()){
+                if (t.id == id){
+                    type = t;
+                    break;
+                }
+            }
+            return type;
+        }
+    }
+
+    /*****************************************
+     *
      * Request types
      *
      *****************************************/
-    public enum RequestTypes { PING }
+    public enum RequestTypes { ERROR, AUTHENTICATE, PING }
 
 }

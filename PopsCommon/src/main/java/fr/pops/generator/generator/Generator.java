@@ -20,8 +20,8 @@
  ******************************************************************************/
 package fr.pops.generator.generator;
 
-import fr.pops.cst.GeneratorCst;
-import fr.pops.cst.StrCst;
+import fr.pops.commoncst.GeneratorCst;
+import fr.pops.commoncst.StrCst;
 import fr.pops.generator.beanfileconfig.BeanFileConfig;
 import fr.pops.xmlparser.xmlparser.XMLParser;
 

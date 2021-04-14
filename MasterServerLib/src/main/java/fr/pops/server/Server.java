@@ -10,73 +10,106 @@
  *
  * Name: Server.java
  *
- * Description: Class defining the fr.pops.server running Pops
+ * Description: Class defining the master server for Pops
+ *              It is used as a junction between the clients and
+ *              other servers hosting devices
  *
  * Author: Charles MERINO
  *
- * Date: 10/02/2021
+ * Date: 11/04/2021
  *
  ******************************************************************************/
 package fr.pops.server;
 
-import fr.pops.client.Client;
-import fr.pops.client.ClientManager;
-import fr.pops.serverlibcst.IntCst;
+import fr.pops.client.ClientSession;
+import fr.pops.commoncst.IntCst;
+import fr.pops.cst.DoubleCst;
+import fr.pops.sockets.resquest.Request;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.concurrent.ExecutorService;
+import java.net.InetSocketAddress;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
-@SuppressWarnings("unused")
 public class Server {
 
-    /*****************************************
-     *
-     * Static attributes
-     *
-     *****************************************/
-
+    /*
+     * TODO: Try moving the communicate loop somewhere else
+     */
     /*****************************************
      *
      * Attributes
      *
      *****************************************/
-    private boolean isServerReady;
-    private boolean isServerRunning;
-    private int port;
+    // Server connexion parameters
+    private InetSocketAddress socketAddress;
+    private final String host = "localhost";
+    private final int port = IntCst.SERVER_PORT;
 
-    private ExecutorService pool;
-    private ServerSocket serverSocket;
+    // Server loop parameters
+    private final long initialDelay = (long) DoubleCst.SERVER_INITIAL_DELAY;
+    private final long frequency = (long) (1E3 / DoubleCst.SERVER_FREQUENCY_HZ);
 
-    private ClientManager clientManager;
+    // Communication
+    private ServerSocketChannel serverChannel;
+    private Selector selector;
+
+    // Clients
+    private ServerRequestHandler requestHandler;
+    private HashMap<Long,SelectionKey> connectedClientsId = new HashMap<>();
+    private HashMap<SelectionKey, ClientSession> clientMap = new HashMap<>();
 
     /*****************************************
      *
-     * Ctor
+     * Ctors
      *
      *****************************************/
     /**
      * Standard ctor
-     * Nothing to be done...
+     * Nothing to be done
      */
-    private Server() {
-     // Nothing to be done...
+    private Server(){
+        // Nothing to be done
     }
 
     /**
-     * Instantiate the fr.pops.server
-     * @param port The port used by the fr.pops.server
+     * Ctor
+     * @param socketAddress The socket address to connect to
      */
-    public Server(int port) {
-        System.out.println("Pops server is starting...");
+    public Server(InetSocketAddress socketAddress){
+        // Initialize server
+        this.onInit(socketAddress);
+    }
 
-        // Initialization
-        this.onInit(port);
+    /*****************************************
+     *
+     * Initialisation
+     *
+     *****************************************/
+    /**
+     * Initialize communication
+     * @param socketAddress The socket adress to connect to
+     */
+    private void onInit(InetSocketAddress socketAddress) {
+        // Store fields
+        this.socketAddress = socketAddress;
+        this.requestHandler = new ServerRequestHandler(this);
 
-        // Run the fr.pops.server
-        this.run();
+        // Initialize server
+        try {
+            this.selector = Selector.open();
+            this.serverChannel = ServerSocketChannel.open();
+            this.serverChannel.configureBlocking(false);
+            this.serverChannel.register(this.selector, SelectionKey.OP_ACCEPT);
+            this.serverChannel.bind(socketAddress);
+
+        } catch (Throwable ignored){}
+
     }
 
     /*****************************************
@@ -85,55 +118,72 @@ public class Server {
      *
      *****************************************/
     /**
-     * Initialize the fr.pops.server
+     * Run the server
      */
-    private void onInit(int port) {
-        // Boolean needed to ensure that the fr.pops.server is properly initialized
-        this.isServerReady = false;
-
-        try {
-            // Create fr.pops.server socket
-            this.serverSocket = new ServerSocket(port);
-
-            // Configure the pool
-            this.pool = Executors.newFixedThreadPool(IntCst.SERVER_POOL_SIZE);
-
-            // Configure the client manager
-            this.clientManager = ClientManager.getInstance();
-
-            // Fill in missing properties
-            this.port = port;
-
-            // If no error occurred the fr.pops.server is ready to be ran
-            this.isServerReady = true;
-
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-
+    public void run(){
+        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
+            try {
+                this.communicate();
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
+        }, this.initialDelay, this.frequency, TimeUnit.MILLISECONDS);
     }
 
     /**
-     * Run the server
+     * Communicate with clients
+     * @throws Throwable Exception raised by the different throws
+     *                  across the communication
      */
-    private void run(){
-        System.out.println("Server is running...");
+    private void communicate() throws Throwable {
+        // Select the keys
+        this.selector.select();
+        Iterator<SelectionKey> keys = this.selector.selectedKeys().iterator();
 
-        // Start fr.pops.server
-        this.isServerRunning = this.isServerReady;
+        // Loop over the keys
+        for (; keys.hasNext();) {
+            SelectionKey key = keys.next();
+            // If key is not valid skip to next one
+            if (!key.isValid()) continue;
 
-        // Server loop
-        while (this.isServerRunning) {
-            try {
-                Socket clientSocket = this.serverSocket.accept();
-                System.out.println("Client connected: " + clientSocket);
-                Client client = new Client(clientSocket);
-                this.clientManager.addClient(client);
-                this.pool.execute(client.getRequestHandler());
-            } catch (IOException e) {
-                e.printStackTrace();
+            // Accept new client
+            if (key.isAcceptable()){
+                SocketChannel acceptedChannel = this.serverChannel.accept();
+                if (acceptedChannel == null) continue;
+                acceptedChannel.configureBlocking(false);
+                SelectionKey readKey = acceptedChannel.register(this.selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+                this.clientMap.put(readKey, new ClientSession(readKey, acceptedChannel));
+                System.out.println("Connected:" + acceptedChannel.getRemoteAddress() + ", total clients: " + this.clientMap.size());
+            }
+
+            // Read input and handle it
+            if (key.isReadable()){
+                Request request = this.clientMap.get(key).read();
+                if (request != null){
+                    // Handle the request
+                    this.requestHandler.handle(key, request);
+
+                    // Post processing checks
+                    if (request.needResponse()){
+                        this.clientMap.get(key).send(request);
+                    }
+                }
+            }
+
+            // Write output
+            if (key.isWritable()){
+                this.clientMap.get(key).write();
             }
         }
     }
 
+    /**
+     * Add client id to a dictionary
+     * @param clientId The client id to add
+     * @param key The corresponding selection key to find
+     *            which client session to point in case of a transfer
+     */
+    public void addClient(long clientId, SelectionKey key) {
+        this.connectedClientsId.put(clientId, key);
+    }
 }

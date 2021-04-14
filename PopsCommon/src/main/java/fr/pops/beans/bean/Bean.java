@@ -20,7 +20,7 @@
  ******************************************************************************/
 package fr.pops.beans.bean;
 
-import fr.pops.cst.GeneratorCst;
+import fr.pops.commoncst.GeneratorCst;
 import fr.pops.models.BeanModel;
 
 import java.lang.reflect.InvocationTargetException;

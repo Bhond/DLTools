@@ -20,7 +20,7 @@
  ******************************************************************************/
 package fr.pops.generator.beanfileconfig;
 
-import fr.pops.cst.GeneratorCst;
+import fr.pops.commoncst.GeneratorCst;
 
 import java.util.List;
 

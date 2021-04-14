@@ -1,5 +1,12 @@
 # Pops
 
+Outdated.
+
+Missing:
+* Server / client architecture
+* Beans 
+* Stock data recovering 
+
 Pops is a Deep Learning framework written in Java.
 It is destined to be a personnal assistant.
 
@@ -12,13 +19,18 @@ It is destined to be a personnal assistant.
 * GUI for tuning the parameters
 * NDArray structure (numpy-like)
 
+## Incoming features
+* Deep learning:
+    * LSTM
+* Fully functionnal GUI
+
 ## Installation
 Null
 
 ## Usage
 Null
 
-## Contributer
+## Contributor
 Charles MERINO
 
 ## License

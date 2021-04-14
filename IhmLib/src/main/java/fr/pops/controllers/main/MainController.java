@@ -20,8 +20,8 @@
  ******************************************************************************/
 package fr.pops.controllers.main;
 
-import fr.pops.ihmlibcst.EnumCst;
-import fr.pops.ihmlibcst.IntCst;
+import fr.pops.cst.EnumCst;
+import fr.pops.cst.IntCst;
 import fr.pops.views.MainView;
 import javafx.event.ActionEvent;
 import javafx.scene.Cursor;

@@ -21,15 +21,26 @@
 package fr.pops.views;
 
 import fr.pops.client.Client;
-import fr.pops.ihmlibcst.StrCst;
+import fr.pops.controllers.viewcontrollers.ServerInfoController;
+import fr.pops.cst.StrCst;
+import fr.pops.sockets.resquest.PingRequest;
 import fr.pops.utils.Utils;
+import fr.pops.viewmodels.ServerInfoModel;
 import javafx.scene.control.Button;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Sphere;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-public class ServerInfoView extends View {
+public class ServerInfoView extends BaseView<ServerInfoView, ServerInfoModel> {
+
+    /*****************************************
+     *
+     * Attributes
+     *
+     *****************************************/
+    HBox pingBow = new HBox();
+    private Label pingLbl = new Label("Ping:");
+    private Label pingValue = new Label("0.0 ms");
 
     /*****************************************
      *
@@ -57,6 +68,9 @@ public class ServerInfoView extends View {
      */
     @Override
     protected void onInit(){
+        // Set controller
+        this.controller = new ServerInfoController(this);
+
         // Set root stylesheet
         // Root pane
         this.root.getStylesheets().add(Utils.getResource(StrCst.PATH_SERVER_INFO_VIEW_CSS));
@@ -70,23 +84,18 @@ public class ServerInfoView extends View {
      */
     @Override
     protected void configureContentPane(){
-
         /** TEMP **/
         Button test = new Button("This is a test");
-        test.setOnAction(actionEvent -> Client.getInstance().sendMessageToServer("Clicked"));
+        test.setOnAction(actionEvent -> Client.getInstance().send(new PingRequest()));
         this.rootLayout.getChildren().add(test);
-
-        Sphere sphere = new Sphere();
-        sphere.radiusProperty().set(10);
-        PhongMaterial mat = new PhongMaterial();
-        mat.setDiffuseColor(Color.RED);
-        sphere.materialProperty().setValue(mat);
-        sphere.setTranslateX( - 50);
-        sphere.setTranslateY( - 50);
-
-        this.rootLayout.getChildren().add(sphere);
         /** TEMP **/
 
+        // Ping
+        this.pingBow = new HBox();
+        this.pingLbl = new Label("Ping:");
+        this.pingValue = new Label("0.0 ms");
+        this.pingBow.getChildren().addAll(this.pingLbl, this.pingValue);
+        this.rootLayout.getChildren().add(this.pingBow);
     }
 
     /*****************************************
@@ -94,4 +103,8 @@ public class ServerInfoView extends View {
      * Update
      *
      *****************************************/
+    public void setPingValue(Double value){
+        //System.out.println("Ping: " + value);
+        Updater.update(this.pingValue, String.format("%f ms", value));
+    }
 }

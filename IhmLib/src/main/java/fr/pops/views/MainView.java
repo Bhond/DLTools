@@ -21,9 +21,9 @@
 package fr.pops.views;
 
 import fr.pops.controllers.main.MainController;
-import fr.pops.ihmlibcst.EnumCst;
-import fr.pops.ihmlibcst.IntCst;
-import fr.pops.ihmlibcst.StrCst;
+import fr.pops.cst.EnumCst;
+import fr.pops.cst.IntCst;
+import fr.pops.cst.StrCst;
 import fr.pops.systeminfo.DisplayInfo;
 import fr.pops.utils.Utils;
 import javafx.geometry.HPos;
@@ -38,9 +38,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-import java.util.HashSet;
-
-public class MainView extends View {
+public class MainView extends BaseView {
 
     /*****************************************
      *
@@ -82,7 +80,6 @@ public class MainView extends View {
     private GridPane mainLayout;
 
     // Active Views
-    private HashSet<View> activeViews = new HashSet<>();
     private int nbRows;
     private int currentRowIdx;
     private int nbColumns;
@@ -307,7 +304,7 @@ public class MainView extends View {
         this.updateActiveViewsSizes();
 
         // Switch on the type of the view to add
-        View view = null;
+        BaseView<?,?> view = null;
         switch (viewType){
             case SERVER:
                 view = new ServerInfoView(this.stage, this.contentHeight, this.contentWidth);
@@ -318,9 +315,6 @@ public class MainView extends View {
             case PLOT:
                 view = new PlotView(this.stage, this.contentHeight, this.contentWidth);
                 break;
-            case TEST:
-                view = new TestView(this.stage, this.contentHeight, this.contentWidth);
-                break;
             default:
                 System.out.println("Unknown view");
                 break;
@@ -329,7 +323,6 @@ public class MainView extends View {
         // Add view to active views
         if (view != null){
             this.mainLayout.add(view.getRoot(), this.currentColumnIdx, this.currentRowIdx);
-            this.activeViews.add(view);
         }
     }
 

@@ -22,7 +22,7 @@ package fr.pops.xmlparser.utils;
 import fr.pops.nn.ndarray.BaseNDArray;
 import fr.pops.nn.ndarray.INDArray;
 import fr.pops.nn.ndarray.Shape;
-import fr.pops.cst.StrCst;
+import fr.pops.commoncst.StrCst;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;

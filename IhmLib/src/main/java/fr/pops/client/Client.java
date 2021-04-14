@@ -21,18 +21,19 @@
  ******************************************************************************/
 package fr.pops.client;
 
-import fr.pops.ihmlibcst.StrCst;
-import fr.pops.sockets.cst.IdCst;
+import fr.pops.cst.StrCst;
+import fr.pops.ihmloop.IhmLoop;
+import fr.pops.sockets.client.BaseClient;
+import fr.pops.sockets.cst.EnumCst;
 import fr.pops.views.MainView;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.io.IOException;
-import java.net.Socket;
+import java.net.InetSocketAddress;
 
-public class Client {
+public class Client extends BaseClient {
 
     /*****************************************
      *
@@ -42,23 +43,12 @@ public class Client {
     // Instance
     private final static Client instance = new Client();
 
-    // General parameters
-    private final static long id = IdCst.ID_IHM;
-    private boolean isStandalone = false;
-
     // Ihm
+    private IhmLoop ihmLoop;
     private Stage stage;
     private MainView mainView;
     private Parent root;
     private Scene scene;
-
-    // Socket
-    private Socket socket;
-
-    // Communication pipeline
-    private IhmRequestHandler requestHandler;
-    private IhmInputStreamHandler inputStreamHandler;
-    private IhmOutputStreamHandler outputStreamHandler;
 
     /*****************************************
      *
@@ -69,7 +59,8 @@ public class Client {
      * Standard ctor
      */
     public Client(){
-        // Nothing to be done
+        // Parent
+        super(EnumCst.ClientTypes.IHM, new InetSocketAddress("localhost", 8163), new IhmRequestHandler());
     }
 
     /*****************************************
@@ -83,6 +74,9 @@ public class Client {
     public void init(Stage stage){
         // Set the stage
         this.stage = stage;
+
+        // Set the model loop
+        this.ihmLoop = new IhmLoop();
 
         // Set main view
         this.mainView = new MainView(stage);
@@ -109,35 +103,14 @@ public class Client {
      * Start the client
      */
     public void start() {
-        try {
-            // Connect to the server
-            if (!this.isStandalone){
-                // Connect to the server
-                this.socket = new Socket("127.0.0.1", 8163);
+        // Parent
+        super.start();
 
-                // Build communication pipeline
-                this.outputStreamHandler = new IhmOutputStreamHandler(this.socket);
-                this.inputStreamHandler = new IhmInputStreamHandler(this.socket);
-                this.requestHandler = new IhmRequestHandler(this.inputStreamHandler, this.outputStreamHandler);
-                this.outputStreamHandler.start();
-                this.inputStreamHandler.start();
-            }
+        // Display the main view
+        this.stage.show();
 
-            // Display the main view
-            this.stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /*****************************************
-     *
-     * Methods
-     *
-     *****************************************/
-    public void sendMessageToServer(String msg){
-        System.out.println(msg);
+        // Start models
+        this.ihmLoop.run();
     }
 
     /*****************************************

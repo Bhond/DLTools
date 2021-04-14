@@ -22,9 +22,9 @@
 package fr.pops.beans.bean;
 
 import fr.pops.beanobservable.BeanObservable;
-import fr.pops.cst.EnumCst;
-import fr.pops.cst.GeneratorCst;
-import fr.pops.cst.GeneratorDefaultValues;
+import fr.pops.commoncst.EnumCst;
+import fr.pops.commoncst.GeneratorCst;
+import fr.pops.commoncst.GeneratorDefaultValues;
 
 import java.beans.PropertyChangeEvent;
 import java.io.Serializable;

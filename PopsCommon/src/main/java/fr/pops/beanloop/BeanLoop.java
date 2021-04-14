@@ -21,7 +21,7 @@ package fr.pops.beanloop;
 
 import fr.pops.beans.bean.Bean;
 import fr.pops.beans.bean.BeanManager;
-import fr.pops.cst.IntCst;
+import fr.pops.commoncst.IntCst;
 import fr.pops.models.BeanModel;
 
 public class BeanLoop extends Thread implements Runnable {

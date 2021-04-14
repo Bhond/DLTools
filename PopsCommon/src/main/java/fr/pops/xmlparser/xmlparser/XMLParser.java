@@ -19,7 +19,7 @@
  ******************************************************************************/
 package fr.pops.xmlparser.xmlparser;
 
-import fr.pops.cst.GeneratorCst;
+import fr.pops.commoncst.GeneratorCst;
 import fr.pops.generator.beanfileconfig.BeanFileConfig;
 import fr.pops.xmlparser.utils.XMLParserUtil;
 
