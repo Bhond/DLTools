@@ -20,10 +20,8 @@
  ******************************************************************************/
 package fr.pops.views;
 
-import fr.pops.client.Client;
 import fr.pops.controllers.viewcontrollers.ServerInfoController;
 import fr.pops.cst.StrCst;
-import fr.pops.sockets.resquest.PingRequest;
 import fr.pops.utils.Utils;
 import fr.pops.viewmodels.ServerInfoModel;
 import javafx.scene.control.Button;
@@ -86,7 +84,7 @@ public class ServerInfoView extends BaseView<ServerInfoView, ServerInfoModel> {
     protected void configureContentPane(){
         /** TEMP **/
         Button test = new Button("This is a test");
-        test.setOnAction(actionEvent -> Client.getInstance().send(new PingRequest()));
+        test.setOnAction(actionEvent -> System.out.println("Test button clicked"));
         this.rootLayout.getChildren().add(test);
         /** TEMP **/
 
@@ -103,8 +101,15 @@ public class ServerInfoView extends BaseView<ServerInfoView, ServerInfoModel> {
      * Update
      *
      *****************************************/
+    /**
+     * Set the ping value received from the request
+     * @param value The response delay between the client and the server
+     */
     public void setPingValue(Double value){
-        //System.out.println("Ping: " + value);
-        Updater.update(this.pingValue, String.format("%f ms", value));
+        Updater.update(this.pingValue, String.format("%3f ms", value));
+    }
+
+    public void setServerFrequency(Double value){
+
     }
 }

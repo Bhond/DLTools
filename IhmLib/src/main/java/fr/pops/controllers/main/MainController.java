@@ -70,7 +70,7 @@ public class MainController {
      * @param actionEvent The clicked action event
      */
     public void onServerViewMenuItemClicked(ActionEvent actionEvent){
-        this.mainView.addView(EnumCst.VIEWS.SERVER);
+        this.mainView.addView(EnumCst.Views.SERVER);
     }
 
     /**
@@ -78,7 +78,7 @@ public class MainController {
      * @param actionEvent The clicked action event
      */
     public void onNeuralNetworkViewMenuItemClicked(ActionEvent actionEvent){
-        this.mainView.addView(EnumCst.VIEWS.NEURAL_NETWORK);
+        this.mainView.addView(EnumCst.Views.NEURAL_NETWORK);
     }
 
     /**
@@ -86,7 +86,7 @@ public class MainController {
      * @param actionEvent The clicked action event
      */
     public void onPlotViewMenuItemClicked(ActionEvent actionEvent){
-        this.mainView.addView(EnumCst.VIEWS.PLOT);
+        this.mainView.addView(EnumCst.Views.PLOT);
     }
 
     /**
@@ -94,7 +94,7 @@ public class MainController {
      * @param actionEvent The clicked action event
      */
     public void onTestViewMenuItemClicked(ActionEvent actionEvent){
-        this.mainView.addView(EnumCst.VIEWS.TEST);
+        this.mainView.addView(EnumCst.Views.TEST);
     }
 
     /**

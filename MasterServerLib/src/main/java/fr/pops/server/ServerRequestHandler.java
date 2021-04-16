@@ -20,7 +20,9 @@
  ******************************************************************************/
 package fr.pops.server;
 
+import fr.pops.sockets.cst.EnumCst;
 import fr.pops.sockets.resquest.AuthenticateRequest;
+import fr.pops.sockets.resquest.GetServerInfoRequest;
 import fr.pops.sockets.resquest.Request;
 import fr.pops.sockets.resquesthandler.RequestHandler;
 
@@ -84,9 +86,16 @@ public class ServerRequestHandler extends RequestHandler {
 
         switch (request.getType()){
             case AUTHENTICATE:
-                this.server.addClient(((AuthenticateRequest) request).getClientId(), this.currentKey);
-                System.out.println("Connected client's id: " + ((AuthenticateRequest) request).getClientId());
+                long id = ((AuthenticateRequest) request).getClientId();
+                this.server.addClient(id, this.currentKey);
+                System.out.println(EnumCst.ClientTypes.getType(id).name() + " client is connected.");
                 break;
+            case GET_SERVER_INFO:
+                GetServerInfoRequest serverInfoRequest = (GetServerInfoRequest) request;
+                serverInfoRequest.setFrequency(this.server.getFrequency());
+                serverInfoRequest.setClientTypes(this.server.getConnectedClientsId());
+                break;
+
         }
 
     }

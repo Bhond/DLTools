@@ -27,6 +27,11 @@ import fr.pops.sockets.resquest.Request;
 
 public abstract class RequestDispatcher {
 
+    /*****************************************
+     *
+     * Methods
+     *
+     *****************************************/
     /**
      * Dispatch the request across the controllers
      * @param request The request to dispatch

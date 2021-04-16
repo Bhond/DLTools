@@ -36,7 +36,6 @@ public abstract class Request {
     protected boolean needResponse = false;
     protected boolean needDispatch = false;
 
-    protected int id;
     protected EnumCst.RequestTypes type;
     protected int length;
     protected byte[] rawParams;
@@ -52,7 +51,7 @@ public abstract class Request {
      * Standard ctor
      * Nothing to be done
      */
-    protected Request(){
+    private Request(){
         // Nothing to be done
     }
 
@@ -62,7 +61,6 @@ public abstract class Request {
      */
     protected Request(EnumCst.RequestTypes type){
         // Initialize the request
-        this.id = type.ordinal();
         this.type = type;
     }
 
@@ -74,7 +72,6 @@ public abstract class Request {
     protected Request(EnumCst.RequestTypes type, byte[] rawParams){
         // Initialize the request
         this.rawParams = rawParams;
-        this.id = type.ordinal();
         this.type = type;
     }
 
@@ -162,7 +159,7 @@ public abstract class Request {
      */
     @Override
     public String toString(){
-        return Arrays.toString(this.rawRequest);
+        return Arrays.toString(this.rawParams);
     }
 
 }

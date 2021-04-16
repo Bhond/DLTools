@@ -52,7 +52,6 @@ public abstract class StrCst {
     public final static String PATH_CSS_DIRECTORY = "/resources/css/";
     public final static String PATH_MAIN_VIEW_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "MainView.css";
     public final static String PATH_SERVER_INFO_VIEW_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "ServerInfoView.css";
-    public final static String PATH_TEST_VIEW_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "TestView.css";
     public final static String PATH_PLOT_VIEW_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "PlotView.css";
 
     /*****************************************

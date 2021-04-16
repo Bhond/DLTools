@@ -26,5 +26,12 @@ public abstract class EnumCst {
      * View
      *
      *****************************************/
-    public enum VIEWS { SERVER, NEURAL_NETWORK, PLOT, TEST }
+    public enum Views { SERVER, NEURAL_NETWORK, PLOT, TEST }
+
+    /*****************************************
+     *
+     * View
+     *
+     *****************************************/
+    public enum ModelSteppingFamily { FAMILY_1_ON_1, FAMILY_1_ON_10, FAMILY_1_ON_20, FAMILY_1_ON_100 }
 }

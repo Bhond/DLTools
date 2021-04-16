@@ -13,6 +13,7 @@
  * Description: Class defining the master server for Pops
  *              It is used as a junction between the clients and
  *              other servers hosting devices
+ *              This class uses the singleton pattern
  *
  * Author: Charles MERINO
  *
@@ -41,6 +42,14 @@ public class Server {
     /*
      * TODO: Try moving the communicate loop somewhere else
      */
+
+    /*****************************************
+     *
+     * Static attributes
+     *
+     *****************************************/
+    private static Server instance = new Server();
+
     /*****************************************
      *
      * Attributes
@@ -77,20 +86,19 @@ public class Server {
         // Nothing to be done
     }
 
-    /**
-     * Ctor
-     * @param socketAddress The socket address to connect to
-     */
-    public Server(InetSocketAddress socketAddress){
-        // Initialize server
-        this.onInit(socketAddress);
-    }
-
     /*****************************************
      *
      * Initialisation
      *
      *****************************************/
+    /**
+     * Initialize the server with the given socket adress
+     * @param socketAddress The socket address to connect to
+     */
+    public void init(InetSocketAddress socketAddress){
+        this.onInit(socketAddress);
+    }
+
     /**
      * Initialize communication
      * @param socketAddress The socket adress to connect to
@@ -185,5 +193,33 @@ public class Server {
      */
     public void addClient(long clientId, SelectionKey key) {
         this.connectedClientsId.put(clientId, key);
+    }
+
+    /*****************************************
+     *
+     * Getter
+     *
+     *****************************************/
+    /**
+     * Singleton pattern
+     * @return The instance of the server
+     */
+    public static Server getInstance(){
+        return instance;
+    }
+
+    /**
+     * @return The frequency of the server
+     */
+    public long getFrequency() {
+        return this.frequency;
+    }
+
+    /**
+     * @return The map between the connected clients' ids
+     *          and their selection key
+     */
+    public Long[] getConnectedClientsId() {
+        return this.connectedClientsId.keySet().stream().toArray(Long[]::new);
     }
 }

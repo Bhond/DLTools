@@ -42,7 +42,7 @@ public class AuthenticateRequest extends Request{
      * Nothing to be done
      */
     private AuthenticateRequest(){
-        super();
+        super(EnumCst.RequestTypes.AUTHENTICATE);
         // Nothing to be done
     }
 

@@ -1,3 +1,22 @@
+/*******************************************************************************
+ *
+ *                         PPPP     OOOO     PPPP    SSSS
+ *                        PP  PP   OO  OO   PP  PP  SS
+ *                        PP  PP  OO    OO  PP  PP  SS
+ *                        PP  PP  OO    OO  PP  PP   SSSS
+ *                        PPPP    OO    OO  PPPP        SS
+ *                        PP       OO  OO   PP          SS
+ *                        PP        OOOO    PP       SSSS
+ *
+ * Name: BaseView.java
+ *
+ * Description: Abstract class defining the basic structure for the views
+ *
+ * Author: Charles MERINO
+ *
+ * Date: 10/02/2021
+ *
+ ******************************************************************************/
 package fr.pops.views;
 
 import fr.pops.controllers.viewcontrollers.BaseController;
@@ -88,13 +107,6 @@ public abstract class BaseView<viewT extends BaseView<?,?>, modelT extends BaseM
      * Configure the rootPane
      */
     protected abstract void configureContentPane();
-
-    /*****************************************
-     *
-     * Update
-     *
-     *****************************************/
-
     /*****************************************
      *
      * Getter

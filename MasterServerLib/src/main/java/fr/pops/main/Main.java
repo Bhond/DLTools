@@ -28,7 +28,8 @@ public class Main {
     
     public static void main(String[] args) {
         // Instantiate the server
-        Server server = new Server(new InetSocketAddress(IntCst.SERVER_PORT));
+        Server server = Server.getInstance();
+        server.init(new InetSocketAddress(IntCst.SERVER_PORT));
         server.run();
     }
     

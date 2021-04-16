@@ -293,7 +293,7 @@ public class MainView extends BaseView {
      * Add a view
      * @param viewType The type of the view to display
      */
-    public void addView(EnumCst.VIEWS viewType){
+    public void addView(EnumCst.Views viewType){
         // Update grid
         this.updateGrid();
 

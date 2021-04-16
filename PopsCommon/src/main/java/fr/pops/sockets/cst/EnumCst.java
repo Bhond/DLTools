@@ -56,7 +56,7 @@ public abstract class EnumCst {
          * @param id The id of the client to look for
          * @return The type of the client corresponding to the given id
          */
-        public ClientTypes getType(long id){
+        public static ClientTypes getType(long id){
             ClientTypes type = null;
             for (ClientTypes t : ClientTypes.values()){
                 if (t.id == id){
@@ -73,6 +73,6 @@ public abstract class EnumCst {
      * Request types
      *
      *****************************************/
-    public enum RequestTypes { ERROR, AUTHENTICATE, PING }
+    public enum RequestTypes { ERROR, AUTHENTICATE, PING, GET_SERVER_INFO }
 
 }
