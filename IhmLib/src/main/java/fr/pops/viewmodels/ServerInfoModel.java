@@ -46,7 +46,7 @@ public class ServerInfoModel extends BaseModel<ServerInfoController>{
     public ServerInfoModel(ServerInfoController controller){
         // Parent
         super(controller);
-        this.modelSteppingFamily = EnumCst.ModelSteppingFamily.FAMILY_1_ON_10;
+        this.modelSteppingFamily = EnumCst.ModelSteppingFamily.FAMILY_1_ON_1;
     }
 
     /*****************************************

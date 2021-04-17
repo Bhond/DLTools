@@ -18,3 +18,11 @@
 	-fx-background-color: -fx-palette-fogra39;
 	-fx-background-radius:10px;
 }
+
+/* Labels */
+.label
+{
+    -fx-font-size: 10pt;
+    -fx-text-fill: -fx-palette-ghost-white;
+    -fx-font-family: 'Stellar';
+}

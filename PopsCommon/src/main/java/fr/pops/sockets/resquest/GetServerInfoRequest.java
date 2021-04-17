@@ -36,8 +36,8 @@ public class GetServerInfoRequest extends Request{
      *****************************************/
     private int state = 0;
 
-    private double frequency;
-    private int nbClients;
+    private double frequency = 0.0d;
+    private int nbClients = 0;
     private List<EnumCst.ClientTypes> clientTypes = new ArrayList<>();
 
     /*****************************************
@@ -124,8 +124,12 @@ public class GetServerInfoRequest extends Request{
      */
     @Override
     public void process() {
-        this.needResponse = true;
-        this.state++;
+        if (this.state == 0){
+            this.needResponse = true;
+            this.state++;
+        } else {
+            this.needDispatch = true;
+        }
     }
 
     /**
@@ -145,7 +149,12 @@ public class GetServerInfoRequest extends Request{
      * Getters
      *
      *****************************************/
-
+    /**
+     * @return The server's update rate
+     */
+    public double getFrequency() {
+        return this.frequency;
+    }
     /*****************************************
      *
      * Setters

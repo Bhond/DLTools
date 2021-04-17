@@ -178,6 +178,7 @@ public class CommunicationPipeline {
      */
     private void write(){
         // Check if a request is ready to be sent
+        System.out.println("Nb request: " + this.outputBucket.size());
         if (!this.outputBucket.isEmpty()){
             // Get request
             Request requestToSend = this.outputBucket.poll();

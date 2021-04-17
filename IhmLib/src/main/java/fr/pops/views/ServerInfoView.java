@@ -24,7 +24,6 @@ import fr.pops.controllers.viewcontrollers.ServerInfoController;
 import fr.pops.cst.StrCst;
 import fr.pops.utils.Utils;
 import fr.pops.viewmodels.ServerInfoModel;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -36,9 +35,15 @@ public class ServerInfoView extends BaseView<ServerInfoView, ServerInfoModel> {
      * Attributes
      *
      *****************************************/
-    HBox pingBow = new HBox();
-    private Label pingLbl = new Label("Ping:");
-    private Label pingValue = new Label("0.0 ms");
+    // Ping
+    HBox pingBox;
+    private Label pingLbl;
+    private Label pingValue;
+
+    // Frequency
+    HBox frequencyBox;
+    private Label frequencyLbl;
+    private Label frequencyValue;
 
     /*****************************************
      *
@@ -82,18 +87,19 @@ public class ServerInfoView extends BaseView<ServerInfoView, ServerInfoModel> {
      */
     @Override
     protected void configureContentPane(){
-        /** TEMP **/
-        Button test = new Button("This is a test");
-        test.setOnAction(actionEvent -> System.out.println("Test button clicked"));
-        this.rootLayout.getChildren().add(test);
-        /** TEMP **/
-
         // Ping
-        this.pingBow = new HBox();
-        this.pingLbl = new Label("Ping:");
-        this.pingValue = new Label("0.0 ms");
-        this.pingBow.getChildren().addAll(this.pingLbl, this.pingValue);
-        this.rootLayout.getChildren().add(this.pingBow);
+        this.pingBox = new HBox();
+        this.pingLbl = new Label("Ping: ");
+        this.pingValue = new Label();
+        this.pingBox.getChildren().addAll(this.pingLbl, this.pingValue);
+        this.rootLayout.getChildren().add(this.pingBox);
+
+        // Frequency
+        this.frequencyBox = new HBox();
+        this.frequencyLbl = new Label("Frequency: ");
+        this.frequencyValue = new Label();
+        this.frequencyBox.getChildren().addAll(this.frequencyLbl, this.frequencyValue);
+        this.rootLayout.getChildren().add(this.frequencyBox);
     }
 
     /*****************************************
@@ -109,7 +115,11 @@ public class ServerInfoView extends BaseView<ServerInfoView, ServerInfoModel> {
         Updater.update(this.pingValue, String.format("%3f ms", value));
     }
 
-    public void setServerFrequency(Double value){
-
+    /**
+     * Set the frequency value received from the server
+     * @param value The update rate of the server
+     */
+    public void setFrequency(Double value){
+        Updater.update(this.frequencyValue, String.format("%3f ms", value));
     }
 }

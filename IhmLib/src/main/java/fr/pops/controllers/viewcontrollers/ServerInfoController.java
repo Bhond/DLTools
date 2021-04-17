@@ -11,12 +11,16 @@ public class ServerInfoController extends BaseController<ServerInfoView, ServerI
         this.onInit(new ServerInfoModel(this));
     }
 
+    @Override
+    protected void onInit(ServerInfoModel model) {
+        super.onInit(model);
+    }
+
     public void setPingValue(double value){
         this.view.setPingValue(value);
     }
 
-    @Override
-    protected void onInit(ServerInfoModel model) {
-        super.onInit(model);
+    public void setFrequency(double value){
+        this.view.setFrequency(value);
     }
 }

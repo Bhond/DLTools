@@ -21,7 +21,9 @@
 package fr.pops.client;
 
 import fr.pops.controllers.controllermanager.ControllerManager;
+import fr.pops.controllers.viewcontrollers.BaseController;
 import fr.pops.controllers.viewcontrollers.ServerInfoController;
+import fr.pops.sockets.resquest.GetServerInfoRequest;
 import fr.pops.sockets.resquest.PingRequest;
 import fr.pops.sockets.resquest.Request;
 
@@ -39,13 +41,21 @@ public abstract class RequestDispatcher {
     public static void dispatch(Request request){
 
         // Dispatch the request in the controllers
+        BaseController<?,?> controller;
         switch (request.getType()){
             case PING:
-                ServerInfoController controller = (ServerInfoController) ControllerManager.getInstance().getFirst(ServerInfoController.class);
+                controller = ControllerManager.getInstance().getFirst(ServerInfoController.class);
                 if (controller != null){
-                    controller.setPingValue(((PingRequest) request).getResponseDelay());
+                    ((ServerInfoController) controller).setPingValue(((PingRequest) request).getResponseDelay());
                 }
                 break;
+            case GET_SERVER_INFO:
+                controller =  ControllerManager.getInstance().getFirst(ServerInfoController.class);
+                if (controller != null){
+                    ((ServerInfoController) controller).setFrequency(((GetServerInfoRequest) request).getFrequency());
+                }
+                break;
+
         }
 
     }
