@@ -8,36 +8,48 @@
  *                        PP       OO  OO   PP          SS
  *                        PP        OOOO    PP       SSSS
  *
- * Name: Updater.java
+ * Name: StockController.java
  *
- * Description: Abstract class used to update GUI components
- *              Link between the app thread and the other threads harvesting
- *              or computing new values
+ * Description: Class describing the parameters of the stock controller
  *
  * Author: Charles MERINO
  *
  * Date: 20/04/2021
  *
  ******************************************************************************/
-package fr.pops.views;
+package fr.pops.controllers.viewcontrollers;
 
-import javafx.application.Platform;
-import javafx.scene.control.Label;
+import fr.pops.viewmodels.StockModel;
+import fr.pops.views.StockView;
 
-public abstract class Updater {
+public class StockController extends BaseController<StockView, StockModel>{
 
     /*****************************************
      *
-     * Labels
+     * Ctor
      *
      *****************************************/
     /**
-     * Update the the text of the specified label
-     * @param label The label to update
-     * @param text The text to print
+     * Standard ctor
+     * Nothing to be done
      */
-    public static void update(Label label, String text){
-        Platform.runLater(() -> label.setText(text));
+    private StockController(){
+        // Nothing to be done
     }
+
+    /**
+     * Ctor
+     * @param view The view to control
+     */
+    public StockController(StockView view){
+        // Parent
+        super(view, new StockModel());
+    }
+
+    /*****************************************
+     *
+     * Setters
+     *
+     *****************************************/
 
 }

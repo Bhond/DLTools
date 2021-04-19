@@ -62,7 +62,8 @@ public class Server {
 
     // Server loop parameters
     private final long initialDelay = (long) DoubleCst.SERVER_INITIAL_DELAY;
-    private final long frequency = (long) (1E3 / DoubleCst.SERVER_FREQUENCY_HZ);
+    private final double frequency = DoubleCst.SERVER_FREQUENCY_HZ;
+    private final long timeDelay = (long) (1E3 / this.frequency);
 
     // Communication
     private ServerSocketChannel serverChannel;
@@ -92,7 +93,7 @@ public class Server {
      *
      *****************************************/
     /**
-     * Initialize the server with the given socket adress
+     * Initialize the server with the given socket address
      * @param socketAddress The socket address to connect to
      */
     public void init(InetSocketAddress socketAddress){
@@ -135,7 +136,7 @@ public class Server {
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
-        }, this.initialDelay, this.frequency, TimeUnit.MILLISECONDS);
+        }, this.initialDelay, this.timeDelay, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -211,7 +212,7 @@ public class Server {
     /**
      * @return The frequency of the server
      */
-    public long getFrequency() {
+    public double getFrequency() {
         return this.frequency;
     }
 

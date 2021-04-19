@@ -40,9 +40,12 @@ public abstract class StrCst {
 
     // Menu bar
     public final static String MENUBAR_LABEL_VIEWS = "Views";
-    public final static String MENUBAR_LABEL_SERVER_VIEW_ITEM = "Server";
-    public final static String MENUBAR_LABEL_NEURAL_NETWORK_VIEW_ITEM = "Neural Network";
-    public final static String MENUBAR_LABEL_PLOT_VIEW_ITEM = "Plot";
+
+    // View names
+    public final static String NAME_SERVER_VIEW = "Server";
+    public final static String NAME_NEURAL_NETWORK_VIEW = "Neural Network";
+    public final static String NAME_PLOT_VIEW = "Plot";
+    public final static String NAME_STOCK_VIEW = "Plot";
 
     /*****************************************
      *
@@ -65,4 +68,5 @@ public abstract class StrCst {
     public final static String STYLE_CLASS_MENUBAR = "menuBar";
     public final static String STYLE_CLASS_MENUBAR_MENU = "menuBarMenu";
     public final static String STYLE_CLASS_MENUBAR_MENU_ITEM = "menuBarMenuItem";
+    public final static String STYLE_CLASS_VIEWS_TAB_PANE = "viewsTabPane";
 }

@@ -90,14 +90,6 @@ public class MainController {
     }
 
     /**
-     * Triggers the display of the test view
-     * @param actionEvent The clicked action event
-     */
-    public void onTestViewMenuItemClicked(ActionEvent actionEvent){
-        this.mainView.addView(EnumCst.Views.TEST);
-    }
-
-    /**
      * Triggers the closing of the window which contains the button calling it
      * @param actionEvent The closing action event
      */

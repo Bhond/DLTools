@@ -26,16 +26,13 @@ import fr.pops.cst.IntCst;
 import fr.pops.cst.StrCst;
 import fr.pops.systeminfo.DisplayInfo;
 import fr.pops.utils.Utils;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.layout.*;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class MainView extends BaseView {
@@ -65,6 +62,7 @@ public class MainView extends BaseView {
     private HBox topBar;
     private Button minimizeWindowButton;
     private Button closeWindowButton;
+
     // Menu bar
     private HBox menuBarLayout;
     private MenuBar menuBar;
@@ -73,17 +71,9 @@ public class MainView extends BaseView {
     private MenuItem serverViewMenuItem;
     private MenuItem neuralNetworkViewMenuItem;
     private MenuItem plotViewMenuItem;
-    // Temp
-    private MenuItem testViewMenuItem;
 
     // Main layout, contains all of the objects
-    private GridPane mainLayout;
-
-    // Active Views
-    private int nbRows;
-    private int currentRowIdx;
-    private int nbColumns;
-    private int  currentColumnIdx;
+    private TabPane viewsTabPane;
 
     /*****************************************
      *
@@ -93,10 +83,11 @@ public class MainView extends BaseView {
     /**
      * Standard ctor
      * Singleton
+     * @param stage Stage of the view
      */
     public MainView(Stage stage){
         // Parent
-        super(stage);
+        super(stage, StrCst.ZE_NAME);
 
         // Initialize the view
         this.onInit();
@@ -136,10 +127,7 @@ public class MainView extends BaseView {
 
         // Build hierarchy
         this.rootLayout.getChildren().addAll(this.topBar,
-                this.mainLayout);
-
-        // Update sizes
-        this.updateContentSizes();
+                                             this.viewsTabPane);
     }
 
     /**
@@ -147,10 +135,8 @@ public class MainView extends BaseView {
      */
     protected void configureRoot(){
         // Root pane
-        this.height = IntCst.DEFAULT_MAIN_WINDOW_HEIGHT_TEST;
-        this.width = IntCst.DEFAULT_MAIN_WINDOW_WIDTH_TEST;
-        this.root.setPrefHeight(IntCst.DEFAULT_MAIN_WINDOW_HEIGHT_TEST); //this.displayInfo.getHeight());
-        this.root.setPrefWidth(IntCst.DEFAULT_MAIN_WINDOW_WIDTH_TEST); //this.displayInfo.getWidth());
+        this.root.setPrefHeight(IntCst.DEFAULT_MAIN_WINDOW_HEIGHT_TEST);
+        this.root.setPrefWidth(IntCst.DEFAULT_MAIN_WINDOW_WIDTH_TEST);
         this.root.getStylesheets().add(Utils.getResource(StrCst.PATH_MAIN_VIEW_CSS));
 
         // Controller
@@ -209,33 +195,20 @@ public class MainView extends BaseView {
 
         // Menu items
         // Tool menu
-        this.serverViewMenuItem = new MenuItem(StrCst.MENUBAR_LABEL_SERVER_VIEW_ITEM);
+        this.serverViewMenuItem = new MenuItem(StrCst.NAME_SERVER_VIEW);
         this.serverViewMenuItem.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR_MENU_ITEM);
         this.serverViewMenuItem.setOnAction(a -> this.controller.onServerViewMenuItemClicked(a));
-        this.neuralNetworkViewMenuItem = new MenuItem(StrCst.MENUBAR_LABEL_NEURAL_NETWORK_VIEW_ITEM);
+        this.neuralNetworkViewMenuItem = new MenuItem(StrCst.NAME_NEURAL_NETWORK_VIEW);
         this.neuralNetworkViewMenuItem.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR_MENU_ITEM);
         this.neuralNetworkViewMenuItem.setOnAction(a -> this.controller.onNeuralNetworkViewMenuItemClicked(a));
-        this.plotViewMenuItem = new MenuItem(StrCst.MENUBAR_LABEL_PLOT_VIEW_ITEM);
+        this.plotViewMenuItem = new MenuItem(StrCst.NAME_PLOT_VIEW);
         this.plotViewMenuItem.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR_MENU_ITEM);
         this.plotViewMenuItem.setOnAction(a -> this.controller.onPlotViewMenuItemClicked(a));
 
-        /**
-         *
-         * TEMP
-         *
-         */
-        this.testViewMenuItem = new MenuItem("Test");
-        this.testViewMenuItem.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR_MENU_ITEM);
-        this.testViewMenuItem.setOnAction(a -> this.controller.onTestViewMenuItemClicked(a));
-        /**
-         *
-         * TEMP
-         *
-         */
-
-
         // Build hierarchy
-        this.viewsMenu.getItems().addAll(this.serverViewMenuItem, this.neuralNetworkViewMenuItem, this.plotViewMenuItem, this.testViewMenuItem);
+        this.viewsMenu.getItems().addAll(this.serverViewMenuItem,
+                                         this.neuralNetworkViewMenuItem,
+                                         this.plotViewMenuItem);
         this.menuBar.getMenus().add(viewsMenu);
         this.menuBarLayout.getChildren().add(this.menuBar);
     }
@@ -245,34 +218,11 @@ public class MainView extends BaseView {
      */
     private void configureMainLayout(){
         // Content Grid pane
-        this.mainLayout = new GridPane();
-        VBox.setVgrow(this.mainLayout, Priority.ALWAYS);
-        HBox.setHgrow(this.mainLayout, Priority.ALWAYS);
-        this.mainLayout.setHgap(IntCst.DEFAULT_MAIN_VIEW_CONTENT_SPACING);
-        this.mainLayout.setVgap(IntCst.DEFAULT_MAIN_VIEW_CONTENT_SPACING);
-        this.mainLayout.setAlignment(Pos.CENTER);
-        this.contentLayoutInsets = new Insets(IntCst.DEFAULT_MAIN_VIEW_CONTENT_MARGIN,
-                IntCst.DEFAULT_MAIN_VIEW_CONTENT_MARGIN,
-                IntCst.DEFAULT_MAIN_VIEW_CONTENT_MARGIN,
-                IntCst.DEFAULT_MAIN_VIEW_CONTENT_MARGIN);
-        this.mainLayout.setPadding(this.contentLayoutInsets);
-
-        // Constraints
-        ColumnConstraints columnConstraints = new ColumnConstraints();
-        columnConstraints.setHgrow(Priority.ALWAYS);
-        columnConstraints.setHalignment(HPos.CENTER);
-        this.mainLayout.getColumnConstraints().add(columnConstraints);
-
-        RowConstraints rowConstraints = new RowConstraints();
-        rowConstraints.setVgrow(Priority.ALWAYS);
-        rowConstraints.setValignment(VPos.CENTER);
-        this.mainLayout.getRowConstraints().add(rowConstraints);
-
-        // Store layout current state
-        this.nbRows = 1;
-        this.nbColumns = 0;
-        this.currentRowIdx = 0;
-        this.currentColumnIdx = -1;
+        this.viewsTabPane = new TabPane();
+        VBox.setVgrow(this.viewsTabPane, Priority.ALWAYS);
+        HBox.setHgrow(this.viewsTabPane, Priority.ALWAYS);
+        //this.viewsTabPane.setSide(Side.LEFT);
+        this.viewsTabPane.getStyleClass().add(StrCst.STYLE_CLASS_VIEWS_TAB_PANE);
     }
 
     /**
@@ -294,26 +244,20 @@ public class MainView extends BaseView {
      * @param viewType The type of the view to display
      */
     public void addView(EnumCst.Views viewType){
-        // Update grid
-        this.updateGrid();
-
-        // Update content sizes
-        this.updateContentSizes();
-
         // Update active views sizes
         this.updateActiveViewsSizes();
 
         // Switch on the type of the view to add
-        BaseView<?,?> view = null;
+        BaseView view = null;
         switch (viewType){
             case SERVER:
-                view = new ServerInfoView(this.stage, this.contentHeight, this.contentWidth);
+                view = new ServerInfoView(this.stage);
                 break;
             case NEURAL_NETWORK:
                 System.out.println("Not implemented yet...");
                 break;
             case PLOT:
-                view = new PlotView(this.stage, this.contentHeight, this.contentWidth);
+                view = new PlotView(this.stage);
                 break;
             default:
                 System.out.println("Unknown view");
@@ -322,7 +266,11 @@ public class MainView extends BaseView {
 
         // Add view to active views
         if (view != null){
-            this.mainLayout.add(view.getRoot(), this.currentColumnIdx, this.currentRowIdx);
+            Tab tab = new Tab();
+            tab.setText(view.getName());
+            tab.setContent(view.getRoot());
+            tab.getStyleClass().add("viewTab");
+            this.viewsTabPane.getTabs().add(tab);
         }
     }
 
@@ -332,48 +280,10 @@ public class MainView extends BaseView {
      *
      *****************************************/
     /**
-     * Update the grid
-     * TODO: Implement the case where a view is deleted
-     */
-    private void updateGrid(){
-        // Update the indices and the number of columns and rows
-        if (this.currentColumnIdx == IntCst.DEFAULT_MAX_NB_COLUMNS - 1){
-            this.nbRows++;
-            this.currentRowIdx++;
-            this.currentColumnIdx = 0;
-        } else {
-            if (!(this.nbColumns == IntCst.DEFAULT_MAX_NB_COLUMNS)){
-                this.nbColumns++;
-            }
-            this.currentColumnIdx++;
-        }
-    }
-
-    /**
-     * Update the content sizes
-     */
-    public void updateContentSizes(){
-        this.contentHeight = (this.mainLayout.getHeight()
-                - this.contentLayoutInsets.getTop()
-                - this.contentLayoutInsets.getBottom()
-                - (this.nbRows - 1) * this.mainLayout.getVgap()) /
-                (this.nbRows == 0 ? 1 : this.nbRows);
-
-        this.contentWidth = (this.mainLayout.getHeight()
-                - this.contentLayoutInsets.getLeft()
-                - this.contentLayoutInsets.getRight()
-                - (this.nbColumns - 1) * this.mainLayout.getHgap()) /
-                (this.nbColumns == 0 ? 1 : this.nbColumns);
-    }
-
-    /**
      * Update active views sizes
      */
     private void updateActiveViewsSizes(){
-        // Loop over all the active view
-//        for (View view : this.activeViews){
-//            view.updateSize(this.contentHeight, this.contentWidth);
-//        }
+        System.out.println("Not implemented yet...");
     }
 
     /*****************************************

@@ -29,24 +29,18 @@ public class ServerInfoModel extends BaseModel<ServerInfoController>{
 
     /*****************************************
      *
-     * Attributes
-     *
-     *****************************************/
-    private ServerInfoController controller;
-
-    /*****************************************
-     *
      * Ctor
      *
      *****************************************/
     /**
      * Ctor
-     * @param controller The controller that controls the model and the view
      */
-    public ServerInfoModel(ServerInfoController controller){
+    public ServerInfoModel(){
         // Parent
-        super(controller);
-        this.modelSteppingFamily = EnumCst.ModelSteppingFamily.FAMILY_1_ON_1;
+        super();
+
+        // Slow down the model
+        this.modelSteppingFamily = EnumCst.ModelSteppingFamily.FAMILY_1_ON_10;
     }
 
     /*****************************************
@@ -58,7 +52,7 @@ public class ServerInfoModel extends BaseModel<ServerInfoController>{
      * Update model
      */
     @Override
-    public void update(double dt) {
+    public void update(double dt)  {
 
         // Send ping
         PingRequest ping = new PingRequest();

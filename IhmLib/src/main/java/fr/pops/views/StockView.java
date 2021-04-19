@@ -8,33 +8,28 @@
  *                        PP       OO  OO   PP          SS
  *                        PP        OOOO    PP       SSSS
  *
- * Name: PlotController.java
+ * Name: StockView.java
  *
- * Description: Class defining the controller for plot views
+ * Description: Class defining the stock view used to display
+ *              info from stock data
  *
  * Author: Charles MERINO
  *
- * Date: 10/03/2021
+ * Date: 20/04/2021
  *
  ******************************************************************************/
-package fr.pops.controllers.viewcontrollers;
+package fr.pops.views;
 
-import fr.pops.viewmodels.ServerInfoModel;
-import fr.pops.views.PlotView;
+import fr.pops.cst.StrCst;
+import javafx.stage.Stage;
 
-import java.util.List;
-
-public class PlotController extends BaseController<PlotView, ServerInfoModel>{
+public class StockView extends BaseView {
 
     /*****************************************
      *
      * Attributes
      *
      *****************************************/
-    // Data
-    private List<Object> data;
-
-    // TODO: move some of this in the view class
 
     /*****************************************
      *
@@ -43,50 +38,48 @@ public class PlotController extends BaseController<PlotView, ServerInfoModel>{
      *****************************************/
     /**
      * Standard ctor
+     *  Nothing to be done
      */
-    private PlotController(){
-        // Call parent
-        super();
+    private StockView(){
+        // Nothing to be done
     }
 
     /**
      * Ctor
-     * @param plotView The view to control
+     * @param stage Stage of the view
      */
-    public PlotController(PlotView plotView){
-        // Call parent
-        super(plotView, null);
+    public StockView(Stage stage){
+        // Parent
+        super(stage, StrCst.NAME_STOCK_VIEW);
     }
 
     /*****************************************
      *
-     * Main pane building
+     * Initialisation
      *
      *****************************************/
     /**
-     * Build the axis
+     * Initialize the view
      */
-    private void buildAxis(){
+    @Override
+    protected void onInit() {
+
     }
 
     /**
-     * Compute the x and y origins
+     * Configure the content pane
+     * Build the layout of the view
+     * Draw all the components holding the info
+     * displayed by the view
      */
-    private void computeOrigins(){
+    @Override
+    protected void configureContentPane() {
 
     }
 
     /*****************************************
      *
-     * Setter
+     * Update
      *
      *****************************************/
-    /**
-     * Set the data to plot
-     * @param data The data to plot
-     */
-    private void setData(List<Object> data){
-        this.data = data;
-    }
-
 }

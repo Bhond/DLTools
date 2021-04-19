@@ -22,7 +22,6 @@ package fr.pops.views;
 import fr.pops.controllers.viewcontrollers.BaseController;
 import fr.pops.cst.DblCst;
 import fr.pops.cst.StrCst;
-import fr.pops.viewmodels.BaseModel;
 import javafx.geometry.Pos;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -30,41 +29,44 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public abstract class BaseView<viewT extends BaseView<?,?>, modelT extends BaseModel<?>> {
+public abstract class BaseView {
 
     /*****************************************
      *
      * Attributes
      *
      *****************************************/
-    protected BaseController<viewT, modelT> controller;
+    // General
+    private String name;
+    protected BaseController<?, ?> controller;
 
+    // Basic components
     protected Stage stage;
     protected AnchorPane root;
     protected VBox rootLayout;
-
-    protected double height;
-    protected double width;
 
     /*****************************************
      *
      * Ctor
      *
      *****************************************/
-    protected BaseView(Stage stage){
-        // Initialization
-        this.stage = stage;
-        this.configureRoot();
+    /**
+     * Standard ctor
+     * Nothing to be done
+     */
+    protected BaseView() {
+        // Nothing to be done
     }
 
     /**
-     * Standard ctor
+     * Ctor
+     * @param stage Stage of the view
+     * @param name Name of the view, used in misc occasions
      */
-    protected BaseView(Stage stage, double height, double width){
+    protected BaseView(Stage stage, String name){
         // Initialization
         this.stage = stage;
-//        this.height = height;
-//        this.width = width;
+        this.name = name;
         this.configureRoot();
     }
 
@@ -107,6 +109,7 @@ public abstract class BaseView<viewT extends BaseView<?,?>, modelT extends BaseM
      * Configure the rootPane
      */
     protected abstract void configureContentPane();
+
     /*****************************************
      *
      * Getter
@@ -118,5 +121,12 @@ public abstract class BaseView<viewT extends BaseView<?,?>, modelT extends BaseM
      */
     public AnchorPane getRoot(){
         return this.root;
+    }
+
+    /**
+     * @return Name of the view
+     */
+    public String getName() {
+        return this.name;
     }
 }

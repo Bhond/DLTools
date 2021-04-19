@@ -155,6 +155,14 @@ public class GetServerInfoRequest extends Request{
     public double getFrequency() {
         return this.frequency;
     }
+
+    /**
+     * @return The clients connected to the server
+     */
+    public List<EnumCst.ClientTypes> getClientTypes() {
+        return clientTypes;
+    }
+
     /*****************************************
      *
      * Setters

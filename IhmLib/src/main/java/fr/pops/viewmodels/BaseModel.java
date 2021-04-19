@@ -30,7 +30,6 @@ public abstract class BaseModel<controllerT extends BaseController<?,?>> {
      *
      *****************************************/
     protected EnumCst.ModelSteppingFamily modelSteppingFamily = EnumCst.ModelSteppingFamily.FAMILY_1_ON_1;
-    protected controllerT controller;
 
     /*****************************************
      *
@@ -38,11 +37,10 @@ public abstract class BaseModel<controllerT extends BaseController<?,?>> {
      *
      *****************************************/
     /**
-     * Ctor
-     * @param controller The model's controller
+     * Standard ctor
      */
-    protected BaseModel(controllerT controller){
-        this.controller = controller;
+    protected BaseModel(){
+        // Nothing to be done
     }
 
     /*****************************************

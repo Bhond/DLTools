@@ -53,6 +53,7 @@ public abstract class RequestDispatcher {
                 controller =  ControllerManager.getInstance().getFirst(ServerInfoController.class);
                 if (controller != null){
                     ((ServerInfoController) controller).setFrequency(((GetServerInfoRequest) request).getFrequency());
+                    ((ServerInfoController) controller).setConnectedClients(((GetServerInfoRequest) request).getClientTypes());
                 }
                 break;
 

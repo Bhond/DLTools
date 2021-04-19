@@ -22,13 +22,15 @@ package fr.pops.views;
 
 import fr.pops.controllers.viewcontrollers.ServerInfoController;
 import fr.pops.cst.StrCst;
+import fr.pops.sockets.cst.EnumCst;
 import fr.pops.utils.Utils;
-import fr.pops.viewmodels.ServerInfoModel;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-public class ServerInfoView extends BaseView<ServerInfoView, ServerInfoModel> {
+import java.util.List;
+
+public class ServerInfoView extends BaseView {
 
     /*****************************************
      *
@@ -51,11 +53,20 @@ public class ServerInfoView extends BaseView<ServerInfoView, ServerInfoModel> {
      *
      *****************************************/
     /**
-     * Standard ctor
+     * Standar ctor
+     * Nothing to be done
      */
-    public ServerInfoView(Stage stage, double height, double width){
+    private ServerInfoView(){
+        // Nothing to be done
+    }
+
+    /**
+     * Ctor
+     * @param stage Stage of the view
+     */
+    public ServerInfoView(Stage stage){
         // Parent
-        super(stage, height, width);
+        super(stage, StrCst.NAME_SERVER_VIEW);
 
         // Initialization
         this.onInit();
@@ -111,15 +122,23 @@ public class ServerInfoView extends BaseView<ServerInfoView, ServerInfoModel> {
      * Set the ping value received from the request
      * @param value The response delay between the client and the server
      */
-    public void setPingValue(Double value){
-        Updater.update(this.pingValue, String.format("%3f ms", value));
+    public void displayPingValue(Double value){
+        Updater.update(this.pingValue, String.format("%3.0f ms", value));
     }
 
     /**
      * Set the frequency value received from the server
      * @param value The update rate of the server
      */
-    public void setFrequency(Double value){
-        Updater.update(this.frequencyValue, String.format("%3f ms", value));
+    public void displayFrequency(Double value){
+        Updater.update(this.frequencyValue, String.format("%3.0f Hz", value));
+    }
+
+    /**
+     * Set the clients connected to the server
+     * @param clients The clients connected to the server
+     */
+    public void displayConnectedClients(List<EnumCst.ClientTypes> clients){
+
     }
 }

@@ -108,7 +108,6 @@ public class ClientSession {
         try{
             // Put data in the buffer
             int amountRead = this.channel.read(this.buffer);
-
             // If something has been read, fill in the returned request
             // TODO: Check if in the case of amountRead == 0, should the client be disconnected?
             if (amountRead != -1 && amountRead != 0){

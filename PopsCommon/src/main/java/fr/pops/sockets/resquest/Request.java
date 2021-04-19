@@ -37,7 +37,7 @@ public abstract class Request {
     protected boolean needDispatch = false;
 
     protected EnumCst.RequestTypes type;
-    protected int length;
+    public int length;
     protected byte[] rawParams;
 
     protected byte[] rawRequest;

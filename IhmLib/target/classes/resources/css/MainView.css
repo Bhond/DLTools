@@ -76,3 +76,49 @@
     -fx-background-color: transparent;
 }
 
+/* Views TabPane */
+.viewsTabPane .tab-header-area .tab-header-background
+{
+    -fx-background-color: -fx-palette-fogra39;
+}
+
+.viewsTabPane .tab-label
+{
+    -fx-background-color: -fx-palette-fogra39;
+    -fx-text-fill: -fx-palette-ghost-white;
+    -fx-font-family: 'Stellar';
+    -fx-font-size: 10pt;
+}
+
+.viewsTabPane .tab-label
+{
+    -fx-border-color: transparent;
+}
+
+.viewTab
+{
+    -fx-background-color: -fx-palette-fogra39;
+    -fx-background-insets: 0.0;
+    -fx-background-radius: 0.0;
+    -fx-padding: 0 30 0 30;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.viewTab:selected
+{
+    -fx-background-color: -fx-palette-fogra39;
+    -fx-background-insets: 0.0;
+    -fx-background-radius: 0.0;
+    -fx-border-width: 0 0 5 0;
+    -fx-border-color: -fx-palette-orange;
+}
+
+.viewTab .tab-close-button {
+    -fx-background-color: -fx-palette-ghost-white;
+}
+
+.viewTab .tab-close-button:hover {
+    -fx-effect: dropshadow(gaussian, -fx-palette-orange, 8, 0.3, 0, 0);
+}
+

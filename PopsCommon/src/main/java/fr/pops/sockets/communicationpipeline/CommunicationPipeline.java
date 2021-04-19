@@ -92,7 +92,7 @@ public class CommunicationPipeline {
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
-        }, 0, 1, TimeUnit.MILLISECONDS);
+        }, 0, 100, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -178,7 +178,6 @@ public class CommunicationPipeline {
      */
     private void write(){
         // Check if a request is ready to be sent
-        System.out.println("Nb request: " + this.outputBucket.size());
         if (!this.outputBucket.isEmpty()){
             // Get request
             Request requestToSend = this.outputBucket.poll();
@@ -194,7 +193,9 @@ public class CommunicationPipeline {
             try{
                 this.channel.write(this.buffer);
                 this.cleanBuffer();
-            } catch (IOException ignored){}
+            } catch (IOException e){
+                e.printStackTrace();
+            }
         }
     }
 

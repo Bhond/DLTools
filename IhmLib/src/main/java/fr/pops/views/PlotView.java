@@ -2,13 +2,12 @@ package fr.pops.views;
 
 import fr.pops.cst.StrCst;
 import fr.pops.utils.Utils;
-import fr.pops.viewmodels.ServerInfoModel;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 
-public class PlotView extends BaseView<PlotView, ServerInfoModel> { // TODO: change model
+public class PlotView extends BaseView {
 
     /*****************************************
      *
@@ -28,11 +27,11 @@ public class PlotView extends BaseView<PlotView, ServerInfoModel> { // TODO: cha
      *****************************************/
     /**
      * Ctor
-     * @param stage The stage to draw the view
+     * @param stage Stage of the view
      */
-    public PlotView(Stage stage, double height, double width) {
+    public PlotView(Stage stage) {
         // Parent
-        super(stage, height, width);
+        super(stage, StrCst.NAME_PLOT_VIEW);
 
         // Initialisation
         this.onInit();
