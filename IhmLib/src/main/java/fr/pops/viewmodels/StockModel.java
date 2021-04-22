@@ -19,19 +19,37 @@
  ******************************************************************************/
 package fr.pops.viewmodels;
 
+import fr.pops.client.Client;
 import fr.pops.controllers.viewcontrollers.StockController;
+import fr.pops.sockets.resquest.GetCurrentStockInfoRequest;
 
 public class StockModel extends BaseModel<StockController> {
 
+    /*****************************************
+     *
+     * Ctor
+     *
+     *****************************************/
     /**
      * Standard ctor
      */
     public StockModel() {
+        // Parent
         super();
+
+        // Model stepping family
+//        this.modelSteppingFamily = EnumCst.ModelSteppingFamily.FAMILY_1_ON_10;
     }
 
+    /*****************************************
+     *
+     * Methods
+     *
+     *****************************************/
     @Override
     public void update(double dt) {
-
+        System.out.println("Sending new price request");
+        GetCurrentStockInfoRequest request = new GetCurrentStockInfoRequest();
+        Client.getInstance().send(request);
     }
 }

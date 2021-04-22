@@ -77,6 +77,8 @@ public class RequestFactory {
                 return new PingRequest(rawParams);
             case GET_SERVER_INFO:
                 return new GetServerInfoRequest(rawParams);
+            case GET_CURRENT_STOCK_INFO:
+                return new GetCurrentStockInfoRequest(rawParams);
             default:
                 return null;
         }

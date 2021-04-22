@@ -23,6 +23,8 @@ package fr.pops.client;
 import fr.pops.controllers.controllermanager.ControllerManager;
 import fr.pops.controllers.viewcontrollers.BaseController;
 import fr.pops.controllers.viewcontrollers.ServerInfoController;
+import fr.pops.controllers.viewcontrollers.StockController;
+import fr.pops.sockets.resquest.GetCurrentStockInfoRequest;
 import fr.pops.sockets.resquest.GetServerInfoRequest;
 import fr.pops.sockets.resquest.PingRequest;
 import fr.pops.sockets.resquest.Request;
@@ -54,7 +56,11 @@ public abstract class RequestDispatcher {
                 if (controller != null){
                     ((ServerInfoController) controller).setFrequency(((GetServerInfoRequest) request).getFrequency());
                     ((ServerInfoController) controller).setConnectedClients(((GetServerInfoRequest) request).getClientTypes());
-
+                }
+            case GET_CURRENT_STOCK_INFO:
+                controller =  ControllerManager.getInstance().getFirst(StockController.class);
+                if (controller != null){
+                    ((StockController) controller).addCurrentStockPrice(((GetCurrentStockInfoRequest) request).getCurrentStockPrice());
                 }
                 break;
 

@@ -72,26 +72,31 @@
 
 /* Default colors */
 /* Serie 0 */
-.default-color0.chart-series-line { -fx-stroke: -fx-palette-aureolin; }
-.default-color0.chart-line-symbol { -fx-background-color: -fx-palette-aureolin; -fx-effect: dropshadow(gaussian, -fx-palette-aureolin, 8, 0.3, 0, 0); }
-.default-color0.chart-series-fill { -fx-fill: -fx-palette-aureolin; }
+.default-color0.chart-series-line { -fx-stroke: -fx-palette-ghost-white; }
+.default-color0.chart-line-symbol { -fx-background-color: -fx-palette-ghost-white; -fx-effect: dropshadow(gaussian, -fx-palette-aureolin, 8, 0.3, 0, 0); }
+.default-color0.chart-series-fill { -fx-fill: -fx-palette-ghost-white; }
 
 /* Serie 1 */
-.default-color1.chart-series-line { -fx-stroke: -fx-palette-crayola; }
-.default-color1.chart-line-symbol { -fx-background-color: -fx-palette-crayola; -fx-effect: dropshadow(gaussian, -fx-palette-crayola, 8, 0.3, 0, 0); }
-.default-color1.chart-series-fill { -fx-fill: -fx-palette-crayola; }
+.default-color1.chart-series-line { -fx-stroke: -fx-palette-aureolin; }
+.default-color1.chart-line-symbol { -fx-background-color: -fx-palette-aureolin; -fx-effect: dropshadow(gaussian, -fx-palette-aureolin, 8, 0.3, 0, 0); }
+.default-color1.chart-series-fill { -fx-fill: -fx-palette-aureolin; }
 
 /* Serie 2 */
-.default-color2.chart-series-line { -fx-stroke: -fx-palette-ultramarine; }
-.default-color2.chart-line-symbol { -fx-background-color: -fx-palette-ultramarine; -fx-effect: dropshadow(gaussian, -fx-palette-ultramarine, 8, 0.3, 0, 0); }
-.default-color2.chart-series-fill { -fx-fill: -fx-palette-ultramarine; }
+.default-color2.chart-series-line { -fx-stroke: -fx-palette-crayola; }
+.default-color2.chart-line-symbol { -fx-background-color: -fx-palette-crayola; -fx-effect: dropshadow(gaussian, -fx-palette-crayola, 8, 0.3, 0, 0); }
+.default-color2.chart-series-fill { -fx-fill: -fx-palette-crayola; }
 
 /* Serie 3 */
-.default-color3.chart-series-line { -fx-stroke: -fx-palette-command-blue; }
-.default-color3.chart-line-symbol { -fx-background-color: -fx-palette-command-blue; -fx-effect: dropshadow(gaussian, -fx-palette-command-blue, 8, 0.3, 0, 0); }
-.default-color3.chart-series-fill { -fx-fill: -fx-palette-command-blue; }
+.default-color3.chart-series-line { -fx-stroke: -fx-palette-ultramarine; }
+.default-color3.chart-line-symbol { -fx-background-color: -fx-palette-ultramarine; -fx-effect: dropshadow(gaussian, -fx-palette-ultramarine, 8, 0.3, 0, 0); }
+.default-color3.chart-series-fill { -fx-fill: -fx-palette-ultramarine; }
 
 /* Serie 4 */
-.default-color4.chart-series-line { -fx-stroke: -fx-palette-blue-violet; }
-.default-color4.chart-line-symbol { -fx-background-color: -fx-palette-blue-violet; -fx-effect: dropshadow(gaussian, -fx-palette-blue-violet, 8, 0.3, 0, 0); }
-.default-color4.chart-series-fill { -fx-fill: -fx-palette-blue-violet; }
+.default-color4.chart-series-line { -fx-stroke: -fx-palette-command-blue; }
+.default-color4.chart-line-symbol { -fx-background-color: -fx-palette-command-blue; -fx-effect: dropshadow(gaussian, -fx-palette-command-blue, 8, 0.3, 0, 0); }
+.default-color4.chart-series-fill { -fx-fill: -fx-palette-command-blue; }
+
+/* Serie 5 */
+.default-color5.chart-series-line { -fx-stroke: -fx-palette-blue-violet; }
+.default-color5.chart-line-symbol { -fx-background-color: -fx-palette-blue-violet; -fx-effect: dropshadow(gaussian, -fx-palette-blue-violet, 8, 0.3, 0, 0); }
+.default-color5.chart-series-fill { -fx-fill: -fx-palette-blue-violet; }

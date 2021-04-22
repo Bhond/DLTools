@@ -11,7 +11,7 @@
  * Name: CommunicationPipeline.java
  *
  * Description: Class defining the communication pipeline
- *              used bvy a client to communicate with the server
+ *              used by a client to communicate with the server
  *
  * Author: Charles MERINO
  *
@@ -49,7 +49,7 @@ public class CommunicationPipeline {
     private ByteBuffer buffer;
 
     // Communication
-    private BaseClient client;
+    protected BaseClient client;
     private RequestFactory requestFactory = new RequestFactory();
     private Queue<Request> outputBucket = new LinkedList<>();
 
@@ -59,11 +59,38 @@ public class CommunicationPipeline {
      *
      *****************************************/
     /**
+     * Standard ctor
+     * Nothing to be done
+     */
+    public CommunicationPipeline(){
+        // Nothing to be done
+    }
+
+    /**
      * Ctor
+     * @param client The client using this communication pipeline
      * @param channel The channel used by the client
      *                to communicate with the server
+     * @param buffer The buffer used to communicate
      */
     public CommunicationPipeline(BaseClient client, SocketChannel channel, ByteBuffer buffer){
+        // Initialize pipeline
+        this.onInit(client, channel, buffer);
+    }
+
+    /*****************************************
+     *
+     * Initialisation
+     *
+     *****************************************/
+    /**
+     * Initialize pipeline
+     * @param client The client using this communication pipeline
+     * @param channel The channel used by the client
+     *                to communicate with the server
+     * @param buffer The buffer used to communicate
+     */
+    public void onInit(BaseClient client, SocketChannel channel, ByteBuffer buffer){
         this.client = client;
         this.channel = channel;
         try {
@@ -125,12 +152,18 @@ public class CommunicationPipeline {
             // Skip key if not valid
             if (!key.isValid()) continue;
 
-            // Read request
+            // Specific operation for the key
+            this.specificOp(key);
+
+            // Read request and perform specific operation
             if (key.isReadable()){
                 Request request = this.read();
                 if (request != null){
+                    // Handle request
                     this.client.handle(request);
-                    // TODO: Allow sending request after processing
+
+                    // Specific operation
+                    this.specificOp(key, request);
                 }
             }
 
@@ -140,6 +173,22 @@ public class CommunicationPipeline {
             }
         }
     }
+
+    /**
+     * Perform specific operation for the given key
+     * @param key Client's selection key
+     */
+    protected void specificOp(SelectionKey key){}
+
+    /**
+     * Perform specific operation for the given key
+     * and the given request
+     * @param key Client's selection key
+     * @param request The request to process
+     */
+    protected void specificOp(SelectionKey key, Request request){}
+
+
 
     /*****************************************
      *

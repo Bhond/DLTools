@@ -64,11 +64,25 @@ public abstract class BaseClient {
 
     /**
      * Ctor
+     * @param type The client's type
      * @param socketAddress The socket address to connect to
+     * @param requestHandler The request handler that will process the requests
      */
     protected BaseClient(EnumCst.ClientTypes type, InetSocketAddress socketAddress, RequestHandler requestHandler){
         // Initialisation
         this.onInit(type, socketAddress, requestHandler);
+    }
+
+    /**
+     * Ctor
+     * @param type The client's type
+     * @param socketAddress The socket address to connect to
+     * @param requestHandler The request handler that will process the requests
+     * @param pipeline The raw communication pipeline not initialized
+     */
+    protected BaseClient(EnumCst.ClientTypes type, InetSocketAddress socketAddress, RequestHandler requestHandler, CommunicationPipeline pipeline){
+        // Initialisation
+        this.onInit(type, socketAddress, requestHandler, pipeline);
     }
 
     /*****************************************
@@ -94,6 +108,28 @@ public abstract class BaseClient {
             this.buffer = ByteBuffer.allocate(IntCst.BUFFER_SIZE);
             this.requestHandler = requestHandler;
             this.communicationPipeline = new CommunicationPipeline(this, this.channel, this.buffer);
+        } catch (IOException ignored) {}
+    }
+
+    /**
+     * Initialize client
+     * @param socketAddress The socket address to connect to
+     * @param requestHandler The request handler used to handle requests
+     *                       It needs to be set because handling might not be the same for all clients
+     */
+    private void onInit(EnumCst.ClientTypes type, InetSocketAddress socketAddress, RequestHandler requestHandler, CommunicationPipeline pipeline){
+        // Store fields
+        this.type = type;
+        this.socketAddress = socketAddress;
+
+        // Initialize client
+        try{
+            this.channel = SocketChannel.open(socketAddress);
+            this.channel.configureBlocking(false);
+            this.buffer = ByteBuffer.allocate(IntCst.BUFFER_SIZE);
+            this.requestHandler = requestHandler;
+            this.communicationPipeline = pipeline;
+            this.communicationPipeline.onInit(this, this.channel, this.buffer);
         } catch (IOException ignored) {}
     }
 
@@ -146,5 +182,12 @@ public abstract class BaseClient {
      */
     public final EnumCst.ClientTypes getType(){
         return this.type;
+    }
+
+    /**
+     * @return The request handler
+     */
+    public RequestHandler getRequestHandler() {
+        return this.requestHandler;
     }
 }

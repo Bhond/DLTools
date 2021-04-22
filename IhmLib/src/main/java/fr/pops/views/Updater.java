@@ -22,6 +22,7 @@
 package fr.pops.views;
 
 import javafx.application.Platform;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 
 public abstract class Updater {
@@ -32,12 +33,27 @@ public abstract class Updater {
      *
      *****************************************/
     /**
-     * Update the the text of the specified label
+     * Update the text of the specified label
      * @param label The label to update
      * @param text The text to print
      */
     public static void update(Label label, String text){
         Platform.runLater(() -> label.setText(text));
+    }
+
+    /*****************************************
+     *
+     * Charts
+     *
+     *****************************************/
+    /**
+     * Add value to an existing series
+     * @param series The series to update
+     * @param x The x-coordinate
+     * @param y The y-coordinate
+     */
+    public static void update(XYChart.Series<Number, Number> series, double x, double y){
+        Platform.runLater(() -> series.getData().add(series.getData().size(), new XYChart.Data<>(x, y)));
     }
 
 }

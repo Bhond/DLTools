@@ -20,8 +20,10 @@
  ******************************************************************************/
 package fr.pops.views;
 
+import fr.pops.controllers.viewcontrollers.StockController;
 import fr.pops.cst.StrCst;
 import fr.pops.customnodes.plot.BasePlot;
+import javafx.scene.chart.XYChart;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -71,6 +73,9 @@ public class StockView extends BaseView {
      */
     @Override
     protected void onInit() {
+        // Set controller
+        this.controller = new StockController(this);
+
         // Configure content pane
         this.configureContentPane();
     }
@@ -91,7 +96,6 @@ public class StockView extends BaseView {
 
         // Build hierarchy
         this.rootLayout.getChildren().addAll(this.stockDataPlot);
-
     }
 
     /*****************************************
@@ -99,4 +103,8 @@ public class StockView extends BaseView {
      * Update
      *
      *****************************************/
+    public void addCurrentPrice(double value){
+        XYChart.Series<Number, Number> series = this.stockDataPlot.getSeries();
+        Updater.update(series, series.getData().size(), value);
+    }
 }

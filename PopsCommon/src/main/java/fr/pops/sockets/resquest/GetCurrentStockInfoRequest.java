@@ -8,15 +8,15 @@
  *                        PP       OO  OO   PP          SS
  *                        PP        OOOO    PP       SSSS
  *
- * Name: AuthenticateRequest.java
+ * Name: GetCurrentStockInfoRequest.java
  *
  * Description: Class inheriting from PopsCommon.Request
- *              Describes the authenticate request sent by clients when
- *              connecting to the server to authenticate the identity of the client
+ *              Describes the GetCurrentStockInfo request sent by clients
+ *              to update the stock view
  *
  * Author: Charles MERINO
  *
- * Date: 14/04/2021
+ * Date: 22/04/2021
  *
  ******************************************************************************/
 package fr.pops.sockets.resquest;
@@ -42,18 +42,9 @@ public class GetCurrentStockInfoRequest extends Request{
      * Standard ctor
      * Nothing to be done
      */
-    private GetCurrentStockInfoRequest(){
-        super(EnumCst.RequestTypes.AUTHENTICATE);
-        // Nothing to be done
-    }
-
-    /**
-     * Ctor used to initialize the request with
-     * an id
-     * @param clientId The id of the client to authenticate
-     */
-    public GetCurrentStockInfoRequest(long clientId) {
+    public GetCurrentStockInfoRequest(){
         super(EnumCst.RequestTypes.GET_CURRENT_STOCK_INFO);
+        // Nothing to be done
     }
 
     /**
@@ -76,7 +67,8 @@ public class GetCurrentStockInfoRequest extends Request{
         // Parent
         super.encode();
 
-        // Encode client id
+        // Current price
+        this.encoderDecoderHelper.encodeDouble(this.currentPrice);
 
         // Retrieve raw request
         this.rawRequest = this.encoderDecoderHelper.getRawParams();
@@ -88,6 +80,9 @@ public class GetCurrentStockInfoRequest extends Request{
     public void decode(){
         // Parent
         super.decode();
+
+        // Current price
+        this.currentPrice = this.encoderDecoderHelper.decodeDouble();
     }
 
     /*****************************************
@@ -98,7 +93,7 @@ public class GetCurrentStockInfoRequest extends Request{
     /**
      * @return The current stock price
      */
-    public double getCurrentPrice() {
+    public double getCurrentStockPrice() {
         return this.currentPrice;
     }
 
@@ -112,15 +107,15 @@ public class GetCurrentStockInfoRequest extends Request{
      */
     @Override
     protected void setRequestLength() {
-        //            Request ID
-        this.length = Integer.BYTES;
+        //            Request ID      Current stock price
+        this.length = Integer.BYTES + Double.BYTES;
     }
 
     /**
      * Set the current price
      * @param currentPrice The current stock price
      */
-    public void setCurrentPrice(double currentPrice) {
+    public void getCurrentStockPrice(double currentPrice) {
         this.currentPrice = currentPrice;
     }
 }

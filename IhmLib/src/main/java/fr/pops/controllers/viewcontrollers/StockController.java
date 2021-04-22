@@ -51,5 +51,11 @@ public class StockController extends BaseController<StockView, StockModel>{
      * Setters
      *
      *****************************************/
+    /**
+     * Add current stock price to the chart displaying it
+     */
+    public void addCurrentStockPrice(double value){
+        this.view.addCurrentPrice(value);
+    }
 
 }
