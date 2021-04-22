@@ -112,8 +112,8 @@ public class GetCurrentStockInfoRequest extends Request{
      */
     @Override
     protected void setRequestLength() {
-        //            Request ID      State
-        this.length = Integer.BYTES + Integer.BYTES;
+        //            Request ID
+        this.length = Integer.BYTES;
     }
 
     /**

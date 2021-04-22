@@ -76,4 +76,11 @@ public abstract class EnumCst {
      *****************************************/
     public enum RequestTypes { ERROR, AUTHENTICATE, PING, GET_SERVER_INFO, GET_CURRENT_STOCK_INFO }
 
+    /*****************************************
+     *
+     * Request operations
+     *
+     *****************************************/
+    public enum RequestOperations { NONE, WRITE_BACK, TRANSFER }
+
 }

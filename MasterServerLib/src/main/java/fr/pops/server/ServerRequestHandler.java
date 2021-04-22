@@ -21,7 +21,6 @@
 package fr.pops.server;
 
 import fr.pops.sockets.cst.EnumCst;
-import fr.pops.cst.EnumCst.RequestOperations;
 import fr.pops.sockets.resquest.AuthenticateRequest;
 import fr.pops.sockets.resquest.GetServerInfoRequest;
 import fr.pops.sockets.resquest.Request;
@@ -106,23 +105,23 @@ public class ServerRequestHandler extends RequestHandler {
      * @return The operation to perform next.
      *         Either NONE, WRITE_BACK or TRANSFER
      */
-    public RequestOperations selectNextOperation(Request request){
+    public EnumCst.RequestOperations selectNextOperation(Request request){
         // Init
-        RequestOperations operation;
+        EnumCst.RequestOperations operation;
 
         // Select next operation
         switch (request.getType()){
             case PING:
-                operation = RequestOperations.WRITE_BACK;
+                operation = EnumCst.RequestOperations.WRITE_BACK;
                 break;
             case GET_SERVER_INFO:
-                operation = RequestOperations.WRITE_BACK;
+                operation = EnumCst.RequestOperations.WRITE_BACK;
                 break;
             case GET_CURRENT_STOCK_INFO:
-                operation = RequestOperations.TRANSFER;
+                operation = EnumCst.RequestOperations.TRANSFER;
                 break;
             default:
-                operation = RequestOperations.NONE;
+                operation = EnumCst.RequestOperations.NONE;
                 break;
         }
         return operation;

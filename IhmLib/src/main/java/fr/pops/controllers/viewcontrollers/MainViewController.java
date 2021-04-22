@@ -18,7 +18,7 @@
  * Date: 13/02/2021
  *
  ******************************************************************************/
-package fr.pops.controllers.main;
+package fr.pops.controllers.viewcontrollers;
 
 import fr.pops.cst.EnumCst;
 import fr.pops.cst.IntCst;
@@ -30,14 +30,14 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-public class MainController {
+public class MainViewController {
 
     /*****************************************
      *
      * Static attributes
      *
      *****************************************/
-    private final static MainController instance = new MainController();
+    private final static MainViewController instance = new MainViewController();
 
     /*****************************************
      *
@@ -55,7 +55,7 @@ public class MainController {
      * Standard ctor
      * MainController is a singleton
      */
-    private MainController(){
+    private MainViewController(){
         // Nothing to be done
     }
 
@@ -153,7 +153,7 @@ public class MainController {
      * This class is a singleton
      * @return The only instance of the object
      */
-    public static MainController getInstance(){
+    public static MainViewController getInstance(){
         return instance;
     }
 

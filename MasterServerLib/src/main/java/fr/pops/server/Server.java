@@ -25,7 +25,7 @@ package fr.pops.server;
 import fr.pops.client.ClientSession;
 import fr.pops.commoncst.IntCst;
 import fr.pops.cst.DoubleCst;
-import fr.pops.cst.EnumCst;
+import fr.pops.sockets.cst.EnumCst;
 import fr.pops.sockets.resquest.Request;
 
 import java.net.InetSocketAddress;
@@ -175,9 +175,6 @@ public class Server {
 
                     // Post processing checks
                     this.postProcessRequest(request, key);
-//                    if (request.needResponse()){
-//                        this.clientMap.get(key).send(request);
-//                    }
                 }
             }
 
@@ -206,12 +203,22 @@ public class Server {
                 this.clientMap.get(senderKey).send(request);
                 break;
             case TRANSFER:
-                long id = this.clientMap.get(senderKey).getType().getId();
-                long receiverId = this.requestHandler.selectReceiver(request, id);
-                SelectionKey receiverKey = this.connectedClientsId.get(receiverId);
-                this.clientMap.get(receiverKey).send(request);
+                this.transfer(request, senderKey);
                 break;
         }
+    }
+
+    /**
+     * Transfer request
+     * Select the receiver depending on the sender and the request's type
+     * @param request The request to transfer
+     * @param senderKey The sender key to select the proper receiver
+     */
+    private void transfer(Request request, SelectionKey senderKey){
+        long id = this.clientMap.get(senderKey).getType().getId();
+        long receiverId = this.requestHandler.selectReceiver(request, id);
+        SelectionKey receiverKey = this.connectedClientsId.get(receiverId);
+        this.clientMap.get(receiverKey).send(request);
     }
 
 

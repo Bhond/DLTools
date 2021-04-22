@@ -20,7 +20,7 @@
  ******************************************************************************/
 package fr.pops.views;
 
-import fr.pops.controllers.main.MainController;
+import fr.pops.controllers.viewcontrollers.MainViewController;
 import fr.pops.cst.EnumCst;
 import fr.pops.cst.IntCst;
 import fr.pops.cst.StrCst;
@@ -46,7 +46,7 @@ public class MainView extends BaseView {
     private final DisplayInfo displayInfo = DisplayInfo.getInstance();
 
     // Controller
-    private MainController controller = MainController.getInstance();
+    private MainViewController controller = MainViewController.getInstance();
 
     // Sizes
     private Insets contentLayoutInsets;
