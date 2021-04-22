@@ -189,7 +189,7 @@ public class EncoderDecoderHelper {
      * @return The double value parsed from the buffer
      */
     public double decodeDouble(){
-        return EncoderDecoder.decodeDouble(this.pull(Double.SIZE));
+        return EncoderDecoder.decodeDouble(this.pull(Double.BYTES));
     }
 
     /*****************************************

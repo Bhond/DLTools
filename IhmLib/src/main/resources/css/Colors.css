@@ -21,5 +21,17 @@
     -fx-palette-orange: #FF5000;
 
    /*  Yellow */
-    -fx-palette-yellow: #FFF200;
+    -fx-palette-aureolin: #FFF200;
+
+   /*  Orange red crayola */
+    -fx-palette-crayola: #FE5F55;
+
+   /*  Ultramarine */
+    -fx-palette-ultramarine: #470FF4;
+
+   /*  Star command blue */
+    -fx-palette-command-blue: #1776B5;
+
+   /*  Blue violet */
+    -fx-palette-blue-violet: #8338EC;
 }

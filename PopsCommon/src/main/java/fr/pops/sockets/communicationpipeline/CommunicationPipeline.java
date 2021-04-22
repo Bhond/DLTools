@@ -106,6 +106,8 @@ public class CommunicationPipeline {
     /**
      * Communicate with the server
      *
+     * TODO: Allow sending request after processing
+     *
      * Handles 2 types of operation:
      *      - Read: Read input
      *      - Write: Write output
@@ -128,11 +130,7 @@ public class CommunicationPipeline {
                 Request request = this.read();
                 if (request != null){
                     this.client.handle(request);
-
-                    // Post processing checks
-                    if (request.needResponse()){
-                        this.send(request);
-                    }
+                    // TODO: Allow sending request after processing
                 }
             }
 

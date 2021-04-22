@@ -26,6 +26,6 @@ public abstract class DblCst {
      * Main View
      *
      *****************************************/
-    public final static double ROOT_LAYOUT_ANCHOR_SIZE = 0.0d;
+    public final static double SIZE_ANCHOR_ZERO = 0.0d;
 
 }

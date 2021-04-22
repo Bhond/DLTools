@@ -48,9 +48,6 @@ public abstract class RequestHandler {
         // Decode request
         request.decode();
 
-        // Internal process of the request
-        request.process();
-
         // Process the request
         this.process(request);
     }

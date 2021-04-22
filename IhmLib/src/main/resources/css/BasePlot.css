@@ -1,0 +1,97 @@
+/* Root */
+.rootPane
+{
+    -fx-background-color: transparent;
+	-fx-border-image-source: url("../borders/standardCorners.png");
+	-fx-border-image-width: 50px;
+	-fx-border-image-slice: 50px;
+}
+
+.chart
+{
+    -fx-background-color: transparent;
+}
+
+.chart-legend
+{
+    -fx-background-color: transparent;
+}
+
+.chart-plot-background
+{
+    -fx-background-color: transparent;
+}
+
+.chart-series-line
+{
+    -fx-stroke-width: 2px;
+}
+
+.chart-horizontal-grid-lines
+{
+    -fx-stroke: transparent;
+}
+
+.chart-vertical-grid-lines
+{
+    -fx-stroke: transparent;
+}
+
+.axis:left
+{
+    -fx-tick-label-fill: -fx-palette-ghost-white;
+    -fx-font-family: 'Stellar';
+    -fx-minor-tick-visible: false;
+    -fx-border-color: transparent -fx-palette-ghost-white transparent transparent;
+}
+
+.axis:left .axis-tick-mark
+{
+    -fx-stroke: -fx-palette-ghost-white;
+}
+
+.axis:bottom
+{
+    -fx-tick-label-fill: -fx-palette-ghost-white;
+    -fx-font-family: 'Stellar';
+    -fx-tick-mark-visible: false;
+    -fx-minor-tick-visible: false;
+    -fx-border-color: -fx-palette-ghost-white transparent transparent transparent;
+}
+
+.axis:bottom .axis-tick-mark
+{
+    -fx-stroke: -fx-palette-ghost-white;
+}
+
+.axis-label
+{
+    -fx-background-color: transparent;
+    -fx-text-fill: transparent;
+}
+
+/* Default colors */
+/* Serie 0 */
+.default-color0.chart-series-line { -fx-stroke: -fx-palette-aureolin; }
+.default-color0.chart-line-symbol { -fx-background-color: -fx-palette-aureolin; -fx-effect: dropshadow(gaussian, -fx-palette-aureolin, 8, 0.3, 0, 0); }
+.default-color0.chart-series-fill { -fx-fill: -fx-palette-aureolin; }
+
+/* Serie 1 */
+.default-color1.chart-series-line { -fx-stroke: -fx-palette-crayola; }
+.default-color1.chart-line-symbol { -fx-background-color: -fx-palette-crayola; -fx-effect: dropshadow(gaussian, -fx-palette-crayola, 8, 0.3, 0, 0); }
+.default-color1.chart-series-fill { -fx-fill: -fx-palette-crayola; }
+
+/* Serie 2 */
+.default-color2.chart-series-line { -fx-stroke: -fx-palette-ultramarine; }
+.default-color2.chart-line-symbol { -fx-background-color: -fx-palette-ultramarine; -fx-effect: dropshadow(gaussian, -fx-palette-ultramarine, 8, 0.3, 0, 0); }
+.default-color2.chart-series-fill { -fx-fill: -fx-palette-ultramarine; }
+
+/* Serie 3 */
+.default-color3.chart-series-line { -fx-stroke: -fx-palette-command-blue; }
+.default-color3.chart-line-symbol { -fx-background-color: -fx-palette-command-blue; -fx-effect: dropshadow(gaussian, -fx-palette-command-blue, 8, 0.3, 0, 0); }
+.default-color3.chart-series-fill { -fx-fill: -fx-palette-command-blue; }
+
+/* Serie 4 */
+.default-color4.chart-series-line { -fx-stroke: -fx-palette-blue-violet; }
+.default-color4.chart-line-symbol { -fx-background-color: -fx-palette-blue-violet; -fx-effect: dropshadow(gaussian, -fx-palette-blue-violet, 8, 0.3, 0, 0); }
+.default-color4.chart-series-fill { -fx-fill: -fx-palette-blue-violet; }

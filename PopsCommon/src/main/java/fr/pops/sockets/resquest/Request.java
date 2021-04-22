@@ -33,8 +33,6 @@ public abstract class Request {
      *
      *****************************************/
     protected final EncoderDecoderHelper encoderDecoderHelper = new EncoderDecoderHelper();
-    protected boolean needResponse = false;
-    protected boolean needDispatch = false;
 
     protected EnumCst.RequestTypes type;
     public int length;
@@ -106,11 +104,6 @@ public abstract class Request {
         encoderDecoderHelper.decodeInt32();
     }
 
-    /**
-     * Process the request
-     */
-    public abstract void process();
-
     /*****************************************
      *
      * Getter
@@ -123,21 +116,12 @@ public abstract class Request {
         return this.type;
     }
 
+    /**
+     * @return The raw request encoded to be sent to server or a client
+     */
     public byte[] getRawRequest() {
         return this.rawRequest;
     }
-
-    /**
-     * @return True if this request needs a response
-     */
-    public boolean needResponse(){
-        return this.needResponse;
-    }
-
-    /**
-     * @return True if the request's answer needs to be dispatched
-     */
-    public boolean needDispatch() { return this.needDispatch; }
 
     /*****************************************
      *

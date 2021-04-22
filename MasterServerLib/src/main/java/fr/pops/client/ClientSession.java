@@ -20,6 +20,7 @@
  ******************************************************************************/
 package fr.pops.client;
 
+import fr.pops.sockets.cst.EnumCst;
 import fr.pops.sockets.cst.IntCst;
 import fr.pops.sockets.resquest.Request;
 import fr.pops.sockets.resquest.RequestFactory;
@@ -38,6 +39,7 @@ public class ClientSession {
      * Attributes
      *
      *****************************************/
+    private EnumCst.ClientTypes type;
     private SelectionKey selectionKey;
     private SocketChannel channel;
     private ByteBuffer buffer;
@@ -162,4 +164,19 @@ public class ClientSession {
         this.buffer.clear();
     }
 
+    /**
+     * @return The type of the client bound to this session
+     */
+    public EnumCst.ClientTypes getType() {
+        return this.type;
+    }
+
+    /**
+     * Set the client's type
+     * Coming from the authenticate request
+     * @param type The type of the client
+     */
+    public void setType(EnumCst.ClientTypes type) {
+        this.type = type;
+    }
 }

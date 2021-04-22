@@ -21,6 +21,10 @@
 package fr.pops.views;
 
 import fr.pops.cst.StrCst;
+import fr.pops.customnodes.plot.BasePlot;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class StockView extends BaseView {
@@ -30,6 +34,7 @@ public class StockView extends BaseView {
      * Attributes
      *
      *****************************************/
+    private BasePlot stockDataPlot;
 
     /*****************************************
      *
@@ -51,6 +56,9 @@ public class StockView extends BaseView {
     public StockView(Stage stage){
         // Parent
         super(stage, StrCst.NAME_STOCK_VIEW);
+
+        // Initialisation
+        this.onInit();
     }
 
     /*****************************************
@@ -63,7 +71,8 @@ public class StockView extends BaseView {
      */
     @Override
     protected void onInit() {
-
+        // Configure content pane
+        this.configureContentPane();
     }
 
     /**
@@ -74,6 +83,14 @@ public class StockView extends BaseView {
      */
     @Override
     protected void configureContentPane() {
+
+        // Create plot displaying the stock data in real time
+        this.stockDataPlot = new BasePlot();
+        VBox.setVgrow(this.stockDataPlot, Priority.ALWAYS);
+        HBox.setHgrow(this.stockDataPlot, Priority.ALWAYS);
+
+        // Build hierarchy
+        this.rootLayout.getChildren().addAll(this.stockDataPlot);
 
     }
 

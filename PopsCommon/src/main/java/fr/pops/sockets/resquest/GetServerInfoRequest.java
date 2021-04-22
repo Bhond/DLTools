@@ -34,8 +34,6 @@ public class GetServerInfoRequest extends Request{
      * Attributes
      *
      *****************************************/
-    private int state = 0;
-
     private double frequency = 0.0d;
     private int nbClients = 0;
     private List<EnumCst.ClientTypes> clientTypes = new ArrayList<>();
@@ -71,25 +69,15 @@ public class GetServerInfoRequest extends Request{
         // Parent
         super.encode();
 
-        // State
-        this.encoderDecoderHelper.encodeInt32(this.state);
+        // Frequency
+        this.encoderDecoderHelper.encodeDouble(this.frequency);
 
-        /*
-         * Info
-         * Must concatenate the server info
-         * filled in by the server
-         */
-        if (this.state != 0){
-            // Frequency
-           this.encoderDecoderHelper.encodeDouble(this.frequency);
+        // Nb clients
+        this.encoderDecoderHelper.encodeInt32(this.nbClients);
 
-            // Nb clients
-            this.encoderDecoderHelper.encodeInt32(this.nbClients);
-
-            // Clients" types
-            for (EnumCst.ClientTypes clientType : this.clientTypes) {
-                this.encoderDecoderHelper.encodeInt32(clientType.ordinal());
-            }
+        // Clients' types
+        for (EnumCst.ClientTypes clientType : this.clientTypes) {
+            this.encoderDecoderHelper.encodeLong64(clientType.getId());
         }
 
         // Raw request
@@ -101,34 +89,17 @@ public class GetServerInfoRequest extends Request{
         // Parent
         super.decode();
 
-        // State
-        this.state = this.encoderDecoderHelper.decodeInt32();
+        // Frequency
+        this.frequency = this.encoderDecoderHelper.decodeDouble();
 
-        // Decode info if it is the response
-        if (this.state != 0){
-            // Frequency
-            this.frequency = this.encoderDecoderHelper.decodeDouble();
+        // Nb clients
+        this.nbClients = this.encoderDecoderHelper.decodeInt32();
 
-            // Nb clients
-            this.nbClients = this.encoderDecoderHelper.decodeInt32();
-
-            // Clients" types
-            for (int i = 0; i < this.nbClients; i++){
-                this.clientTypes.add(EnumCst.ClientTypes.getType(this.encoderDecoderHelper.decodeInt32()));
-            }
-        }
-    }
-
-    /**
-     * Process the request
-     */
-    @Override
-    public void process() {
-        if (this.state == 0){
-            this.needResponse = true;
-            this.state++;
-        } else {
-            this.needDispatch = true;
+        // Clients' types
+        for (int i = 0; i < this.nbClients; i++){
+            long clientTypeId = this.encoderDecoderHelper.decodeLong64();
+            EnumCst.ClientTypes clientType = EnumCst.ClientTypes.getType(clientTypeId);
+            if (clientType != null) this.clientTypes.add(clientType);
         }
     }
 
@@ -138,10 +109,9 @@ public class GetServerInfoRequest extends Request{
     @Override
     protected void setRequestLength() {
         this.length = Integer.BYTES               // ID
-                + Integer.BYTES                   // State
                 + Double.BYTES                    // Frequency
                 + Integer.BYTES                   // Nb clients
-                + this.nbClients * Integer.BYTES; // Clients' types
+                + this.nbClients * Long.BYTES; // Clients' types
     }
 
     /*****************************************
@@ -181,9 +151,13 @@ public class GetServerInfoRequest extends Request{
      * @param clientTypeIds The client type id connected to the server
      */
     public void setClientTypes(Long... clientTypeIds) {
+        // Store the client types
         for (Long id : clientTypeIds){
             this.clientTypes.add(EnumCst.ClientTypes.getType(id));
         }
         this.nbClients = clientTypeIds.length;
+
+        // Update request length
+        this.setRequestLength();
     }
 }

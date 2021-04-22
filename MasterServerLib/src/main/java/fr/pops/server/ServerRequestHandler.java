@@ -21,6 +21,7 @@
 package fr.pops.server;
 
 import fr.pops.sockets.cst.EnumCst;
+import fr.pops.cst.EnumCst.RequestOperations;
 import fr.pops.sockets.resquest.AuthenticateRequest;
 import fr.pops.sockets.resquest.GetServerInfoRequest;
 import fr.pops.sockets.resquest.Request;
@@ -83,7 +84,7 @@ public class ServerRequestHandler extends RequestHandler {
      */
     @Override
     protected void process(Request request) {
-
+        // Process the request depending on its type
         switch (request.getType()){
             case AUTHENTICATE:
                 long id = ((AuthenticateRequest) request).getClientId();
@@ -97,6 +98,84 @@ public class ServerRequestHandler extends RequestHandler {
                 break;
 
         }
+    }
 
+    /**
+     * Select the next operation to perform with the request
+     * @param request The request to handle
+     * @return The operation to perform next.
+     *         Either NONE, WRITE_BACK or TRANSFER
+     */
+    public RequestOperations selectNextOperation(Request request){
+        // Init
+        RequestOperations operation;
+
+        // Select next operation
+        switch (request.getType()){
+            case PING:
+                operation = RequestOperations.WRITE_BACK;
+                break;
+            case GET_SERVER_INFO:
+                operation = RequestOperations.WRITE_BACK;
+                break;
+            case GET_CURRENT_STOCK_INFO:
+                operation = RequestOperations.TRANSFER;
+                break;
+            default:
+                operation = RequestOperations.NONE;
+                break;
+        }
+        return operation;
+    }
+
+    /**
+     * Select the next receiver when the request is transferred
+     * amongst the clients
+     * @param request The request to transfer
+     * @param from The client's id who sent the request
+     * @return The receiver's id
+     */
+    public long selectReceiver(Request request, long from){
+        long toId;
+        switch (request.getType()) {
+            case GET_CURRENT_STOCK_INFO:
+                toId = getOtherStockOrIhm(from);
+                break;
+            default:
+                toId = EnumCst.ClientTypes.DEFAULT.getId();
+                System.out.println("Unknown request type: " + request.getType() + ". Unable to select receiver.");
+                break;
+        }
+        return toId;
+    }
+
+    /*****************************************
+     *
+     * Request exchange handling
+     *
+     *****************************************/
+    /**
+     * Returns the appropriate receiver
+     * between the IHM and the Stock clients
+     * @param from Ihm client's id or Stock client's id
+     * @return The other id:
+     *          If from.id == Ihm.id return Stock.id
+     *          If from.id == Stock.id return Ihm.id
+     */
+    private long getOtherStockOrIhm(long from){
+        long toId;
+        switch (EnumCst.ClientTypes.getType(from)){
+            case IHM:
+                toId = EnumCst.ClientTypes.STOCK.getId();
+                break;
+            case STOCK:
+                toId = EnumCst.ClientTypes.IHM.getId();
+                break;
+            default:
+                toId = EnumCst.ClientTypes.DEFAULT.getId();
+                System.out.println("Input sender is neither Ihm nor Stock client. Unable to transfer request.");
+                break;
+        }
+        return toId;
     }
 }

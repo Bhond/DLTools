@@ -44,8 +44,7 @@ public abstract class StrCst {
     // View names
     public final static String NAME_SERVER_VIEW = "Server";
     public final static String NAME_NEURAL_NETWORK_VIEW = "Neural Network";
-    public final static String NAME_PLOT_VIEW = "Plot";
-    public final static String NAME_STOCK_VIEW = "Plot";
+    public final static String NAME_STOCK_VIEW = "Stock";
 
     /*****************************************
      *
@@ -55,7 +54,7 @@ public abstract class StrCst {
     public final static String PATH_CSS_DIRECTORY = "/resources/css/";
     public final static String PATH_MAIN_VIEW_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "MainView.css";
     public final static String PATH_SERVER_INFO_VIEW_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "ServerInfoView.css";
-    public final static String PATH_PLOT_VIEW_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "PlotView.css";
+    public final static String PATH_BASE_PLOT_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "BasePlot.css";
 
     /*****************************************
      *

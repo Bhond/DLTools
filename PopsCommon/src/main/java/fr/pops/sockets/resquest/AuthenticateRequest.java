@@ -92,16 +92,6 @@ public class AuthenticateRequest extends Request{
         this.clientId = this.encoderDecoderHelper.decodeLong64();
     }
 
-    /**
-     * Process the request
-     */
-    @Override
-    public void process() {
-        // Set states
-        this.needDispatch = false;
-        this.needResponse = false;
-    }
-
     /*****************************************
      *
      * Getter

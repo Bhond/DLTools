@@ -9,14 +9,13 @@
 /* Root */
 .root
 {
-	-fx-background-color: -fx-palette-orange;
+	-fx-background-color: -fx-palette-fogra39;
 }
 
 /* Root layout */
 .rootLayout
 {
 	-fx-background-color: -fx-palette-fogra39;
-	-fx-background-radius:10px;
 }
 
 /* Labels */

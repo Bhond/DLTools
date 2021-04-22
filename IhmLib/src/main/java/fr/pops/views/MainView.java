@@ -70,7 +70,7 @@ public class MainView extends BaseView {
 
     private MenuItem serverViewMenuItem;
     private MenuItem neuralNetworkViewMenuItem;
-    private MenuItem plotViewMenuItem;
+    private MenuItem stockViewMenuItem;
 
     // Main layout, contains all of the objects
     private TabPane viewsTabPane;
@@ -201,14 +201,14 @@ public class MainView extends BaseView {
         this.neuralNetworkViewMenuItem = new MenuItem(StrCst.NAME_NEURAL_NETWORK_VIEW);
         this.neuralNetworkViewMenuItem.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR_MENU_ITEM);
         this.neuralNetworkViewMenuItem.setOnAction(a -> this.controller.onNeuralNetworkViewMenuItemClicked(a));
-        this.plotViewMenuItem = new MenuItem(StrCst.NAME_PLOT_VIEW);
-        this.plotViewMenuItem.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR_MENU_ITEM);
-        this.plotViewMenuItem.setOnAction(a -> this.controller.onPlotViewMenuItemClicked(a));
+        this.stockViewMenuItem = new MenuItem(StrCst.NAME_STOCK_VIEW);
+        this.stockViewMenuItem.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR_MENU_ITEM);
+        this.stockViewMenuItem.setOnAction(a -> this.controller.onStockViewMenuItemClicked(a));
 
         // Build hierarchy
         this.viewsMenu.getItems().addAll(this.serverViewMenuItem,
                                          this.neuralNetworkViewMenuItem,
-                                         this.plotViewMenuItem);
+                                         this.stockViewMenuItem);
         this.menuBar.getMenus().add(viewsMenu);
         this.menuBarLayout.getChildren().add(this.menuBar);
     }
@@ -256,8 +256,8 @@ public class MainView extends BaseView {
             case NEURAL_NETWORK:
                 System.out.println("Not implemented yet...");
                 break;
-            case PLOT:
-                view = new PlotView(this.stage);
+            case STOCK:
+                view = new StockView(this.stage);
                 break;
             default:
                 System.out.println("Unknown view");

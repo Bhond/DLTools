@@ -20,6 +20,7 @@
  ******************************************************************************/
 package fr.pops.client;
 
+import fr.pops.sockets.resquest.PingRequest;
 import fr.pops.sockets.resquest.Request;
 import fr.pops.sockets.resquesthandler.RequestHandler;
 
@@ -50,6 +51,13 @@ public class IhmRequestHandler extends RequestHandler {
      */
     @Override
     protected void process(Request request) {
+
+        // Process request
+        switch (request.getType()){
+            case PING:
+                ((PingRequest) request).setT1(System.currentTimeMillis());
+                break;
+        }
 
         // Dispatch model
         RequestDispatcher.dispatch(request);

@@ -26,7 +26,7 @@ public abstract class EnumCst {
      * View
      *
      *****************************************/
-    public enum Views { SERVER, NEURAL_NETWORK, PLOT, TEST }
+    public enum Views { SERVER, NEURAL_NETWORK, STOCK }
 
     /*****************************************
      *

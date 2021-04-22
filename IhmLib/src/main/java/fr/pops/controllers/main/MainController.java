@@ -82,11 +82,11 @@ public class MainController {
     }
 
     /**
-     * Triggers the display of the plot view
+     * Triggers the display of the stock view
      * @param actionEvent The clicked action event
      */
-    public void onPlotViewMenuItemClicked(ActionEvent actionEvent){
-        this.mainView.addView(EnumCst.Views.PLOT);
+    public void onStockViewMenuItemClicked(ActionEvent actionEvent){
+        this.mainView.addView(EnumCst.Views.STOCK);
     }
 
     /**

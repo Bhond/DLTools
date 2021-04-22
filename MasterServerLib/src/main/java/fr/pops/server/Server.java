@@ -25,6 +25,7 @@ package fr.pops.server;
 import fr.pops.client.ClientSession;
 import fr.pops.commoncst.IntCst;
 import fr.pops.cst.DoubleCst;
+import fr.pops.cst.EnumCst;
 import fr.pops.sockets.resquest.Request;
 
 import java.net.InetSocketAddress;
@@ -173,9 +174,10 @@ public class Server {
                     this.requestHandler.handle(key, request);
 
                     // Post processing checks
-                    if (request.needResponse()){
-                        this.clientMap.get(key).send(request);
-                    }
+                    this.postProcessRequest(request, key);
+//                    if (request.needResponse()){
+//                        this.clientMap.get(key).send(request);
+//                    }
                 }
             }
 
@@ -187,13 +189,42 @@ public class Server {
     }
 
     /**
+     * Post process the request
+     * Check what to do with it:
+     *      - Nothing
+     *      - Write it back
+     *      - Transfer
+     * @param request The request to post process
+     */
+    private void postProcessRequest(Request request, SelectionKey senderKey){
+        // Select next operation
+        EnumCst.RequestOperations operation = this.requestHandler.selectNextOperation(request);
+
+        // Adapt to next the next operation
+        switch (operation){
+            case WRITE_BACK:
+                this.clientMap.get(senderKey).send(request);
+                break;
+            case TRANSFER:
+                long id = this.clientMap.get(senderKey).getType().getId();
+                long receiverId = this.requestHandler.selectReceiver(request, id);
+                SelectionKey receiverKey = this.connectedClientsId.get(receiverId);
+                this.clientMap.get(receiverKey).send(request);
+                break;
+        }
+    }
+
+
+    /**
      * Add client id to a dictionary
+     * Set the type of the client in the client session
      * @param clientId The client id to add
      * @param key The corresponding selection key to find
      *            which client session to point in case of a transfer
      */
     public void addClient(long clientId, SelectionKey key) {
         this.connectedClientsId.put(clientId, key);
+        this.clientMap.get(key).setType(fr.pops.sockets.cst.EnumCst.ClientTypes.getType(clientId));
     }
 
     /*****************************************
@@ -221,6 +252,6 @@ public class Server {
      *          and their selection key
      */
     public Long[] getConnectedClientsId() {
-        return this.connectedClientsId.keySet().stream().toArray(Long[]::new);
+        return this.connectedClientsId.keySet().toArray(new Long[0]);
     }
 }

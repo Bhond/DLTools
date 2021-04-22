@@ -31,10 +31,8 @@ public class PingRequest extends Request {
      * Attributes
      *
      *****************************************/
-    private int state = 0;
     private double t0 = 0.0d;
     private double t1 = 0.0d;
-    private double responseDelay = 0.0d;
 
     /*****************************************
      *
@@ -48,8 +46,6 @@ public class PingRequest extends Request {
         // Parent
         super(EnumCst.RequestTypes.PING);
         // Params
-        this.needResponse = true;
-        this.state = 0;
         this.t0 = System.currentTimeMillis();
     }
 
@@ -77,9 +73,10 @@ public class PingRequest extends Request {
         // Parent
         super.encode();
 
-        // Encode raw params
-        this.encoderDecoderHelper.encodeInt32(this.state);
+        // t0
         this.encoderDecoderHelper.encodeDouble(this.t0);
+
+        // Get encoded request
         this.rawRequest = this.encoderDecoderHelper.getRawParams();
     }
 
@@ -91,24 +88,8 @@ public class PingRequest extends Request {
         // Parent
         super.decode();
 
-        // Decode raw params
-        this.state = this.encoderDecoderHelper.decodeInt32();
+        // t0
         this.t0 = this.encoderDecoderHelper.decodeDouble();
-    }
-
-    /**
-     * Process the request
-     */
-    @Override
-    public void process(){
-        if (this.state == 0){
-            this.state++;
-            this.needResponse = true;
-        } else if (this.state == 1){
-            this.needDispatch = true;
-            this.t1 = System.currentTimeMillis();
-            this.responseDelay = this.t1 - this.t0;
-        }
     }
 
     /*****************************************
@@ -117,17 +98,10 @@ public class PingRequest extends Request {
      *
      *****************************************/
     /**
-     * @return The state of the ping request
-     */
-    public int getState() {
-        return this.state;
-    }
-
-    /**
      * @return The response delay
      */
     public double getResponseDelay() {
-        return this.responseDelay;
+        return this.t1 - this.t0;
     }
 
     /*****************************************
@@ -140,7 +114,15 @@ public class PingRequest extends Request {
      */
     @Override
     protected void setRequestLength() {
-        //            ID              State           Delay
-        this.length = Integer.BYTES + Integer.BYTES + Double.BYTES;
+        //            ID              Delay
+        this.length = Integer.BYTES + Double.BYTES;
+    }
+
+    /**
+     * Set the response delay
+     * @param t1 The new time to compute the response delay
+     */
+    public void setT1(double t1) {
+        this.t1 = t1;
     }
 }

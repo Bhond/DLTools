@@ -28,6 +28,7 @@ public abstract class EnumCst {
      *****************************************/
     public enum ClientTypes {
         // Client types
+        DEFAULT(0L),
         IHM(7596087841016572405L),
         STOCK(390208358890556977L);
 
@@ -73,6 +74,6 @@ public abstract class EnumCst {
      * Request types
      *
      *****************************************/
-    public enum RequestTypes { ERROR, AUTHENTICATE, PING, GET_SERVER_INFO }
+    public enum RequestTypes { ERROR, AUTHENTICATE, PING, GET_SERVER_INFO, GET_CURRENT_STOCK_INFO }
 
 }
