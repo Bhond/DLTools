@@ -33,6 +33,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class StockView extends BaseView<StockController> {
@@ -134,8 +136,6 @@ public class StockView extends BaseView<StockController> {
         // Create plot displaying the stock data in real time
         this.stockDataPlot = new CandlestickPlot();
         GregorianCalendar gregorianCalendar = new GregorianCalendar();
-        CandleData bar0 = new CandleData(gregorianCalendar, 5,5,5,5,0);
-        this.stockDataPlot.addCandle(bar0);
         VBox.setVgrow(this.stockDataPlot, Priority.ALWAYS);
         HBox.setHgrow(this.stockDataPlot, Priority.ALWAYS);
 
@@ -154,18 +154,19 @@ public class StockView extends BaseView<StockController> {
      *****************************************/
     /**
      * Change current price displayed
-     * @param currentPrice The new price
+     * @param lastAccessTime The last time the stock info were accessed
+     * @param price The new price
      */
-    public void addCurrentPrice(double currentPrice){
-        Updater.update(this.stockDataPlot, currentPrice);
-    }
-
-    /**
-     * Change current price displayed
-     * @param value The new price
-     */
-    public void addNewCandle(GregorianCalendar calendar, double openingPrice){
-        CandleData candleData = new CandleData(calendar, openingPrice, openingPrice, openingPrice, openingPrice, 0);
-        Updater.update(this.stockDataPlot, candleData);
+    public void addCurrentPrice(long lastAccessTime, double price){
+        // Retrieve the date of the last bar
+        CandleData lastCandle = this.stockDataPlot.getLastCandleData();
+        SimpleDateFormat simpleDateFormat = this.stockDataPlot.getSimpleDateFormat();
+        boolean sameDisplayedDate = lastCandle != null && simpleDateFormat.format(new Date(lastAccessTime)).equals(simpleDateFormat.format(lastCandle.getDateTime().getTime()));
+        if (sameDisplayedDate){
+            Updater.update(this.stockDataPlot, price);
+        } else {
+            CandleData candleData = new CandleData(new Date(lastAccessTime), price, price, price, price, 0);
+            Updater.update(this.stockDataPlot, candleData);
+        }
     }
 }

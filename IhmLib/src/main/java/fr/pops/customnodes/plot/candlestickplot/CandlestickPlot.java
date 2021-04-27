@@ -50,14 +50,15 @@ public class CandlestickPlot extends XYChart<String, Number> {
     // Components
     private NumberAxis yAxis;
     private CategoryAxis xAxis;
-    private CandleData currentBar;
+    private CandleData lastCandleData;
     // Parameters
-    private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+    private SimpleDateFormat sdf = new SimpleDateFormat(StrCst.FORMAT_SIMPLE_DATE);
     private double lineWidth = DblCst.CANDLE_LINE_WIDTH_DEFAULT;
     private double candleWidth = DblCst.CANDLE_BODY_WIDTH_DEFAULT;
     private final boolean xAxisAutoRanging = true;
     private final boolean yAxisAutoRanging = true;
     private final boolean isAnimated = true;
+    private final boolean animateOnSeriesAdded = false;
 
     /*****************************************
      *
@@ -91,7 +92,7 @@ public class CandlestickPlot extends XYChart<String, Number> {
         this.yAxis.setAutoRanging(this.yAxisAutoRanging);
         this.yAxis.forceZeroInRangeProperty().setValue(Boolean.FALSE);
         // Misc
-        this.setAnimated(this.isAnimated);
+        this.setAnimated(this.animateOnSeriesAdded);
         // Data
         this.setData(FXCollections.observableArrayList(new Series<>()));
     }
@@ -107,8 +108,8 @@ public class CandlestickPlot extends XYChart<String, Number> {
      */
     public void addCandle(CandleData bar){
         XYChart.Series<String, Number> series = new Series<>();
-        this.currentBar = new CandleData(bar.getDateTime(), bar.getOpen(), bar.getHigh(), bar.getLow(), bar.getClose(), bar.getVolume());
-        series.getData().add(new Data<>(sdf.format(bar.getDateTime().getTime()), this.currentBar.getOpen(), this.currentBar));
+        this.lastCandleData = new CandleData(bar.getDateTime(), bar.getOpen(), bar.getHigh(), bar.getLow(), bar.getClose(), bar.getVolume());
+        series.getData().add(new Data<>(sdf.format(bar.getDateTime().getTime()), this.lastCandleData.getOpen(), this.lastCandleData));
         this.getData().add(series);
     }
 
@@ -117,15 +118,15 @@ public class CandlestickPlot extends XYChart<String, Number> {
      * @param price The Last price of the most recent bar.
      */
     public void updateCurrentCandle(double price) {
-        if (this.currentBar != null) {
-            this.currentBar.update(price);
+        if (this.lastCandleData != null) {
+            this.lastCandleData.update(price);
             int nbSeries = this.getData().size();
             if (nbSeries > 0){
                 Series<String, Number> currentSeries = this.getData().get(nbSeries - 1);
                 int dataLength = currentSeries.getData().size();
                 if (dataLength > 0){
-                    currentSeries.getData().get(dataLength - 1).setYValue(this.currentBar.getOpen());
-                    currentSeries.getData().get(dataLength - 1).setExtraValue(this.currentBar);
+                    currentSeries.getData().get(dataLength - 1).setYValue(this.lastCandleData.getOpen());
+                    currentSeries.getData().get(dataLength - 1).setExtraValue(this.lastCandleData);
                 }
             }
         }
@@ -370,5 +371,25 @@ public class CandlestickPlot extends XYChart<String, Number> {
             this.highLowLine.getStyleClass().setAll(StrCst.STYLE_CLASS_CANDLESTICK_LINE, this.openAboveClose ? StrCst.STYLE_CLASS_OPEN_ABOVE_CLOSE : StrCst.STYLE_CLASS_CLOSE_ABOVE_OPEN);
             this.body.getStyleClass().setAll(StrCst.STYLE_CLASS_CANDLESTICK_BODY,  this.openAboveClose ? StrCst.STYLE_CLASS_OPEN_ABOVE_CLOSE : StrCst.STYLE_CLASS_CLOSE_ABOVE_OPEN);
         }
+    }
+
+    /*****************************************
+     *
+     * Getter
+     *
+     *****************************************/
+    /**
+     * @return The last candle data displayed
+     */
+    public CandleData getLastCandleData(){
+        return this.lastCandleData;
+    }
+
+    /**
+     * @return The date formatter used to display
+     *         the dates on the x-axis
+     */
+    public SimpleDateFormat getSimpleDateFormat() {
+        return this.sdf;
     }
 }

@@ -68,8 +68,8 @@ public class StockController extends BaseController<StockView, StockModel>{
     /**
      * Add current stock price to the chart displaying it
      */
-    public void addCurrentStockPrice(double value){
-        this.view.addCurrentPrice(value);
+    public void addCurrentStockPrice(long lastAccessTime, double value){
+        this.view.addCurrentPrice(lastAccessTime, value);
     }
 
 }

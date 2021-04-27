@@ -21,7 +21,7 @@ package fr.pops.customnodes.plot.candlestickplot;
 
 import fr.pops.cst.DblCst;
 
-import java.util.GregorianCalendar;
+import java.util.Date;
 
 public class CandleData {
 
@@ -35,7 +35,7 @@ public class CandleData {
     protected double low = DblCst.CANDLE_DATA_LOW_DEFAULT;
     protected double close = DblCst.CANDLE_DATA_CLOSE_DEFAULT;
     protected long volume = (long) DblCst.CANDLE_DATA_VOLUME_DEFAULT; // TODO: Remove cast
-    protected GregorianCalendar dateTime;
+    protected Date dateTime;
 
     /*****************************************
      *
@@ -59,7 +59,7 @@ public class CandleData {
      * @param close The close price of this bar
      * @param volume The volume of this bar
      */
-    public CandleData(GregorianCalendar dateTime, double open, double high, double low, double close, long volume) {
+    public CandleData(Date dateTime, double open, double high, double low, double close, long volume) {
         this.dateTime = dateTime;
         this.open = open;
         this.close = close;
@@ -96,7 +96,7 @@ public class CandleData {
     /**
      * @return The current date time
      */
-    public GregorianCalendar getDateTime() {
+    public Date getDateTime() {
         return this.dateTime;
     }
 
@@ -145,7 +145,7 @@ public class CandleData {
      * Set the current date time
      * @param dateTime The current date time
      */
-    public void setDateTime(GregorianCalendar dateTime) {
+    public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
     }
 

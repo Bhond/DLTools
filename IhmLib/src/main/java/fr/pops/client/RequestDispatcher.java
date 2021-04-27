@@ -60,12 +60,11 @@ public abstract class RequestDispatcher {
             case GET_CURRENT_STOCK_INFO:
                 controller =  ControllerManager.getInstance().getFirst(StockController.class);
                 if (controller != null){
-                    ((StockController) controller).addCurrentStockPrice(((GetCurrentStockInfoRequest) request).getCurrentStockPrice());
+                    long lastAccessTime = ((GetCurrentStockInfoRequest) request).getAccessTime();
+                    double price = ((GetCurrentStockInfoRequest) request).getCurrentStockPrice();
+                    ((StockController) controller).addCurrentStockPrice(lastAccessTime, price);
                 }
                 break;
-
         }
-
     }
-
 }

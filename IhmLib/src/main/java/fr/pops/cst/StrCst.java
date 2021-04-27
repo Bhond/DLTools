@@ -46,6 +46,9 @@ public abstract class StrCst {
     public final static String NAME_NEURAL_NETWORK_VIEW = "Neural Network";
     public final static String NAME_STOCK_VIEW = "Stock";
 
+    // String format
+    public final static String FORMAT_SIMPLE_DATE = "HH:mm";
+
     /*****************************************
      *
      * Paths

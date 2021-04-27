@@ -31,6 +31,7 @@ public class GetCurrentStockInfoRequest extends Request{
      *
      *****************************************/
     // Stock info
+    private long accessTime = 0L;
     private double currentPrice = 0.0d;
     private String stockName = "TSLA";
 
@@ -71,6 +72,9 @@ public class GetCurrentStockInfoRequest extends Request{
         // Stock name
         this.encoderDecoderHelper.encodeString(this.stockName);
 
+        // Access time
+        this.encoderDecoderHelper.encodeLong64(this.accessTime);
+
         // Current price
         this.encoderDecoderHelper.encodeDouble(this.currentPrice);
 
@@ -88,6 +92,9 @@ public class GetCurrentStockInfoRequest extends Request{
         // Stock name
         this.stockName = this.encoderDecoderHelper.decodeString();
 
+        // Access time
+        this.accessTime = this.encoderDecoderHelper.decodeLong64();
+
         // Current price
         this.currentPrice = this.encoderDecoderHelper.decodeDouble();
     }
@@ -102,6 +109,13 @@ public class GetCurrentStockInfoRequest extends Request{
      */
     public String getStockName() {
         return this.stockName;
+    }
+
+    /**
+     * @return The last time the data was accessed
+     */
+    public long getAccessTime() {
+        return this.accessTime;
     }
 
     /**
@@ -121,8 +135,16 @@ public class GetCurrentStockInfoRequest extends Request{
      */
     @Override
     protected void setRequestLength() {
-        //            Request ID                 Stock Name                                        Current stock price
-        this.length = Integer.BYTES +  Integer.BYTES + this.stockName.length() * Character.BYTES + Double.BYTES;
+        //            Request ID                 Stock Name                                        Access time  Current stock price
+        this.length = Integer.BYTES +  Integer.BYTES + this.stockName.length() * Character.BYTES + Long.BYTES + Double.BYTES;
+    }
+
+    /**
+     * Set the access time
+     * @param accessTime The time the data retrieved was last accessed
+     */
+    public void setAccessTime(long accessTime) {
+        this.accessTime = accessTime;
     }
 
     /**
@@ -132,4 +154,5 @@ public class GetCurrentStockInfoRequest extends Request{
     public void setCurrentStockPrice(double currentPrice) {
         this.currentPrice = currentPrice;
     }
+
 }
