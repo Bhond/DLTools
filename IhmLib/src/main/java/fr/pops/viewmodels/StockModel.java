@@ -36,9 +36,6 @@ public class StockModel extends BaseModel<StockController> {
     public StockModel() {
         // Parent
         super();
-
-        // Model stepping family
-//        this.modelSteppingFamily = EnumCst.ModelSteppingFamily.FAMILY_1_ON_10;
     }
 
     /*****************************************
@@ -48,7 +45,7 @@ public class StockModel extends BaseModel<StockController> {
      *****************************************/
     @Override
     public void update(double dt) {
-        System.out.println("Sending new price request");
+        // Get stock info
         GetCurrentStockInfoRequest request = new GetCurrentStockInfoRequest();
         Client.getInstance().send(request);
     }

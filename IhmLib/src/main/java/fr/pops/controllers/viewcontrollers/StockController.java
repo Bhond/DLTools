@@ -21,6 +21,7 @@ package fr.pops.controllers.viewcontrollers;
 
 import fr.pops.viewmodels.StockModel;
 import fr.pops.views.StockView;
+import javafx.event.ActionEvent;
 
 public class StockController extends BaseController<StockView, StockModel>{
 
@@ -44,6 +45,19 @@ public class StockController extends BaseController<StockView, StockModel>{
     public StockController(StockView view){
         // Parent
         super(view, new StockModel());
+    }
+
+    /*****************************************
+     *
+     * Actions
+     *
+     *****************************************/
+    /**
+     * Add stock data to the screen
+     * @param actionEvent Action event triggering the event
+     */
+    public void onAddStock(ActionEvent actionEvent){
+        System.out.println("Adding stock");
     }
 
     /*****************************************

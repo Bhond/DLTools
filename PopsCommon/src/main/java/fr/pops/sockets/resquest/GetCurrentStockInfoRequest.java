@@ -32,6 +32,7 @@ public class GetCurrentStockInfoRequest extends Request{
      *****************************************/
     // Stock info
     private double currentPrice = 0.0d;
+    private String stockName = "TSLA";
 
     /*****************************************
      *
@@ -67,6 +68,9 @@ public class GetCurrentStockInfoRequest extends Request{
         // Parent
         super.encode();
 
+        // Stock name
+        this.encoderDecoderHelper.encodeString(this.stockName);
+
         // Current price
         this.encoderDecoderHelper.encodeDouble(this.currentPrice);
 
@@ -81,6 +85,9 @@ public class GetCurrentStockInfoRequest extends Request{
         // Parent
         super.decode();
 
+        // Stock name
+        this.stockName = this.encoderDecoderHelper.decodeString();
+
         // Current price
         this.currentPrice = this.encoderDecoderHelper.decodeDouble();
     }
@@ -90,6 +97,13 @@ public class GetCurrentStockInfoRequest extends Request{
      * Getter
      *
      *****************************************/
+    /**
+     * @return The stock name
+     */
+    public String getStockName() {
+        return this.stockName;
+    }
+
     /**
      * @return The current stock price
      */
@@ -107,15 +121,15 @@ public class GetCurrentStockInfoRequest extends Request{
      */
     @Override
     protected void setRequestLength() {
-        //            Request ID      Current stock price
-        this.length = Integer.BYTES + Double.BYTES;
+        //            Request ID                 Stock Name                                        Current stock price
+        this.length = Integer.BYTES +  Integer.BYTES + this.stockName.length() * Character.BYTES + Double.BYTES;
     }
 
     /**
      * Set the current price
      * @param currentPrice The current stock price
      */
-    public void getCurrentStockPrice(double currentPrice) {
+    public void setCurrentStockPrice(double currentPrice) {
         this.currentPrice = currentPrice;
     }
 }

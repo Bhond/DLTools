@@ -28,4 +28,22 @@ public abstract class DblCst {
      *****************************************/
     public final static double SIZE_ANCHOR_ZERO = 0.0d;
 
+    /*****************************************
+     *
+     * Candlestick plot
+     *
+     *****************************************/
+    public static final double CANDLE_WIDTH_DEFAULT = 20d;
+
+    /*****************************************
+     *
+     * Candle data default values
+     *
+     *****************************************/
+    public static final double CANDLE_DATA_OPEN_DEFAULT = 0.0d;
+    public static final double CANDLE_DATA_CLOSE_DEFAULT = 0.0d;
+    public static final double CANDLE_DATA_LOW_DEFAULT = 0.0d;
+    public static final double CANDLE_DATA_HIGH_DEFAULT = 0.0d;
+    public static final double CANDLE_DATA_VOLUME_DEFAULT = 0.0d;
+
 }

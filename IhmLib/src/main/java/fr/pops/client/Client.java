@@ -50,6 +50,9 @@ public class Client extends BaseClient {
     private Parent root;
     private Scene scene;
 
+    // Settings
+    private boolean isStandAlone = false;
+
     /*****************************************
      *
      * Ctor
@@ -71,9 +74,12 @@ public class Client extends BaseClient {
     /**
      * Initialize the client
      */
-    public void init(Stage stage){
+    public void init(Stage stage, boolean isStandAlone){
         // Set the stage
         this.stage = stage;
+
+        // Set stand alone
+        this.isStandAlone = isStandAlone;
 
         // Set the model loop
         this.ihmLoop = new IhmLoop();
@@ -104,13 +110,15 @@ public class Client extends BaseClient {
      */
     public void start() {
         // Parent
-        super.start();
+        super.start(this.isStandAlone);
 
         // Display the main view
         this.stage.show();
 
         // Start models
-        this.ihmLoop.run();
+        if (!this.isStandAlone){
+            this.ihmLoop.run();
+        }
     }
 
     /*****************************************

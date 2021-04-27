@@ -29,7 +29,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public abstract class BaseView {
+public abstract class BaseView<controllerT extends BaseController<?,?>> {
 
     /*****************************************
      *
@@ -38,7 +38,7 @@ public abstract class BaseView {
      *****************************************/
     // General
     private String name;
-    protected BaseController<?, ?> controller;
+    protected controllerT controller;
 
     // Basic components
     protected Stage stage;

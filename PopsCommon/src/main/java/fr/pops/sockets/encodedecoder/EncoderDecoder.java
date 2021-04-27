@@ -88,7 +88,7 @@ public abstract class EncoderDecoder {
     /**
      * Decode double value from string
      * @param rawParam Byte array representation of a double
-     * @return The double value contained in the input string
+     * @return The double value contained in the input array
      */
     public static double decodeDouble(byte[] rawParam){
         return ByteBuffer.wrap(rawParam).getDouble();
@@ -102,7 +102,7 @@ public abstract class EncoderDecoder {
     /**
      * Encode boolean to byte array representation
      * @param b The boolean to encode in a byte array
-     * @return A byte array representation of the input double
+     * @return A byte array representation of the input boolean
      */
     public static byte[] encodeBoolean(boolean b){
         return b ? EncoderDecoder.encodeInt32(1) : EncoderDecoder.encodeInt32(0);
@@ -111,10 +111,33 @@ public abstract class EncoderDecoder {
     /**
      * Decode boolean from string
      * @param rawParam Byte array representation of a boolean
-     * @return The boolean contained in the input string
+     * @return The boolean contained in the input array
      */
     public static boolean decodeBoolean(byte[] rawParam){
         return EncoderDecoder.decodeInt32(rawParam) == 1;
+    }
+
+    /*****************************************
+     *
+     * String
+     *
+     *****************************************/
+    /**
+     * Encode String to byte array representation
+     * @param str The String to encode in a byte array
+     * @return A byte array representation of the input String
+     */
+    public static byte[] encodeString(String str){
+        return str.getBytes();
+    }
+
+    /**
+     * Decode boolean from string
+     * @param rawParam Byte array representation of a string
+     * @return The String contained in the input array
+     */
+    public static String decodeString(byte[] rawParam){
+        return new String(rawParam);
     }
 
 }

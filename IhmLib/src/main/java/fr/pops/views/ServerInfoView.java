@@ -22,7 +22,6 @@ package fr.pops.views;
 
 import fr.pops.controllers.viewcontrollers.ServerInfoController;
 import fr.pops.cst.StrCst;
-import fr.pops.customnodes.plot.BasePlot;
 import fr.pops.sockets.cst.EnumCst;
 import fr.pops.utils.Utils;
 import javafx.scene.control.Label;
@@ -31,7 +30,7 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
-public class ServerInfoView extends BaseView {
+public class ServerInfoView extends BaseView<ServerInfoController> {
 
     /*****************************************
      *

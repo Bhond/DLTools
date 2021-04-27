@@ -1,0 +1,58 @@
+/*****************************************
+*
+* Stylesheet for the stock view
+*
+*****************************************/
+@import "Colors.css"
+@import "Fonts.css"
+
+/* root */
+.root
+{
+    -fx-padding: 10px;
+}
+
+/* List view */
+.listView
+{
+    -fx-background-color: transparent;
+    -fx-font-size: 10pt;
+    -fx-font-family: 'Stellar';
+	-fx-border-image-source: url("../borders/standardCorners.png");
+	-fx-border-image-width: 50px;
+	-fx-border-image-slice: 50px;
+}
+
+.listView .list-cell:filled:selected:focused
+{
+    -fx-background-color: -fx-palette-orange;
+}
+
+.listView .list-cell:even
+{
+    -fx-background-color: -fx-palette-fogra39;
+    -fx-text-fill: -fx-palette-ghost-white;
+}
+
+.listView .list-cell:odd
+{
+    -fx-background-color: -fx-palette-fogra39;
+    -fx-text-fill: -fx-palette-ghost-white;
+}
+
+/* Buttons */
+.button
+{
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-palette-ghost-white;
+    -fx-font-size: 10pt;
+    -fx-font-family: 'Stellar';
+    -fx-border-width: 1pt;
+    -fx-border-color: -fx-palette-ghost-white;
+    /*-fx-shape: "M 50 3, 100 28, 100, 75, 50 100, 3 75, 3 25Z";*/
+}
+
+.button:hover
+{
+    -fx-effect: dropshadow(gaussian, -fx-palette-orange, 8, 0.3, 0, 0);
+}

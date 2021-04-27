@@ -22,6 +22,7 @@ package fr.pops.ihmloop;
 import fr.pops.controllers.controllermanager.ControllerManager;
 import fr.pops.controllers.viewcontrollers.BaseController;
 import fr.pops.cst.EnumCst;
+import fr.pops.viewmodels.BaseModel;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -97,7 +98,8 @@ public class IhmLoop {
              * Update model if needed depending
              * on the model stepping family
              */
-            if (needUpdate(controller.getModel().getModelSteppingFamily())){
+            BaseModel<?> model = controller.getModel();
+            if (model != null && needUpdate(model.getModelSteppingFamily())){
                 controller.getModel().update(dt);
             }
         }

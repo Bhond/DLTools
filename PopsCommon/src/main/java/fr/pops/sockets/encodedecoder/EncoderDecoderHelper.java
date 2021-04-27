@@ -115,7 +115,6 @@ public class EncoderDecoderHelper {
         int pos = 0;
         byte[] arr = new byte[size];
         for (int i = this.cursor; i < this.cursor + size; i++){
-            //System.out.println("i: " + i +" ; buff: " + buffer[i]);
             arr[pos] = this.buffer[i];
             pos++;
         }
@@ -213,6 +212,34 @@ public class EncoderDecoderHelper {
      */
     public boolean decodeBoolean(){
         return EncoderDecoder.decodeBoolean(this.pull(IntCst.BOOLEAN_BYTE_SIZE));
+    }
+
+    /*****************************************
+     *
+     * String
+     *
+     *****************************************/
+    /**
+     * Concatenate a binary representation
+     * of the given string and the buffer
+     * The string size is encoded as well
+     * @param str String to encode
+     */
+    public void encodeString(String str){
+        byte[] arr = EncoderDecoder.encodeString(str);
+        this.encodeInt32(arr.length);
+        this.put(arr, arr.length);
+    }
+
+    /**
+     * Decode the given binary representation
+     * of a string in the buffer starting from the cursor position
+     * The string size is decode as well
+     * @return The string parsed from the buffer
+     */
+    public String decodeString(){
+        int length = this.decodeInt32();
+        return EncoderDecoder.decodeString(this.pull(length));
     }
 
     /*****************************************

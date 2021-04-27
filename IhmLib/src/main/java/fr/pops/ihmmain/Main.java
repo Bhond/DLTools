@@ -25,13 +25,23 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    private static boolean isStandAlone = false;
+
     public static void main(String[] args) {
+        // Manage args and options
+        for (int i = 0; i < args.length; i++){
+            if (args[i].equals("-sa")){ // Stand alone
+                    isStandAlone = true;
+            }
+        }
+
+        // Launch app
         launch(args);
     }
 
     public void start(Stage stage) {
         Client client = Client.getInstance();
-        client.init(stage);
+        client.init(stage, isStandAlone);
         client.start();
     }
 }

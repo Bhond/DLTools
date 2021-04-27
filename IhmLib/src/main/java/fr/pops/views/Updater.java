@@ -21,6 +21,8 @@
  ******************************************************************************/
 package fr.pops.views;
 
+import fr.pops.customnodes.plot.candlestickplot.CandleData;
+import fr.pops.customnodes.plot.candlestickplot.CandlestickPlot;
 import javafx.application.Platform;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
@@ -46,6 +48,7 @@ public abstract class Updater {
      * Charts
      *
      *****************************************/
+    // Custom plots
     /**
      * Add value to an existing series
      * @param series The series to update
@@ -55,5 +58,27 @@ public abstract class Updater {
     public static void update(XYChart.Series<Number, Number> series, double x, double y){
         Platform.runLater(() -> series.getData().add(series.getData().size(), new XYChart.Data<>(x, y)));
     }
+
+    // Candlestick
+    /**
+     * Update candlestick chart
+     * by adding a new candle
+     * @param chart The series to update
+     * @param candleData The new candle data to display
+     */
+    public static void update(CandlestickPlot chart, CandleData candleData){
+        Platform.runLater(() -> chart.addCandle(candleData));
+    }
+
+    /**
+     * Update candlestick chart
+     * by setting the price of the last candle displayed
+     * @param chart The candlestick chart to update
+     * @param value The new closing price
+     */
+    public static void update(CandlestickPlot chart, double value){
+        Platform.runLater(() -> chart.updateCurrentCandle(value));
+    }
+
 
 }

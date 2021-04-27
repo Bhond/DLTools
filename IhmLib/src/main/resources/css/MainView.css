@@ -9,7 +9,8 @@
 /* Root */
 .root
 {
-	-fx-background-color: -fx-palette-fogra39;
+	-fx-background-color: linear-gradient(#06070D, #0c253d);
+	/*#0c0f21;/*-fx-palette-oxford-blue;/*radial-gradient(focus-distance 0%, center 50% 50% , radius 50%, #1A2B66, #152351, #0F1836, #0A0F20, #06070D);*/
 }
 
 /* Buttons */
@@ -54,7 +55,7 @@
 
 .context-menu
 {
-    -fx-background-color: -fx-palette-fogra39;
+    -fx-background-color: transparent;
     -fx-background-insets: 0, 1, 2;
     -fx-background-radius: 0 6 6 6, 0 5 5 5, 0 4 4 4;
     -fx-padding: 0.333333em 0.083333em 0.666667em 0.083333em;
@@ -79,12 +80,12 @@
 /* Views TabPane */
 .viewsTabPane .tab-header-area .tab-header-background
 {
-    -fx-background-color: -fx-palette-fogra39;
+    -fx-background-color: transparent;
 }
 
 .viewsTabPane .tab-label
 {
-    -fx-background-color: -fx-palette-fogra39;
+    -fx-background-color: transparent;
     -fx-text-fill: -fx-palette-ghost-white;
     -fx-font-family: 'Stellar';
     -fx-font-size: 10pt;
@@ -97,7 +98,7 @@
 
 .viewTab
 {
-    -fx-background-color: -fx-palette-fogra39;
+    -fx-background-color: transparent;
     -fx-background-insets: 0.0;
     -fx-background-radius: 0.0;
     -fx-padding: 0 30 0 30;
@@ -107,7 +108,7 @@
 
 .viewTab:selected
 {
-    -fx-background-color: -fx-palette-fogra39;
+    -fx-background-color: transparent;
     -fx-background-insets: 0.0;
     -fx-background-radius: 0.0;
     -fx-border-width: 0 0 5 0;

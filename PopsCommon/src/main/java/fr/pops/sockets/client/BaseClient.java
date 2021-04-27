@@ -147,6 +147,16 @@ public abstract class BaseClient {
     }
 
     /**
+     * Start the client
+     */
+    public void start(boolean isStandAlone){
+        // Start and run the communication pipeline to enable communication with the server
+        if (!isStandAlone){
+            this.communicationPipeline.run();
+        }
+    }
+
+    /**
      * Close the client
      */
     public void close(){

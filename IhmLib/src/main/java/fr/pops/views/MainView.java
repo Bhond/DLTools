@@ -35,7 +35,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class MainView extends BaseView {
+public class MainView extends BaseView<MainViewController> {
 
     /*****************************************
      *
@@ -244,9 +244,6 @@ public class MainView extends BaseView {
      * @param viewType The type of the view to display
      */
     public void addView(EnumCst.Views viewType){
-        // Update active views sizes
-        this.updateActiveViewsSizes();
-
         // Switch on the type of the view to add
         BaseView view = null;
         switch (viewType){
@@ -272,18 +269,6 @@ public class MainView extends BaseView {
             tab.getStyleClass().add("viewTab");
             this.viewsTabPane.getTabs().add(tab);
         }
-    }
-
-    /*****************************************
-     *
-     * Update
-     *
-     *****************************************/
-    /**
-     * Update active views sizes
-     */
-    private void updateActiveViewsSizes(){
-        System.out.println("Not implemented yet...");
     }
 
     /*****************************************

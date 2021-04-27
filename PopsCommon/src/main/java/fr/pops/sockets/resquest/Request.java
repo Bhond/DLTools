@@ -79,13 +79,6 @@ public abstract class Request {
      *
      *****************************************/
     /**
-     *
-     */
-    private void computeIdLength(){
-        System.out.println("Not implemented yet");
-    }
-
-    /**
      * Encode request to a binary representation
      */
     public void encode(){

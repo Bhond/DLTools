@@ -1,3 +1,22 @@
+/*******************************************************************************
+ *
+ *                         PPPP     OOOO     PPPP    SSSS
+ *                        PP  PP   OO  OO   PP  PP  SS
+ *                        PP  PP  OO    OO  PP  PP  SS
+ *                        PP  PP  OO    OO  PP  PP   SSSS
+ *                        PPPP    OO    OO  PPPP        SS
+ *                        PP       OO  OO   PP          SS
+ *                        PP        OOOO    PP       SSSS
+ *
+ * Name: BasePlot.java
+ *
+ * Description: Class defining the custom line chart plot node for pops
+ *
+ * Author: Charles MERINO
+ *
+ * Date: 27/04/2021
+ *
+ ******************************************************************************/
 package fr.pops.customnodes.plot;
 
 import fr.pops.cst.DblCst;
@@ -93,9 +112,4 @@ public class BasePlot extends AnchorPane {
     public XYChart.Series<Number, Number> getSeries() {
         return this.series;
     }
-    /*****************************************
-     *
-     * Setters
-     *
-     *****************************************/
 }

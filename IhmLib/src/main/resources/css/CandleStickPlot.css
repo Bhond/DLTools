@@ -1,0 +1,94 @@
+/* Root */
+.chart
+{
+    -fx-background-color: transparent;
+	-fx-border-image-source: url("../borders/standardCorners.png");
+	-fx-border-image-width: 50px;
+	-fx-border-image-slice: 50px;
+}
+
+.chart-legend
+{
+    -fx-background-color: transparent;
+}
+
+.chart-plot-background
+{
+    -fx-background-color: transparent;
+}
+
+.chart-series-line
+{
+    -fx-stroke-width: 2px;
+}
+
+.chart-horizontal-grid-lines
+{
+    -fx-stroke: transparent;
+}
+
+.chart-vertical-grid-lines
+{
+    -fx-stroke: transparent;
+}
+
+.axis:left
+{
+    -fx-tick-label-fill: -fx-palette-ghost-white;
+    -fx-font-family: 'Stellar';
+    -fx-minor-tick-visible: false;
+    -fx-border-color: transparent -fx-palette-ghost-white transparent transparent;
+}
+
+.axis:left .axis-tick-mark
+{
+    -fx-stroke: -fx-palette-ghost-white;
+}
+
+.axis:bottom
+{
+    -fx-tick-label-fill: -fx-palette-ghost-white;
+    -fx-font-family: 'Stellar';
+    -fx-tick-mark-visible: false;
+    -fx-minor-tick-visible: false;
+    -fx-border-color: -fx-palette-ghost-white transparent transparent transparent;
+}
+
+.axis:bottom .axis-tick-mark
+{
+    -fx-stroke: -fx-palette-ghost-white;
+}
+
+.axis-label
+{
+    -fx-background-color: transparent;
+    -fx-text-fill: transparent;
+}
+
+/* Candlestick */
+.candlestick-line.close-above-open
+{
+    -fx-stroke: green;
+    -fx-stroke-width: 1px;
+}
+
+.candlestick-line.open-above-close
+{
+    -fx-stroke: red;
+    -fx-stroke-width: 1px;
+}
+
+.candlestick-body.close-above-open
+{
+    -fx-background-color: green;
+    -fx-border-width: 1, 1,1,1;
+    -fx-border-color: #e2e2e2;
+}
+
+.candlestick-body.open-above-close
+{
+    -fx-background-color: red;
+    -fx-border-width: 1, 1,1,1;
+    -fx-font-weight: bold;
+    -fx-border-color: #e2e2e2;
+}

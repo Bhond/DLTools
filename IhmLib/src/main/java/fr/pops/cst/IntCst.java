@@ -49,5 +49,4 @@ public abstract class IntCst {
      *
      *****************************************/
     public final static int MODEL_LOOP_MAX_FPS = 120;
-
 }
