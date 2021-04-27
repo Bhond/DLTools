@@ -9,8 +9,7 @@
 /* Root */
 .root
 {
-	-fx-background-color: linear-gradient(#06070D, #0c253d);
-	/*#0c0f21;/*-fx-palette-oxford-blue;/*radial-gradient(focus-distance 0%, center 50% 50% , radius 50%, #1A2B66, #152351, #0F1836, #0A0F20, #06070D);*/
+	-fx-background-color: linear-gradient(-fx-palette-black, -fx-palette-electric-blue);
 }
 
 /* Buttons */

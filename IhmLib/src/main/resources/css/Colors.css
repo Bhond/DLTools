@@ -6,20 +6,21 @@
 *
 {
    /*  Black */
+    -fx-palette-black: #06070D;
     -fx-palette-fogra39: #07080D;
     -fx-palette-lighter-fogra39: #0A0C14;
     -fx-palette-lighter-plus-fogra39: #0C0E18;
-
 
    /*  White */
     -fx-palette-ghost-white: #E4E7F1;
     -fx-palette-white-bluer: #DDEEFF;
 
    /*  Blue */
-    -fx-palette-electric-blue: #8EFEFF;
+    -fx-palette-electric-blue: #0c253d;
     -fx-palette-fluorescent-blue: #316767;
     -fx-palette-purple-navy: #475285;
     -fx-palette-oxford-blue: #1D2135;
+    -fx-palette-robin-egg-blue: #2DC8C8;
 
     /* Purple */
     -fx-palette-purple-navy: #3A4269;

@@ -68,27 +68,24 @@
 /* Candlestick */
 .candlestick-line.close-above-open
 {
-    -fx-stroke: green;
-    -fx-stroke-width: 1px;
+    -fx-stroke: -fx-palette-robin-egg-blue;
+    -fx-effect: dropshadow(gaussian, -fx-palette-robin-egg-blue, 8, 0.3, 0, 0);
 }
 
 .candlestick-line.open-above-close
 {
-    -fx-stroke: red;
-    -fx-stroke-width: 1px;
+    -fx-stroke: -fx-palette-orange;
+    -fx-effect: dropshadow(gaussian, -fx-palette-orange, 8, 0.3, 0, 0);
 }
 
 .candlestick-body.close-above-open
 {
-    -fx-background-color: green;
-    -fx-border-width: 1, 1,1,1;
-    -fx-border-color: #e2e2e2;
+    -fx-background-color: -fx-palette-robin-egg-blue;
+    -fx-effect: dropshadow(gaussian, -fx-palette-robin-egg-blue, 8, 0.3, 0, 0);
 }
 
 .candlestick-body.open-above-close
 {
-    -fx-background-color: red;
-    -fx-border-width: 1, 1,1,1;
-    -fx-font-weight: bold;
-    -fx-border-color: #e2e2e2;
+    -fx-background-color: -fx-palette-orange;
+    -fx-effect: dropshadow(gaussian, -fx-palette-orange, 8, 0.3, 0, 0);
 }

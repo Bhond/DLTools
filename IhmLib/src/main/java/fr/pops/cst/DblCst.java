@@ -33,7 +33,8 @@ public abstract class DblCst {
      * Candlestick plot
      *
      *****************************************/
-    public static final double CANDLE_WIDTH_DEFAULT = 20d;
+    public static final double CANDLE_LINE_WIDTH_DEFAULT = 1d;
+    public static final double CANDLE_BODY_WIDTH_DEFAULT = 20d;
 
     /*****************************************
      *

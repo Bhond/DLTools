@@ -53,7 +53,8 @@ public class CandlestickPlot extends XYChart<String, Number> {
     private CandleData currentBar;
     // Parameters
     private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-    private double candleWidth = DblCst.CANDLE_WIDTH_DEFAULT;
+    private double lineWidth = DblCst.CANDLE_LINE_WIDTH_DEFAULT;
+    private double candleWidth = DblCst.CANDLE_BODY_WIDTH_DEFAULT;
     private final boolean xAxisAutoRanging = true;
     private final boolean yAxisAutoRanging = true;
     private final boolean isAnimated = true;
@@ -237,7 +238,7 @@ public class CandlestickPlot extends XYChart<String, Number> {
                     double closeOffset = this.getYAxis().getDisplayPosition(bar.getClose());
                     double highOffset = getYAxis().getDisplayPosition(bar.getHigh());
                     double lowOffset = getYAxis().getDisplayPosition(bar.getLow());
-                    candle.update(closeOffset - y, highOffset - y, lowOffset - y, this.candleWidth);
+                    candle.update(closeOffset - y, highOffset - y, lowOffset - y, this.lineWidth, this.candleWidth);
                     // Move candle
                     candle.setLayoutX(x);
                     candle.setLayoutY(y);
@@ -340,9 +341,10 @@ public class CandlestickPlot extends XYChart<String, Number> {
          * @param closeOffset The offset used to draw the closing price of the candle
          * @param highOffset The offset used to draw the highest price of the candle
          * @param lowOffset The offset used to draw the lowest price of the candle
-         * @param candleWidth The candle with
+         * @param lineWidth The line width
+         * @param bodyWidth The candle width
          */
-        public void update(double closeOffset, double highOffset, double lowOffset, double candleWidth) {
+        public void update(double closeOffset, double highOffset, double lowOffset, double lineWidth, double bodyWidth) {
             // Is open price above close price ?
             this.openAboveClose = closeOffset > 0;
 
@@ -355,9 +357,9 @@ public class CandlestickPlot extends XYChart<String, Number> {
 
             // Body
             if (this.openAboveClose){
-                this.body.resizeRelocate(- candleWidth / 2, 0, candleWidth, closeOffset);
+                this.body.resizeRelocate(- bodyWidth / 2, 0, bodyWidth, closeOffset);
             } else {
-                this.body.resizeRelocate(- candleWidth / 2, closeOffset, candleWidth, - closeOffset);
+                this.body.resizeRelocate(- bodyWidth / 2, closeOffset, bodyWidth, - closeOffset);
             }
         }
 
