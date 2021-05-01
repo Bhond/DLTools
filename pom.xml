@@ -22,6 +22,7 @@
         <module>MasterServerLib</module>
         <module>NeuralNetworksLib</module>
         <module>PopsCommon</module>
+        <module>StockLib</module>
     </modules>
 
     <dependencies>
