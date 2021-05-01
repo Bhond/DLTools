@@ -40,7 +40,7 @@ public class ServerInfoModel extends BaseModel<ServerInfoController>{
         super();
 
         // Slow down the model
-        this.modelSteppingFamily = EnumCst.ModelSteppingFamily.FAMILY_1_ON_10;
+        this.modelSteppingFamily = EnumCst.ModelSteppingFamily.FAMILY_1_ON_500;
     }
 
     /*****************************************

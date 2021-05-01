@@ -30,6 +30,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 public class ClientSession {
@@ -104,25 +105,37 @@ public class ClientSession {
      *****************************************/
     /**
      * Read input from buffer
+     * TODO: Check if in the case of amountRead == 0, should the client be disconnected?
      */
-    public Request read(){
-        Request request = null;
+    public List<Request> read(){
+        List<Request> requests = new LinkedList<>();
         try{
-            // Put data in the buffer
-            int amountRead = this.channel.read(this.buffer);
             // If something has been read, fill in the returned request
-            // TODO: Check if in the case of amountRead == 0, should the client be disconnected?
-            if (amountRead != -1 && amountRead != 0){
-                // Build request
-                request = this.requestFactory.getRequest(this.buffer.array());
-                this.cleanBuffer();
-            }
+            int amountRead = this.channel.read(this.buffer.clear());
+            boolean hasRemaining = amountRead > 0;
 
+            // While requests are still in the buffer
+            while (hasRemaining) {
+                Request request = this.requestFactory.getRequest(this.buffer.array());
+                if (request != null) {
+                    requests.add(request);
+                    // Update position to read next request if there is any
+                    if (this.buffer.position() != request.getLength()) {
+                        this.buffer.position(request.getLength());
+                        this.buffer.compact();
+                        this.buffer.rewind();
+                    } else {
+                        hasRemaining = false;
+                    }
+                } else {
+                    hasRemaining = false;
+                }
+            }
         } catch (Throwable t){
             t.printStackTrace();
             this.disconnect();
         }
-        return request;
+        return requests;
     }
 
     public void write(){
@@ -130,18 +143,17 @@ public class ClientSession {
         if (!this.outputBucket.isEmpty()){
             // Get request
             Request requestToSend = this.outputBucket.poll();
-
             // Encode it
             requestToSend.encode();
 
             // Put the request in the buffer
+            this.buffer.clear();
             this.buffer.put(requestToSend.getRawRequest());
             this.buffer.flip();
 
             // Send the request
             try{
                 this.channel.write(this.buffer);
-                this.cleanBuffer();
             } catch (IOException ignored){}
         }
     }
@@ -152,16 +164,6 @@ public class ClientSession {
      */
     public void send(Request request) {
         this.outputBucket.add(request);
-    }
-
-    /**
-     * Clean buffer of all previous data
-     */
-    private void cleanBuffer(){
-        // Replace all the values in the byte array by 0
-        java.util.Arrays.fill(this.buffer.array(), (byte) 0);
-        // Reset cursor, limit and mark
-        this.buffer.clear();
     }
 
     /**

@@ -64,6 +64,14 @@ public class AuthenticateRequest extends Request{
         super(EnumCst.RequestTypes.AUTHENTICATE, rawParams);
     }
 
+    /**
+     * Ctor used to create a request when receiving one
+     * @param rawParams The raw parameters to decode
+     */
+    public AuthenticateRequest(byte[] rawParams, int length) {
+        super(EnumCst.RequestTypes.AUTHENTICATE, rawParams, length);
+    }
+
     /*****************************************
      *
      * Methods
@@ -114,7 +122,6 @@ public class AuthenticateRequest extends Request{
      */
     @Override
     protected void setRequestLength() {
-        //            Request ID      Client ID
-        this.length = Integer.BYTES + Long.BYTES;
+        super.setRequestLength(Long.BYTES); // Client ID
     }
 }

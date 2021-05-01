@@ -44,7 +44,7 @@ public class IhmLoop {
      *
      *****************************************/
     private final long initialDelay = 0;
-    private final long frequency = 1000; // TODO: change frequency
+    private final long frequency = 1; // TODO: change frequency
     private double runningTime = 0.0d;
     private double t0 = 0.0d;
     private long stepCount = 0;
@@ -124,6 +124,12 @@ public class IhmLoop {
                 break;
             case FAMILY_1_ON_100:
                 needsUpdate = this.stepCount % 100 == 0;
+                break;
+            case FAMILY_1_ON_500:
+                needsUpdate = this.stepCount % 500 == 0;
+                break;
+            case FAMILY_1_ON_1000:
+                needsUpdate = this.stepCount % 1000 == 0;
                 break;
         }
         return needsUpdate;

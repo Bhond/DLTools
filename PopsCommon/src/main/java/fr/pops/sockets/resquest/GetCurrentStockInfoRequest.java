@@ -33,7 +33,7 @@ public class GetCurrentStockInfoRequest extends Request{
     // Stock info
     private long accessTime = 0L;
     private double currentPrice = 0.0d;
-    private String stockName = "TSLA";
+    private String stockName = "OIL";
 
     /*****************************************
      *
@@ -55,6 +55,15 @@ public class GetCurrentStockInfoRequest extends Request{
      */
     public GetCurrentStockInfoRequest(byte[] rawParams) {
         super(EnumCst.RequestTypes.GET_CURRENT_STOCK_INFO, rawParams);
+    }
+
+    /**
+     * Ctor used to create a request when receiving one
+     * @param rawParams The raw parameters to decode
+     * @param length The request's length
+     */
+    public GetCurrentStockInfoRequest(byte[] rawParams, int length) {
+        super(EnumCst.RequestTypes.GET_CURRENT_STOCK_INFO, rawParams, length);
     }
 
     /*****************************************
@@ -135,8 +144,10 @@ public class GetCurrentStockInfoRequest extends Request{
      */
     @Override
     protected void setRequestLength() {
-        //            Request ID                 Stock Name                                        Access time  Current stock price
-        this.length = Integer.BYTES +  Integer.BYTES + this.stockName.length() * Character.BYTES + Long.BYTES + Double.BYTES;
+        super.setRequestLength(Integer.BYTES,                             // Stock name's length
+                               this.stockName.length() * Character.BYTES, // Stock name
+                               Long.BYTES,                                // Access time
+                               Double.BYTES);                             // Current stock price
     }
 
     /**

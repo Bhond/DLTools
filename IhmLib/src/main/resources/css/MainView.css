@@ -63,7 +63,7 @@
 /* Menu bar Menu Item */
 .menuBarMenuItem
 {
-    -fx-background-color: transparent;
+    -fx-background-color: -fx-palette-fogra39;
 }
 
 .menuBarMenuItem:hover

@@ -23,7 +23,7 @@ package fr.pops.controllers.viewcontrollers;
 import fr.pops.cst.EnumCst;
 import fr.pops.cst.IntCst;
 import fr.pops.viewmodels.BaseModel;
-import fr.pops.views.MainView;
+import fr.pops.views.main.MainView;
 import javafx.event.ActionEvent;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;

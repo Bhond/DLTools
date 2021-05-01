@@ -21,7 +21,7 @@ package fr.pops.controllers.viewcontrollers;
 
 import fr.pops.sockets.cst.EnumCst;
 import fr.pops.viewmodels.ServerInfoModel;
-import fr.pops.views.ServerInfoView;
+import fr.pops.views.serverinfo.ServerInfoView;
 
 import java.util.List;
 

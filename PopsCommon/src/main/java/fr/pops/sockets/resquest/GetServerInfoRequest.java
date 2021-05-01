@@ -52,11 +52,22 @@ public class GetServerInfoRequest extends Request{
     }
 
     /**
-     * Ctor
+     * Ctor used to create a request when receiving one
+     * @param rawParams The raw parameters to decode
      */
     public GetServerInfoRequest(byte[] rawParams){
         // Parent
         super(EnumCst.RequestTypes.GET_SERVER_INFO, rawParams);
+    }
+
+    /**
+     * Ctor used to create a request when receiving one
+     * @param rawParams The raw parameters to decode
+     * @param length The request's length
+     */
+    public GetServerInfoRequest(byte[] rawParams, int length){
+        // Parent
+        super(EnumCst.RequestTypes.GET_SERVER_INFO, rawParams, length);
     }
 
     /*****************************************
@@ -108,10 +119,9 @@ public class GetServerInfoRequest extends Request{
      */
     @Override
     protected void setRequestLength() {
-        this.length = Integer.BYTES               // ID
-                + Double.BYTES                    // Frequency
-                + Integer.BYTES                   // Nb clients
-                + this.nbClients * Long.BYTES; // Clients' types
+        super.setRequestLength(Double.BYTES,                 // Frequency
+                               Integer.BYTES,                // Nb clients
+                               this.nbClients * Long.BYTES); // Clients' types
     }
 
     /*****************************************

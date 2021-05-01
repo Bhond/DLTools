@@ -72,14 +72,27 @@ public abstract class StrCst {
     public final static String STYLE_CLASS_ROOT = "root";
     public final static String STYLE_CLASS_ROOT_LAYOUT = "rootLayout";
     public final static String STYLE_CLASS_CONTROL_WINDOW_BUTTON = "controlWindowButton";
+
+    // Menubar
     public final static String STYLE_CLASS_MENUBAR = "menuBar";
     public final static String STYLE_CLASS_MENUBAR_MENU = "menuBarMenu";
     public final static String STYLE_CLASS_MENUBAR_MENU_ITEM = "menuBarMenuItem";
+
+    // Controls
     public final static String STYLE_CLASS_VIEWS_TAB_PANE = "viewsTabPane";
     public static final String STYLE_CLASS_LISTVIEW = "listView";
     public final static String STYLE_CLASS_STANDARD_BUTTON = "button";
+
+    // Candlestic
     public final static String STYLE_CLASS_CANDLESTICK_BODY = "candlestick-body";
     public final static String STYLE_CLASS_CANDLESTICK_LINE = "candlestick-line";
     public final static String STYLE_CLASS_OPEN_ABOVE_CLOSE = "open-above-close";
     public final static String STYLE_CLASS_CLOSE_ABOVE_OPEN = "close-above-open";
+
+    // Quote data
+    public final static String STYLE_CLASS_QUOTE_DATA = "quote-data";
+    public final static String STYLE_CLASS_QUOTE_DATA_SYMBOL = "quote-data-symbol";
+    public final static String STYLE_CLASS_QUOTE_DATA_ARROW= "quote-data-arrow";
+    public final static String STYLE_CLASS_QUOTE_DATA_PRICE = "quote-data-price";
+
 }

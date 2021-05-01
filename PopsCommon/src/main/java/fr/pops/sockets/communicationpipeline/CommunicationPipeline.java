@@ -32,7 +32,8 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Queue;
+import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
@@ -48,10 +49,14 @@ public class CommunicationPipeline {
     private SocketChannel channel;
     private ByteBuffer buffer;
 
+    // Server loop parameters
+    private final long initialDelay = 0;
+    private final long timeDelay = 1;
+
     // Communication
     protected BaseClient client;
     private RequestFactory requestFactory = new RequestFactory();
-    private Queue<Request> outputBucket = new LinkedList<>();
+    private ConcurrentLinkedQueue<Request> outputBucket = new ConcurrentLinkedQueue<>();
 
     /*****************************************
      *
@@ -119,7 +124,7 @@ public class CommunicationPipeline {
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
-        }, 0, 100, TimeUnit.MILLISECONDS);
+        }, this.initialDelay, this.timeDelay, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -139,7 +144,10 @@ public class CommunicationPipeline {
      *      - Read: Read input
      *      - Write: Write output
      *
-     * @throws Throwable
+     * @throws Throwable Exception thrown when an error occurs
+     *                  when selecting the keys.
+     *                  Check {@link java.nio.channels.Selector::selectNow} method
+     *                  for more info
      */
     private void communicate() throws Throwable {
         // Select the keys
@@ -157,9 +165,9 @@ public class CommunicationPipeline {
 
             // Read request and perform specific operation
             if (key.isReadable()){
-                Request request = this.read();
-                if (request != null){
-                    // Handle request
+                List<Request> requests = this.read();
+                for (Request request : requests){
+                    // Handle the request
                     this.client.handle(request);
 
                     // Specific operation
@@ -188,8 +196,6 @@ public class CommunicationPipeline {
      */
     protected void specificOp(SelectionKey key, Request request){}
 
-
-
     /*****************************************
      *
      * Request handling
@@ -198,27 +204,36 @@ public class CommunicationPipeline {
     /**
      * Read request received from the server
      */
-    private Request read(){
-        Request request = null;
+    private List<Request> read(){
+        List<Request> requests = new LinkedList<>();
         try{
-            // Put data in the buffer
-            int amountRead = this.channel.read(buffer.clear());
-
             // If something has been read, fill in the returned request
-            // TODO: Check if in the case of amountRead == 0, should the client be disconnected?
-            if (amountRead != -1 && amountRead != 0){
-                // Build request
-                request = this.requestFactory.getRequest(this.buffer.array());
+            int amountRead = this.channel.read(this.buffer.clear());
+            int remaining = amountRead;
+
+            // While requests are still in the buffer
+            while (remaining > 0) {
+                Request request = this.requestFactory.getRequest(this.buffer.array());
+                if (request != null) {
+                    requests.add(request);
+                    // Update position to read next request if there is any
+                    if (remaining > request.getLength()) {
+                        this.buffer.position(request.getLength());
+                        this.buffer.compact();
+                        remaining -= request.getLength();
+                    } else if (remaining == request.getLength()){
+                        break;
+                    }
+                } else {
+                    break;
+                }
             }
-
-            // Clean buffer
-            this.cleanBuffer();
-
         } catch (Throwable t){
             t.printStackTrace();
         }
-        return request;
+        return requests;
     }
+
 
     /**
      * Write output
@@ -228,20 +243,21 @@ public class CommunicationPipeline {
         if (!this.outputBucket.isEmpty()){
             // Get request
             Request requestToSend = this.outputBucket.poll();
+            if (requestToSend != null) {
+                // Encode it
+                requestToSend.encode();
 
-            // Encode it
-            requestToSend.encode();
+                // Put the request in the buffer
+                this.buffer.clear();
+                this.buffer.put(requestToSend.getRawRequest());
+                this.buffer.flip();
 
-            // Put the request in the buffer
-            this.buffer.put(requestToSend.getRawRequest());
-            this.buffer.flip();
-
-            // Send the request
-            try{
-                this.channel.write(this.buffer);
-                this.cleanBuffer();
-            } catch (IOException e){
-                e.printStackTrace();
+                // Send the request
+                try{
+                    this.channel.write(this.buffer);
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -254,14 +270,5 @@ public class CommunicationPipeline {
         this.outputBucket.add(request);
     }
 
-    /**
-     * Clean buffer of all previous data
-     */
-    private void cleanBuffer(){
-        // Replace all the values in the byte array by 0
-        java.util.Arrays.fill(this.buffer.array(), (byte) 0);
-        // Reset cursor, limit and mark
-        this.buffer.clear();
-    }
 }
 

@@ -35,6 +35,7 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
@@ -62,9 +63,9 @@ public class Server {
     private final int port = IntCst.SERVER_PORT;
 
     // Server loop parameters
-    private final long initialDelay = (long) DoubleCst.SERVER_INITIAL_DELAY;
+    private final long initialDelay = 0;
     private final double frequency = DoubleCst.SERVER_FREQUENCY_HZ;
-    private final long timeDelay = (long) (1E3 / this.frequency);
+    private final long timeDelay = 1;
 
     // Communication
     private ServerSocketChannel serverChannel;
@@ -168,14 +169,15 @@ public class Server {
 
             // Read input and handle it
             if (key.isReadable()){
-                Request request = this.clientMap.get(key).read();
-                if (request != null){
-                    // Handle the request
-                    this.requestHandler.handle(key, request);
+               List<Request> requests = this.clientMap.get(key).read();
+               for (Request request : requests){
+                   System.out.println("Handling: " +  request.getType() + " from " + this.clientMap.get(key).getType());
+                   // Handle the request
+                   this.requestHandler.handle(key, request);
 
-                    // Post processing checks
-                    this.postProcessRequest(request, key);
-                }
+                   // Post processing checks
+                   this.postProcessRequest(request, key);
+               }
             }
 
             // Write output
@@ -218,6 +220,7 @@ public class Server {
         long id = this.clientMap.get(senderKey).getType().getId();
         long receiverId = this.requestHandler.selectReceiver(request, id);
         SelectionKey receiverKey = this.connectedClientsId.get(receiverId);
+        System.out.println("Transferring from: " +  this.clientMap.get(senderKey).getType() + " to " + this.clientMap.get(receiverKey).getType());
         this.clientMap.get(receiverKey).send(request);
     }
 

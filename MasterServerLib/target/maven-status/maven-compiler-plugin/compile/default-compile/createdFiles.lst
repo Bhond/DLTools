@@ -1,9 +1,0 @@
-fr\pops\serverlibcst\IntCst.class
-fr\pops\encoderdecoder\EncoderDecoder.class
-fr\pops\main\Main.class
-fr\pops\server\Server.class
-fr\pops\client\ClientManager.class
-fr\pops\requesthandler\ServerRequestHandler.class
-fr\pops\serverexceptions\InvalidPortException.class
-fr\pops\encoderdecoder\EncoderDecoderUtils.class
-fr\pops\client\ServerStreamHandler.class

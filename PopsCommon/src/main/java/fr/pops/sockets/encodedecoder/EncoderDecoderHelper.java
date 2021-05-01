@@ -23,6 +23,10 @@ package fr.pops.sockets.encodedecoder;
 
 import fr.pops.sockets.cst.IntCst;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 public class EncoderDecoderHelper {
 
     /*****************************************
@@ -30,6 +34,7 @@ public class EncoderDecoderHelper {
      * Attributes
      *
      *****************************************/
+    private List<Byte> bufferList = new LinkedList<>();
     private byte[] buffer;
     private int cursor;
 
@@ -66,6 +71,7 @@ public class EncoderDecoderHelper {
      * to encode a new message
      */
     public void reset(){
+        this.bufferList.clear();
         this.buffer = new byte[0];
         this.cursor = 0;
     }
@@ -75,6 +81,7 @@ public class EncoderDecoderHelper {
      * to encode a new message
      */
     public void reset(int length){
+        this.bufferList.clear();
         this.buffer = new byte[length];
         this.cursor = 0;
     }
@@ -84,6 +91,9 @@ public class EncoderDecoderHelper {
      * @param rawParams The raw parameters to decode
      */
     public void reset(byte[] rawParams){
+        this.bufferList = IntStream.range(0, rawParams.length)
+                .mapToObj((i) -> rawParams[i])
+                .collect(Collectors.toList());
         this.buffer = rawParams;
         this.cursor = 0;
     }
@@ -121,6 +131,26 @@ public class EncoderDecoderHelper {
         this.cursor += size;
         return arr;
     }
+
+    /**
+     * Put given list in the buffer
+     * @param arr The array to add
+     */
+    private void put(List<Byte> arr){
+        this.bufferList.addAll(arr);
+    }
+
+    /**
+     * Pull a list from the buffer starting from the cursor's position
+     * with a length defined by the input size
+     * @param size The size of the array to extract
+     */
+    private List<Byte> pullList(int size){
+        return IntStream.range(this.cursor, this.cursor + size)
+                .mapToObj((i -> this.bufferList.get(i)))
+                .collect(Collectors.toList());
+    }
+
 
     /*****************************************
      *
@@ -252,5 +282,12 @@ public class EncoderDecoderHelper {
      */
     public byte[] getRawParams() {
         return this.buffer;
+    }
+
+    /**
+     * @return The position of the cursor
+     */
+    public int getCursor() {
+        return this.cursor;
     }
 }

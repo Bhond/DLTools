@@ -20,7 +20,7 @@
 package fr.pops.controllers.viewcontrollers;
 
 import fr.pops.viewmodels.StockModel;
-import fr.pops.views.StockView;
+import fr.pops.views.stock.StockView;
 import javafx.event.ActionEvent;
 
 public class StockController extends BaseController<StockView, StockModel>{

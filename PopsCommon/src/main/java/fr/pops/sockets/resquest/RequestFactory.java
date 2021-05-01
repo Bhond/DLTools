@@ -66,19 +66,20 @@ public class RequestFactory {
         // Retrieve the request id
         this.encoderDecoderHelper.reset(rawRequest.clone());
         int id = this.encoderDecoderHelper.decodeInt32();
+        int length = this.encoderDecoderHelper.decodeInt32();
         byte[] rawParams = this.encoderDecoderHelper.getRawParams();
         EnumCst.RequestTypes requestType = EnumCst.RequestTypes.values()[id];
 
         // Create the correct type of request
         switch (requestType){
             case AUTHENTICATE:
-                return new AuthenticateRequest(rawParams);
+                return new AuthenticateRequest(rawParams, length);
             case PING:
-                return new PingRequest(rawParams);
+                return new PingRequest(rawParams, length);
             case GET_SERVER_INFO:
-                return new GetServerInfoRequest(rawParams);
+                return new GetServerInfoRequest(rawParams, length);
             case GET_CURRENT_STOCK_INFO:
-                return new GetCurrentStockInfoRequest(rawParams);
+                return new GetCurrentStockInfoRequest(rawParams, length);
             default:
                 return null;
         }

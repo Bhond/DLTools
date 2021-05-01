@@ -21,6 +21,7 @@ package fr.pops.viewmodels;
 
 import fr.pops.client.Client;
 import fr.pops.controllers.viewcontrollers.StockController;
+import fr.pops.cst.EnumCst;
 import fr.pops.sockets.resquest.GetCurrentStockInfoRequest;
 
 public class StockModel extends BaseModel<StockController> {
@@ -36,6 +37,8 @@ public class StockModel extends BaseModel<StockController> {
     public StockModel() {
         // Parent
         super();
+        // Change stepping family
+        this.modelSteppingFamily = EnumCst.ModelSteppingFamily.FAMILY_1_ON_100;
     }
 
     /*****************************************

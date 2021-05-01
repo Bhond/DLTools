@@ -58,6 +58,16 @@ public class PingRequest extends Request {
         super(EnumCst.RequestTypes.PING, rawParams);
     }
 
+    /**
+     * Create a request that will be handled by the requestHandler
+     * @param rawParams The raw parameters to decode
+     * @param length The request's length
+     */
+    public PingRequest(byte[] rawParams, int length) {
+        // Parent
+        super(EnumCst.RequestTypes.PING, rawParams, length);
+    }
+
     /*****************************************
      *
      * Methods
@@ -114,8 +124,7 @@ public class PingRequest extends Request {
      */
     @Override
     protected void setRequestLength() {
-        //            ID              Delay
-        this.length = Integer.BYTES + Double.BYTES;
+        super.setRequestLength(Double.BYTES); // Delay
     }
 
     /**

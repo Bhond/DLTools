@@ -21,7 +21,7 @@ package fr.pops.controllers.viewcontrollers;
 
 import fr.pops.controllers.controllermanager.ControllerManager;
 import fr.pops.viewmodels.BaseModel;
-import fr.pops.views.BaseView;
+import fr.pops.views.base.BaseView;
 
 public abstract class BaseController<viewT extends BaseView, modelT extends BaseModel<?>> {
 

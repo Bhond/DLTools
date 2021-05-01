@@ -1,0 +1,156 @@
+/*******************************************************************************
+ *
+ *                         PPPP     OOOO     PPPP    SSSS
+ *                        PP  PP   OO  OO   PP  PP  SS
+ *                        PP  PP  OO    OO  PP  PP  SS
+ *                        PP  PP  OO    OO  PP  PP   SSSS
+ *                        PPPP    OO    OO  PPPP        SS
+ *                        PP       OO  OO   PP          SS
+ *                        PP        OOOO    PP       SSSS
+ *
+ * Name: QuoteData.java
+ *
+ * Description: Class defining the node containing the quote data displayed
+ *              by the listview on the StockInfoView
+ *
+ * Author: Charles MERINO
+ *
+ * Date: 28/04/2021
+ *
+ ******************************************************************************/
+package fr.pops.views.stock;
+
+import fr.pops.cst.StrCst;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+
+public class QuoteData extends HBox {
+
+    /*****************************************
+     *
+     * Attributes
+     *
+     *****************************************/
+    // Children
+    private Label symbolLabel;
+    private HBox centralBox;
+    private HBox arrow;
+    private Label price;
+    // State
+    private String symbol = "";
+    private double lastPrice = 0.0d;
+
+    /*****************************************
+     *
+     * Ctor
+     *
+     *****************************************/
+    /**
+     * Standard ctor
+     * Body is temporary, for tests
+     */
+    public QuoteData(){
+        // Global style class
+        this.getStyleClass().add(StrCst.STYLE_CLASS_QUOTE_DATA);
+
+        // Symbol
+        this.symbol = "GME";
+        this.symbolLabel = new Label("GME");
+        this.symbolLabel.getStyleClass().add(StrCst.STYLE_CLASS_QUOTE_DATA_SYMBOL);
+        HBox.setHgrow(this.symbolLabel, Priority.ALWAYS);
+
+        // Central box
+        this.centralBox = new HBox();
+        HBox.setHgrow(this.centralBox, Priority.ALWAYS);
+
+        // Arrow
+        this.arrow = new HBox();
+        this.arrow.setPrefWidth(10);
+        HBox.setHgrow(this.arrow, Priority.NEVER);
+
+
+        // Price
+        this.lastPrice = 0.0d;
+        this.price = new Label("8163");
+        this.updateStyle(true);
+        HBox.setHgrow(this.price, Priority.ALWAYS);
+
+        // Build hierarchy
+        this.getChildren().addAll(this.symbolLabel, this.centralBox, this.arrow, this.price);
+    }
+
+    /**
+     * Ctor
+     * @param symbol The stock's symbol
+     * @param price The current price of the quote
+     */
+    public QuoteData(String symbol, double price) {
+        // Fields
+        this.symbol = symbol;
+        this.lastPrice = price;
+
+        // Global style class
+        this.getStyleClass().add(StrCst.STYLE_CLASS_QUOTE_DATA);
+
+        // Symbol
+        this.symbolLabel = new Label(symbol);
+        this.symbolLabel.getStyleClass().add(StrCst.STYLE_CLASS_QUOTE_DATA_SYMBOL);
+        HBox.setHgrow(this.symbolLabel, Priority.ALWAYS);
+
+        // Central box
+        this.centralBox = new HBox();
+        HBox.setHgrow(this.centralBox, Priority.ALWAYS);
+
+        // Arrow
+        this.arrow = new HBox();
+        this.arrow.setPrefWidth(10);
+        HBox.setHgrow(this.arrow, Priority.NEVER);
+
+        // Price
+        this.price = new Label(String.valueOf(price));
+        this.updateStyle(true);
+        HBox.setHgrow(this.price, Priority.ALWAYS);
+
+        // Build hierarchy
+        this.getChildren().addAll(this.symbolLabel, this.centralBox, this.price);
+    }
+
+    /*****************************************
+     *
+     * Methods
+     *
+     *****************************************/
+    /**
+     * Update price style class depending on the current price
+     * of the quote
+     * @param openAboveClose State to define which style class
+     *                       to use
+     */
+    private void updateStyle(boolean openAboveClose){
+        this.arrow.getStyleClass().setAll(StrCst.STYLE_CLASS_QUOTE_DATA_ARROW, openAboveClose ? StrCst.STYLE_CLASS_OPEN_ABOVE_CLOSE : StrCst.STYLE_CLASS_CLOSE_ABOVE_OPEN);
+        this.price.getStyleClass().setAll(StrCst.STYLE_CLASS_QUOTE_DATA_PRICE, openAboveClose ? StrCst.STYLE_CLASS_OPEN_ABOVE_CLOSE : StrCst.STYLE_CLASS_CLOSE_ABOVE_OPEN);
+    }
+
+    /*****************************************
+     *
+     * Setter
+     *
+     *****************************************/
+    /**
+     * @return The symbol of the quote data displayed
+     */
+    public String getSymbol() {
+        return this.symbol;
+    }
+
+    /**
+     * Display the input price
+     * @param price The price to display
+     */
+    public void setPrice(double price) {
+        this.price.setText(String.valueOf(price));
+        if (this.lastPrice != price) this.updateStyle(this.lastPrice < price);
+        this.lastPrice = price;
+    }
+}

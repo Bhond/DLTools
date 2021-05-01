@@ -19,7 +19,7 @@
     -fx-font-size: 10pt;
     -fx-font-family: 'Stellar';
 	-fx-border-image-source: url("../borders/standardCorners.png");
-	-fx-border-image-width: 50px;
+	-fx-border-image-width: 20px;
 	-fx-border-image-slice: 50px;
 }
 
@@ -30,14 +30,50 @@
 
 .listView .list-cell:even
 {
-    -fx-background-color: -fx-palette-fogra39;
-    -fx-text-fill: -fx-palette-ghost-white;
+    -fx-background-color: transparent;
 }
 
 .listView .list-cell:odd
 {
-    -fx-background-color: -fx-palette-fogra39;
+    -fx-background-color: transparent;
+}
+
+/* Quote data */
+.quote-data
+{
+    -fx-spacing: 10px;
+}
+
+.quote-data-symbol
+{
     -fx-text-fill: -fx-palette-ghost-white;
+}
+
+.quote-data-price.open-above-close
+{
+    -fx-text-fill: -fx-palette-robin-egg-blue;
+}
+
+.quote-data-price.close-above-open
+{
+    -fx-text-fill: -fx-palette-orange;
+}
+
+.quote-data-arrow
+{
+    -fx-shape: "M233 752 c23 -23 37 -47 37 -63 0 -18 26 -50 101 -123 l100 -97 -100 -101 c-62 -62 -101 -109 -101 -122 0 -11 -17 -37 -37 -58 l-37 -38 35 0 c30 0 45 11 123 89 51 51 86 94 82 100 -4 6 18 38 50 71 l58 61 -52 52 c-29 29 -52 61 -52 71 0 10 -39 58 -87 107 -77 79 -91 89 -122 89 l-35 0 37 -38zM480 574 c0 -6 21 -31 47 -57 l46 -47 -46 -43 c-26 -24 -47 -50 -47 -58 0 -7 26 12 57 44 l58 57 -58 57 c-31 32 -57 53 -57 47zM331 470 c1 -38 5 -70 9 -70 3 0 21 16 40 35 l34 35 -34 35 c-19 19 -38 35 -42 35 -5 0 -8 -31 -7 -70z";
+}
+
+.quote-data-arrow.open-above-close
+{
+    -fx-background-color: -fx-palette-robin-egg-blue;
+    -fx-rotate: -90;
+}
+
+.quote-data-arrow.close-above-open
+{
+    -fx-background-color: -fx-palette-orange;
+    -fx-rotate: 90;
 }
 
 /* Buttons */
@@ -49,7 +85,6 @@
     -fx-font-family: 'Stellar';
     -fx-border-width: 1pt;
     -fx-border-color: -fx-palette-ghost-white;
-    /*-fx-shape: "M 50 3, 100 28, 100, 75, 50 100, 3 75, 3 25Z";*/
 }
 
 .button:hover

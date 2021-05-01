@@ -25,7 +25,7 @@ import fr.pops.cst.StrCst;
 import fr.pops.ihmloop.IhmLoop;
 import fr.pops.sockets.client.BaseClient;
 import fr.pops.sockets.cst.EnumCst;
-import fr.pops.views.MainView;
+import fr.pops.views.main.MainView;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
