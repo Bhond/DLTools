@@ -53,7 +53,6 @@ fr\pops\nn\nncst\cst\EnumCst$ActivationFunction.class
 fr\pops\nn\neuralnetworks\layers\ConvolutionLayer$ConvolutionLayerBuilder.class
 fr\pops\nn\scorer\Error.class
 fr\pops\commoncst\EnumCst.class
-fr\pops\sockets\resquest\GetServerInfoRequest.class
 fr\pops\nn\solver\ISolver.class
 fr\pops\nn\neuralnetworks\layers\FlattenLayer.class
 fr\pops\nn\popsmath\PopsMath.class
@@ -78,6 +77,7 @@ fr\pops\sockets\encodedecoder\EncoderDecoderHelper.class
 fr\pops\nn\datareader\DataReader.class
 fr\pops\models\BeanModel.class
 fr\pops\nn\activator\Activator.class
+fr\pops\sockets\resquest\GetNetworkInfoRequest.class
 fr\pops\nn\neuralnetworks\weights\weight\StandardWeight.class
 fr\pops\nn\neuralnetworks\layers\DenseLayer.class
 fr\pops\nn\neuralnetworks\NeuralNetworkToXMLParser.class
@@ -105,6 +105,7 @@ fr\pops\sockets\resquest\RequestFactory$1.class
 fr\pops\commoncst\EnumCst$ActivationFunction.class
 fr\pops\nn\nncst\cst\EnumCst$DataTypes.class
 fr\pops\nn\nncst\cst\EnumCst$LayerTypes.class
+fr\pops\sockets\resquest\DisconnectionRequest.class
 fr\pops\commoncst\EnumCst$CifarLabels.class
 fr\pops\nn\neuralnetworks\layers\PoolingLayer$1.class
 fr\pops\nn\popsmath\Vector.class

@@ -59,11 +59,7 @@ public class StockRequestHandler extends RequestHandler {
         // Process request
         switch (request.getType()){
             case GET_CURRENT_STOCK_INFO:
-                StockInfoManager.getInstance().getStockInfo().updateStockInfo();
-                long lastAccessTime = StockInfoManager.getInstance().getStockInfo().getLastAccessedTime();
-                ((GetCurrentStockInfoRequest) request).setAccessTime(lastAccessTime); // currentPrice
-                double currentPrice = StockInfoManager.getInstance().getStockInfo().getPrice();
-                ((GetCurrentStockInfoRequest) request).setCurrentStockPrice(10 * Math.random() + 5);
+                this.getCurrentStockInfoHandling((GetCurrentStockInfoRequest) request);
                 break;
         }
     }
@@ -90,5 +86,15 @@ public class StockRequestHandler extends RequestHandler {
         return operation;
     }
 
-
+    /**
+     * Handle GetCurrentStockInfo request
+     * @param request The request to handle
+     */
+    private void getCurrentStockInfoHandling(GetCurrentStockInfoRequest request){
+        StockInfoManager.getInstance().getStockInfo().updateStockInfo();
+        long lastAccessTime = StockInfoManager.getInstance().getStockInfo().getLastAccessedTime();
+        request.setAccessTime(lastAccessTime); // currentPrice
+        double currentPrice = StockInfoManager.getInstance().getStockInfo().getPrice();
+        request.setCurrentStockPrice(currentPrice);
+    }
 }

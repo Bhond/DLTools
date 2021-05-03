@@ -29,8 +29,8 @@ public abstract class IntCst {
     // Main window default sizes
     public static final int DEFAULT_MAIN_WINDOW_WIDTH = 3500;
     public static final int DEFAULT_MAIN_WINDOW_HEIGHT = 1950;
-    public static final int DEFAULT_MAIN_WINDOW_WIDTH_TEST = 1600;
-    public static final int DEFAULT_MAIN_WINDOW_HEIGHT_TEST = 1600;
+    public static final int DEFAULT_MAIN_WINDOW_WIDTH_TEST = DEFAULT_MAIN_WINDOW_WIDTH;
+    public static final int DEFAULT_MAIN_WINDOW_HEIGHT_TEST = DEFAULT_MAIN_WINDOW_HEIGHT;
 
     public static final int DEFAULT_MENU_BAR_HEIGHT = 50;
 

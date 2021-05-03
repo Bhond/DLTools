@@ -20,6 +20,7 @@
  ******************************************************************************/
 package fr.pops.controllers.viewcontrollers;
 
+import fr.pops.client.Client;
 import fr.pops.cst.EnumCst;
 import fr.pops.cst.IntCst;
 import fr.pops.viewmodels.BaseModel;
@@ -95,6 +96,9 @@ public class MainViewController extends BaseController<MainView, BaseModel<?>> {
      * @param actionEvent The closing action event
      */
     public void onCloseWindow(ActionEvent actionEvent){
+        if (!Client.getInstance().isStandAlone()){
+            Client.getInstance().close();
+        }
         Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
         stage.close();
     }

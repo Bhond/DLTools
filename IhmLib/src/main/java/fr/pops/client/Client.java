@@ -127,11 +127,17 @@ public class Client extends BaseClient {
      *
      *****************************************/
     /**
+     * @return True if the gui is launched as a standalone app
+     */
+    public boolean isStandAlone() {
+        return this.isStandAlone;
+    }
+
+    /**
      * This class is a singleton
      * @return The only instance of the object
      */
     public static Client getInstance(){
         return instance;
     }
-
 }

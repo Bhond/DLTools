@@ -121,7 +121,6 @@ public class StockInfo {
      * @return The time of the last update
      */
     public long getLastAccessedTime() {
-        System.out.println("Last accessed time: " + lastAccessedTime);
         return this.lastAccessedTime;
     }
 

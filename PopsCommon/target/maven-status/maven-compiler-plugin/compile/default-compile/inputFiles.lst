@@ -2,8 +2,8 @@ C:\Users\Charles\Documents\WorkspaceJava\Pops\PopsCommon\src\main\java\fr\pops\m
 C:\Users\Charles\Documents\WorkspaceJava\Pops\PopsCommon\src\main\java\fr\pops\sockets\resquest\RequestFactory.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\PopsCommon\src\main\java\fr\pops\beans\bean\Property.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\PopsCommon\src\main\java\fr\pops\nn\popsmath\Complex.java
+C:\Users\Charles\Documents\WorkspaceJava\Pops\PopsCommon\src\main\java\fr\pops\sockets\resquest\GetNetworkInfoRequest.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\PopsCommon\src\main\java\fr\pops\sockets\encodedecoder\EncoderDecoder.java
-C:\Users\Charles\Documents\WorkspaceJava\Pops\PopsCommon\src\main\java\fr\pops\sockets\resquest\GetServerInfoRequest.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\PopsCommon\src\main\java\fr\pops\commoncst\StrCst.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\PopsCommon\src\main\java\fr\pops\nn\neuralnetworks\networks\NeuralNetworkProperties.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\PopsCommon\src\main\java\fr\pops\nn\neuralnetworks\networks\NeuralNetwork.java
@@ -52,6 +52,7 @@ C:\Users\Charles\Documents\WorkspaceJava\Pops\PopsCommon\src\main\java\fr\pops\s
 C:\Users\Charles\Documents\WorkspaceJava\Pops\PopsCommon\src\main\java\fr\pops\beanloop\BeanLoop.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\PopsCommon\src\main\java\fr\pops\nn\neuralnetworks\weights\weightInit\WeightInitRelu.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\PopsCommon\src\main\java\fr\pops\commoncst\GeneratorDefaultValues.java
+C:\Users\Charles\Documents\WorkspaceJava\Pops\PopsCommon\src\main\java\fr\pops\sockets\resquest\DisconnectionRequest.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\PopsCommon\src\main\java\fr\pops\nn\neuralnetworks\layers\Layer.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\PopsCommon\src\main\java\fr\pops\nn\neuralnetworks\layers\PoolingLayer.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\PopsCommon\src\main\java\fr\pops\nn\neuralnetworks\layers\FlattenLayer.java

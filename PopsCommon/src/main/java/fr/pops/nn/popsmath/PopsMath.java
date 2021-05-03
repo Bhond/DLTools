@@ -29,6 +29,16 @@ import java.util.function.Function;
 public abstract class PopsMath<T, R> implements Function<T, R> {
 
     // Misc
+    /**
+     * Convert double to long
+     * @param value The value to convert
+     * @param base The base value which correspond to 1L
+     */
+    public static long convertDoubleToLong(double value, double base){
+        if (value < base) return 0L;
+        return (long) (value / base);
+    }
+
     // Round the given number at the given decimal
     public static double round(double x, int dec){ return Math.round(x * Math.pow(10, dec)) / Math.pow(10, dec); }
 

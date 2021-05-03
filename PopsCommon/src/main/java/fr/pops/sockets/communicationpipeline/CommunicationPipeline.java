@@ -20,6 +20,7 @@
  ******************************************************************************/
 package fr.pops.sockets.communicationpipeline;
 
+import fr.pops.nn.popsmath.PopsMath;
 import fr.pops.sockets.client.BaseClient;
 import fr.pops.sockets.resquest.AuthenticateRequest;
 import fr.pops.sockets.resquest.Request;
@@ -35,6 +36,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class CommunicationPipeline {
@@ -51,9 +53,10 @@ public class CommunicationPipeline {
 
     // Server loop parameters
     private final long initialDelay = 0;
-    private final long timeDelay = 1;
+    private final long timeDelay = PopsMath.convertDoubleToLong(1E-2, 1E-2);
 
     // Communication
+    protected ScheduledFuture<?> service;
     protected BaseClient client;
     private RequestFactory requestFactory = new RequestFactory();
     private ConcurrentLinkedQueue<Request> outputBucket = new ConcurrentLinkedQueue<>();
@@ -115,24 +118,14 @@ public class CommunicationPipeline {
      * to communicate with the server
      */
     public void run(){
-
         this.onConnectionOpened();
-
-        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
+        this.service = Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
             try {
                 this.communicate();
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
         }, this.initialDelay, this.timeDelay, TimeUnit.MILLISECONDS);
-    }
-
-    /**
-     * Send an authenticate request when the connection is started
-     */
-    private void onConnectionOpened() {
-        // Send authenticate request to server to inform it which ones are connected
-        this.send(new AuthenticateRequest(this.client.getType().getId()));
     }
 
     /**
@@ -243,21 +236,20 @@ public class CommunicationPipeline {
         if (!this.outputBucket.isEmpty()){
             // Get request
             Request requestToSend = this.outputBucket.poll();
-            if (requestToSend != null) {
-                // Encode it
-                requestToSend.encode();
 
-                // Put the request in the buffer
-                this.buffer.clear();
-                this.buffer.put(requestToSend.getRawRequest());
-                this.buffer.flip();
+            // Encode it
+            requestToSend.encode();
 
-                // Send the request
-                try{
-                    this.channel.write(this.buffer);
-                } catch (IOException e){
-                    e.printStackTrace();
-                }
+            // Put the request in the buffer
+            this.buffer.clear();
+            this.buffer.put(requestToSend.getRawRequest());
+            this.buffer.flip();
+
+            // Send the request
+            try{
+                this.channel.write(this.buffer);
+            } catch (IOException e){
+                e.printStackTrace();
             }
         }
     }
@@ -268,6 +260,30 @@ public class CommunicationPipeline {
      */
     public void send(Request request) {
         this.outputBucket.add(request);
+    }
+
+    /*****************************************
+     *
+     * Connection handling
+     *
+     *****************************************/
+    /**
+     * Send an authenticate request when the connection is started
+     */
+    private void onConnectionOpened() {
+        // Send authenticate request to server to inform it which ones are connected
+        this.send(new AuthenticateRequest(this.client.getType().getId()));
+    }
+
+    /**
+     * Close communication between server and client
+     */
+    public void close(){
+        try {
+            this.channel.close();
+            this.buffer = null;
+            this.service.cancel(true);
+        } catch (IOException ignored){}
     }
 
 }

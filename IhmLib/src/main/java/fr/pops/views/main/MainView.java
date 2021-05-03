@@ -26,8 +26,8 @@ import fr.pops.cst.IntCst;
 import fr.pops.cst.StrCst;
 import fr.pops.systeminfo.DisplayInfo;
 import fr.pops.utils.Utils;
-import fr.pops.views.serverinfo.ServerInfoView;
 import fr.pops.views.base.BaseView;
+import fr.pops.views.serverinfo.NetworkInfoView;
 import fr.pops.views.stock.StockView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -224,7 +224,6 @@ public class MainView extends BaseView<MainViewController> {
         this.viewsTabPane = new TabPane();
         VBox.setVgrow(this.viewsTabPane, Priority.ALWAYS);
         HBox.setHgrow(this.viewsTabPane, Priority.ALWAYS);
-        //this.viewsTabPane.setSide(Side.LEFT);
         this.viewsTabPane.getStyleClass().add(StrCst.STYLE_CLASS_VIEWS_TAB_PANE);
     }
 
@@ -251,7 +250,7 @@ public class MainView extends BaseView<MainViewController> {
         BaseView view = null;
         switch (viewType){
             case SERVER:
-                view = new ServerInfoView(this.stage);
+                view = new NetworkInfoView(this.stage);
                 break;
             case NEURAL_NETWORK:
                 System.out.println("Not implemented yet...");

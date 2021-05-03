@@ -5,37 +5,12 @@
 *****************************************/
 @import "Colors.css"
 @import "Fonts.css"
+@import "BaseListView.css"
 
 /* root */
 .root
 {
     -fx-padding: 10px;
-}
-
-/* List view */
-.listView
-{
-    -fx-background-color: transparent;
-    -fx-font-size: 10pt;
-    -fx-font-family: 'Stellar';
-	-fx-border-image-source: url("../borders/standardCorners.png");
-	-fx-border-image-width: 20px;
-	-fx-border-image-slice: 50px;
-}
-
-.listView .list-cell:filled:selected:focused
-{
-    -fx-background-color: -fx-palette-orange;
-}
-
-.listView .list-cell:even
-{
-    -fx-background-color: transparent;
-}
-
-.listView .list-cell:odd
-{
-    -fx-background-color: transparent;
 }
 
 /* Quote data */

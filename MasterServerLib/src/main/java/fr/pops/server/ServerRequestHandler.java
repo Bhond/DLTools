@@ -22,7 +22,8 @@ package fr.pops.server;
 
 import fr.pops.sockets.cst.EnumCst;
 import fr.pops.sockets.resquest.AuthenticateRequest;
-import fr.pops.sockets.resquest.GetServerInfoRequest;
+import fr.pops.sockets.resquest.DisconnectionRequest;
+import fr.pops.sockets.resquest.GetNetworkInfoRequest;
 import fr.pops.sockets.resquest.Request;
 import fr.pops.sockets.resquesthandler.RequestHandler;
 
@@ -86,14 +87,13 @@ public class ServerRequestHandler extends RequestHandler {
         // Process the request depending on its type
         switch (request.getType()){
             case AUTHENTICATE:
-                long id = ((AuthenticateRequest) request).getClientId();
-                this.server.addClient(id, this.currentKey);
-                System.out.println(EnumCst.ClientTypes.getType(id).name() + " client is connected.");
+                this.authenticateHandling((AuthenticateRequest) request);
                 break;
-            case GET_SERVER_INFO:
-                GetServerInfoRequest serverInfoRequest = (GetServerInfoRequest) request;
-                serverInfoRequest.setFrequency(this.server.getFrequency());
-                serverInfoRequest.setClientTypes(this.server.getConnectedClientsId());
+            case DISCONNECTION:
+                this.disconnectionHandling((DisconnectionRequest) request);
+                break;
+            case GET_NETWORK_INFO:
+                this.getServerInfoHandling((GetNetworkInfoRequest) request);
                 break;
 
         }
@@ -114,7 +114,7 @@ public class ServerRequestHandler extends RequestHandler {
             case PING:
                 operation = EnumCst.RequestOperations.WRITE_BACK;
                 break;
-            case GET_SERVER_INFO:
+            case GET_NETWORK_INFO:
                 operation = EnumCst.RequestOperations.WRITE_BACK;
                 break;
             case GET_CURRENT_STOCK_INFO:
@@ -176,5 +176,39 @@ public class ServerRequestHandler extends RequestHandler {
                 break;
         }
         return toId;
+    }
+
+    /*****************************************
+     *
+     * Handling
+     *
+     ****************************************/
+    /**
+     * Handle authenticate request
+     * @param request The request to handle
+     */
+    private void authenticateHandling(AuthenticateRequest request){
+        long id = request.getClientId();
+        this.server.addClient(id, this.currentKey);
+        System.out.println(EnumCst.ClientTypes.getType(id).name() + " client is connected.");
+    }
+
+    /**
+     * Handle disconnection request
+     * @param request The request to handle
+     */
+    private void disconnectionHandling(DisconnectionRequest request){
+        long id = request.getClientId();
+        this.server.removeClient(id, this.currentKey);
+        System.out.println(EnumCst.ClientTypes.getType(id).name() + " client is disconnected.");
+    }
+
+    /**
+     * Handle get server info request
+     * @param request The request to handle
+     */
+    private void getServerInfoHandling(GetNetworkInfoRequest request) {
+        request.setFrequency(this.server.getFrequency());
+        request.setClientTypes(this.server.getConnectedClientsId());
     }
 }

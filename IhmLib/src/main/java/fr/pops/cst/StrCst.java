@@ -42,12 +42,20 @@ public abstract class StrCst {
     public final static String MENUBAR_LABEL_VIEWS = "Views";
 
     // View names
-    public final static String NAME_SERVER_VIEW = "Server";
+    public final static String NAME_SERVER_VIEW = "Network info";
     public final static String NAME_NEURAL_NETWORK_VIEW = "Neural Network";
     public final static String NAME_STOCK_VIEW = "Stock";
 
     // String format
     public final static String FORMAT_SIMPLE_DATE = "HH:mm";
+
+    // Network view
+    public final static String LABEL_PING = "Ping: ";
+    public final static String FORMAT_VALUE_PING = "%3.0f ms";
+    public final static String LABEL_FREQUENCY = "Frequency: ";
+    public final static String FORMAT_VALUE_FREQUENCY = "%3.0f Hz";
+
+    // Stock info
 
     /*****************************************
      *
@@ -56,13 +64,17 @@ public abstract class StrCst {
      *****************************************/
     // Directory
     public final static String PATH_CSS_DIRECTORY = "/resources/css/";
+    public final static String PATH_MEDIA_DIRECTORY = "/resources/media/";
+    public final static String PATH_IMAGES_DIRECTORY = fr.pops.cst.StrCst.PATH_MEDIA_DIRECTORY + "images/";
     // Custom nodes
     public final static String PATH_BASE_PLOT_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "BasePlot.css";
     public final static String PATH_CANDLESTICK_PLOT_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "CandleStickPlot.css";
     // Views
     public final static String PATH_MAIN_VIEW_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "MainView.css";
-    public final static String PATH_SERVER_INFO_VIEW_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "ServerInfoView.css";
-    public static final String PATH_STOCK_VIEW_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "StockView.css";
+    public final static String PATH_SERVER_INFO_VIEW_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "NetworkInfoView.css";
+    public final static String PATH_STOCK_VIEW_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "StockView.css";
+    // Earth texture
+    public final static String PATH_EARTH_TEXTURE =  fr.pops.cst.StrCst.PATH_IMAGES_DIRECTORY + "earth.png";
 
     /*****************************************
      *
@@ -82,6 +94,7 @@ public abstract class StrCst {
     public final static String STYLE_CLASS_VIEWS_TAB_PANE = "viewsTabPane";
     public static final String STYLE_CLASS_LISTVIEW = "listView";
     public final static String STYLE_CLASS_STANDARD_BUTTON = "button";
+    public final static String STYLE_CLASS_LABEL_VALUE_PAIR_BOX = "labelValuePairBox";
 
     // Candlestic
     public final static String STYLE_CLASS_CANDLESTICK_BODY = "candlestick-body";

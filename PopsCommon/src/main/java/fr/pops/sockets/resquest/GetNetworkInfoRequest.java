@@ -27,7 +27,7 @@ import fr.pops.sockets.cst.EnumCst;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetServerInfoRequest extends Request{
+public class GetNetworkInfoRequest extends Request{
 
     /*****************************************
      *
@@ -46,18 +46,18 @@ public class GetServerInfoRequest extends Request{
     /**
      * Standard ctor
      */
-    public GetServerInfoRequest(){
+    public GetNetworkInfoRequest(){
         // Parent
-        super(EnumCst.RequestTypes.GET_SERVER_INFO);
+        super(EnumCst.RequestTypes.GET_NETWORK_INFO);
     }
 
     /**
      * Ctor used to create a request when receiving one
      * @param rawParams The raw parameters to decode
      */
-    public GetServerInfoRequest(byte[] rawParams){
+    public GetNetworkInfoRequest(byte[] rawParams){
         // Parent
-        super(EnumCst.RequestTypes.GET_SERVER_INFO, rawParams);
+        super(EnumCst.RequestTypes.GET_NETWORK_INFO, rawParams);
     }
 
     /**
@@ -65,9 +65,9 @@ public class GetServerInfoRequest extends Request{
      * @param rawParams The raw parameters to decode
      * @param length The request's length
      */
-    public GetServerInfoRequest(byte[] rawParams, int length){
+    public GetNetworkInfoRequest(byte[] rawParams, int length){
         // Parent
-        super(EnumCst.RequestTypes.GET_SERVER_INFO, rawParams, length);
+        super(EnumCst.RequestTypes.GET_NETWORK_INFO, rawParams, length);
     }
 
     /*****************************************

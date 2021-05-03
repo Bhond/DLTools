@@ -22,10 +22,10 @@ package fr.pops.client;
 
 import fr.pops.controllers.controllermanager.ControllerManager;
 import fr.pops.controllers.viewcontrollers.BaseController;
-import fr.pops.controllers.viewcontrollers.ServerInfoController;
+import fr.pops.controllers.viewcontrollers.NetworkInfoController;
 import fr.pops.controllers.viewcontrollers.StockController;
 import fr.pops.sockets.resquest.GetCurrentStockInfoRequest;
-import fr.pops.sockets.resquest.GetServerInfoRequest;
+import fr.pops.sockets.resquest.GetNetworkInfoRequest;
 import fr.pops.sockets.resquest.PingRequest;
 import fr.pops.sockets.resquest.Request;
 
@@ -46,17 +46,18 @@ public abstract class RequestDispatcher {
         BaseController<?,?> controller;
         switch (request.getType()){
             case PING:
-                controller = ControllerManager.getInstance().getFirst(ServerInfoController.class);
+                controller = ControllerManager.getInstance().getFirst(NetworkInfoController.class);
                 if (controller != null){
-                    ((ServerInfoController) controller).setPingValue(((PingRequest) request).getResponseDelay());
+                    ((NetworkInfoController) controller).setPingValue(((PingRequest) request).getResponseDelay());
                 }
                 break;
-            case GET_SERVER_INFO:
-                controller =  ControllerManager.getInstance().getFirst(ServerInfoController.class);
+            case GET_NETWORK_INFO:
+                controller =  ControllerManager.getInstance().getFirst(NetworkInfoController.class);
                 if (controller != null){
-                    ((ServerInfoController) controller).setFrequency(((GetServerInfoRequest) request).getFrequency());
-                    ((ServerInfoController) controller).setConnectedClients(((GetServerInfoRequest) request).getClientTypes());
+                    ((NetworkInfoController) controller).setFrequency(((GetNetworkInfoRequest) request).getFrequency());
+                    ((NetworkInfoController) controller).setConnectedClients(((GetNetworkInfoRequest) request).getClientTypes());
                 }
+                break;
             case GET_CURRENT_STOCK_INFO:
                 controller =  ControllerManager.getInstance().getFirst(StockController.class);
                 if (controller != null){

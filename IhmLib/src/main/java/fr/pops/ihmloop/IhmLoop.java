@@ -22,9 +22,11 @@ package fr.pops.ihmloop;
 import fr.pops.controllers.controllermanager.ControllerManager;
 import fr.pops.controllers.viewcontrollers.BaseController;
 import fr.pops.cst.EnumCst;
+import fr.pops.nn.popsmath.PopsMath;
 import fr.pops.viewmodels.BaseModel;
 
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -43,8 +45,10 @@ public class IhmLoop {
      * Attributes
      *
      *****************************************/
+    private ScheduledFuture<?> service;
     private final long initialDelay = 0;
-    private final long frequency = 1; // TODO: change frequency
+    private final double frequency = 100;
+    private final long timeDelay = PopsMath.convertDoubleToLong(1 / this.frequency, 1E-2);
     private double runningTime = 0.0d;
     private double t0 = 0.0d;
     private long stepCount = 0;
@@ -76,7 +80,7 @@ public class IhmLoop {
     public void run() {
         AtomicReference<Double> dt = new AtomicReference<>(0.0d);
         this.t0 = System.currentTimeMillis();
-        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
+        this.service = Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
             try {
                 this.updateModels(dt.get());
             } catch (Throwable throwable) {
@@ -85,7 +89,7 @@ public class IhmLoop {
             dt.set(dt.accumulateAndGet((double) this.frequency, Double::sum));
             this.runningTime = System.currentTimeMillis() - this.t0;
             this.stepCount++;
-        }, this.initialDelay, this.frequency, TimeUnit.MILLISECONDS);
+        }, this.initialDelay, this.timeDelay, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -133,5 +137,18 @@ public class IhmLoop {
                 break;
         }
         return needsUpdate;
+    }
+
+    /*****************************************
+     *
+     * Connection handling
+     *
+     *****************************************/
+    /**
+     * Cancel loop when the connection is closed
+     */
+    public void onConnectionClosed(){
+        // Service
+        this.service.cancel(true);
     }
 }

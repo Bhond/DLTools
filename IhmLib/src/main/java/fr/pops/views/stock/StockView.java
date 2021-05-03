@@ -41,6 +41,10 @@ import java.util.Date;
 
 public class StockView extends BaseView<StockController> {
 
+    /**
+     * TODO: Make Quote info draggable with a new scene
+     */
+
     /*****************************************
      *
      * Attributes
@@ -52,7 +56,7 @@ public class StockView extends BaseView<StockController> {
     private HBox bottomBox;
 
     // Controls
-    private ListView<QuoteData> stockDisplayedListView;
+    private ListView<QuoteInfo> stockDisplayedListView;
     private CandlestickPlot stockDataPlot;
     private Button addStockDataButton;
 
@@ -126,24 +130,26 @@ public class StockView extends BaseView<StockController> {
         this.addStockDataButton.setOnAction(a -> this.controller.onAddStock(a));
         this.addStockDataButton.getStyleClass().add(StrCst.STYLE_CLASS_STANDARD_BUTTON);
 
-
         /**
          * Temp
          */
-        QuoteData qd = new QuoteData();
-        this.stockDisplayedListView.getItems().addAll(qd);
+        QuoteInfo qd = new QuoteInfo();
+        this.stockDisplayedListView.getItems().add(qd);
         /**
          * Temp
          */
+        this.stockDisplayedListView.onDragDetectedProperty().set(event -> this.controller.onDragDetected(event, this.stockDisplayedListView));
+        this.stockDisplayedListView.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (!observableValue.getValue()){
+                this.stockDisplayedListView.getSelectionModel().clearSelection();
+            }
+        });
 
         // Create plot displaying the stock data in real time
         this.stockDataPlot = new CandlestickPlot();
-//        CandleData candleData = new CandleData(new Date(), 7,  20, 3, 15, 0);
-//        this.stockDataPlot.addCandle(candleData);
+        this.stockDataPlot.onDragOverProperty().set(event -> this.controller.onDragOverChart(event, this.stockDataPlot));
         VBox.setVgrow(this.stockDataPlot, Priority.ALWAYS);
         HBox.setHgrow(this.stockDataPlot, Priority.ALWAYS);
-
-
 
         // Build hierarchy
         this.topLeftBox.getChildren().addAll(this.stockDisplayedListView, this.addStockDataButton);
@@ -163,7 +169,7 @@ public class StockView extends BaseView<StockController> {
      */
     public void addCurrentPrice(long lastAccessTime, double price){
         // Update list view
-        for (QuoteData quoteData : this.stockDisplayedListView.getItems()) {
+        for (QuoteInfo quoteData : this.stockDisplayedListView.getItems()) {
             if (quoteData.getSymbol().equals("GME")){
                 Platform.runLater(() -> quoteData.setPrice(price)); // TODO: Add it to updater
                 break;
@@ -181,4 +187,14 @@ public class StockView extends BaseView<StockController> {
             Updater.update(this.stockDataPlot, candleData);
         }
     }
+
+    /**
+     * TODO: To be corrected
+     * Update the list height to avoid displaying empty cells
+     */
+    private void updateListHeight() {
+        final double height = Math.min(stockDisplayedListView.getItems().size(), 100) * stockDisplayedListView.getFixedCellSize();
+        stockDisplayedListView.setPrefHeight(height + stockDisplayedListView.getFixedCellSize());
+    }
+
 }

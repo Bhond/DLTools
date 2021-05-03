@@ -20,12 +20,12 @@
 package fr.pops.viewmodels;
 
 import fr.pops.client.Client;
-import fr.pops.controllers.viewcontrollers.ServerInfoController;
+import fr.pops.controllers.viewcontrollers.NetworkInfoController;
 import fr.pops.cst.EnumCst;
-import fr.pops.sockets.resquest.GetServerInfoRequest;
+import fr.pops.sockets.resquest.GetNetworkInfoRequest;
 import fr.pops.sockets.resquest.PingRequest;
 
-public class ServerInfoModel extends BaseModel<ServerInfoController>{
+public class NetworkInfoModel extends BaseModel<NetworkInfoController>{
 
     /*****************************************
      *
@@ -35,7 +35,7 @@ public class ServerInfoModel extends BaseModel<ServerInfoController>{
     /**
      * Ctor
      */
-    public ServerInfoModel(){
+    public NetworkInfoModel(){
         // Parent
         super();
 
@@ -59,7 +59,7 @@ public class ServerInfoModel extends BaseModel<ServerInfoController>{
         Client.getInstance().send(ping);
 
         // Send a get server info request
-        GetServerInfoRequest serverInfoRequest = new GetServerInfoRequest();
+        GetNetworkInfoRequest serverInfoRequest = new GetNetworkInfoRequest();
         Client.getInstance().send(serverInfoRequest);
 
     }

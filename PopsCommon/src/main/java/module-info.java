@@ -12,4 +12,5 @@ module PopsCommon {
     exports fr.pops.sockets.resquest;
     exports fr.pops.sockets.resquesthandler;
     exports fr.pops.commoncst;
+    exports fr.pops.nn.popsmath;
 }

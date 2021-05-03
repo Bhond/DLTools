@@ -21,11 +21,15 @@
  ******************************************************************************/
 package fr.pops.views.updater;
 
+import fr.pops.cst.EnumCst;
 import fr.pops.customnodes.plot.candlestickplot.CandleData;
 import fr.pops.customnodes.plot.candlestickplot.CandlestickPlot;
 import javafx.application.Platform;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+
+import java.util.Collection;
 
 public abstract class Updater {
 
@@ -78,6 +82,33 @@ public abstract class Updater {
      */
     public static void update(CandlestickPlot chart, double value){
         Platform.runLater(() -> chart.updateCurrentCandle(value));
+    }
+
+    /*****************************************
+     *
+     * ListView
+     *
+     *****************************************/
+    public static <T> void update(ListView<T> listView, EnumCst.ListViewOps op, T item){
+        switch (op){
+            case ADD:
+                Platform.runLater(() -> listView.getItems().add(item));
+                break;
+            case REMOVE:
+                Platform.runLater(() -> listView.getItems().remove(item));
+                break;
+        }
+    }
+
+    public static <T> void update(ListView<T> listView, EnumCst.ListViewOps op, Collection<T> items){
+        switch (op){
+            case ADD:
+                Platform.runLater(() -> listView.getItems().addAll(items));
+                break;
+            case REMOVE:
+                Platform.runLater(() -> listView.getItems().removeAll(items));
+                break;
+        }
     }
 
 

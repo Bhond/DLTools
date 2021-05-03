@@ -54,7 +54,7 @@
 
 .context-menu
 {
-    -fx-background-color: transparent;
+    -fx-background-color: -fx-palette-fogra39;
     -fx-background-insets: 0, 1, 2;
     -fx-background-radius: 0 6 6 6, 0 5 5 5, 0 4 4 4;
     -fx-padding: 0.333333em 0.083333em 0.666667em 0.083333em;
@@ -80,6 +80,8 @@
 .viewsTabPane .tab-header-area .tab-header-background
 {
     -fx-background-color: transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: -fx-palette-robin-egg-blue;
 }
 
 .viewsTabPane .tab-label
@@ -111,7 +113,7 @@
     -fx-background-insets: 0.0;
     -fx-background-radius: 0.0;
     -fx-border-width: 0 0 5 0;
-    -fx-border-color: -fx-palette-orange;
+    -fx-border-color: -fx-palette-robin-egg-blue;
 }
 
 .viewTab .tab-close-button {

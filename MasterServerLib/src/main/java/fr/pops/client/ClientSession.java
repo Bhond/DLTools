@@ -131,10 +131,8 @@ public class ClientSession {
                     hasRemaining = false;
                 }
             }
-        } catch (Throwable t){
-            t.printStackTrace();
-            this.disconnect();
-        }
+        } catch (Throwable ignored){}
+
         return requests;
     }
 
@@ -180,5 +178,17 @@ public class ClientSession {
      */
     public void setType(EnumCst.ClientTypes type) {
         this.type = type;
+    }
+
+    /*****************************************
+     *
+     * Getter
+     *
+     *****************************************/
+    /**
+     * @return The client's channel
+     */
+    public SocketChannel getChannel() {
+        return this.channel;
     }
 }

@@ -25,14 +25,12 @@ package fr.pops.server;
 import fr.pops.client.ClientSession;
 import fr.pops.commoncst.IntCst;
 import fr.pops.cst.DoubleCst;
+import fr.pops.nn.popsmath.PopsMath;
 import fr.pops.sockets.cst.EnumCst;
 import fr.pops.sockets.resquest.Request;
 
 import java.net.InetSocketAddress;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
-import java.nio.channels.ServerSocketChannel;
-import java.nio.channels.SocketChannel;
+import java.nio.channels.*;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -65,7 +63,7 @@ public class Server {
     // Server loop parameters
     private final long initialDelay = 0;
     private final double frequency = DoubleCst.SERVER_FREQUENCY_HZ;
-    private final long timeDelay = 1;
+    private final long timeDelay = PopsMath.convertDoubleToLong(1 / this.frequency, 1E-2);
 
     // Communication
     private ServerSocketChannel serverChannel;
@@ -135,6 +133,7 @@ public class Server {
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
             try {
                 this.communicate();
+            } catch (CancelledKeyException ignored){
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
@@ -171,7 +170,6 @@ public class Server {
             if (key.isReadable()){
                List<Request> requests = this.clientMap.get(key).read();
                for (Request request : requests){
-                   System.out.println("Handling: " +  request.getType() + " from " + this.clientMap.get(key).getType());
                    // Handle the request
                    this.requestHandler.handle(key, request);
 
@@ -219,11 +217,11 @@ public class Server {
     private void transfer(Request request, SelectionKey senderKey){
         long id = this.clientMap.get(senderKey).getType().getId();
         long receiverId = this.requestHandler.selectReceiver(request, id);
-        SelectionKey receiverKey = this.connectedClientsId.get(receiverId);
-        System.out.println("Transferring from: " +  this.clientMap.get(senderKey).getType() + " to " + this.clientMap.get(receiverKey).getType());
-        this.clientMap.get(receiverKey).send(request);
+        if (isClientConnected(receiverId)){
+            SelectionKey receiverKey = this.connectedClientsId.get(receiverId);
+            this.clientMap.get(receiverKey).send(request);
+        }
     }
-
 
     /**
      * Add client id to a dictionary
@@ -235,6 +233,43 @@ public class Server {
     public void addClient(long clientId, SelectionKey key) {
         this.connectedClientsId.put(clientId, key);
         this.clientMap.get(key).setType(fr.pops.sockets.cst.EnumCst.ClientTypes.getType(clientId));
+    }
+
+    /**
+     * Remove client id from dictionaries
+     * Close session
+     * @param clientId The client id to remove
+     * @param key The client's corresponding selection key
+     */
+    public void removeClient(long clientId, SelectionKey key){
+        // Log
+        try {
+            System.out.println("Disconnecting:" + this.clientMap.get(key).getChannel().getRemoteAddress() + ", total clients: " + this.clientMap.size());
+        } catch (Exception ignored){}
+
+        // Disconnect client's session
+        this.clientMap.get(key).disconnect();
+
+        // Remove selection key from the client map
+        this.clientMap.remove(key);
+    }
+
+    /**
+     * Check if the client is connected
+     * @param id The client's id
+     * @return True if the client is connected
+     */
+    private boolean isClientConnected(long id){
+        return this.connectedClientsId.containsKey(id);
+    }
+
+    /**
+     * Check if the client is connected
+     * @param key The client's key
+     * @return True if the client is connected
+     */
+    private boolean isClientConnected(SelectionKey key){
+        return this.clientMap.containsKey(key);
     }
 
     /*****************************************

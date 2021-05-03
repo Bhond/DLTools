@@ -20,12 +20,12 @@
 package fr.pops.controllers.viewcontrollers;
 
 import fr.pops.sockets.cst.EnumCst;
-import fr.pops.viewmodels.ServerInfoModel;
-import fr.pops.views.serverinfo.ServerInfoView;
+import fr.pops.viewmodels.NetworkInfoModel;
+import fr.pops.views.serverinfo.NetworkInfoView;
 
 import java.util.List;
 
-public class ServerInfoController extends BaseController<ServerInfoView, ServerInfoModel>{
+public class NetworkInfoController extends BaseController<NetworkInfoView, NetworkInfoModel>{
 
     /*****************************************
      *
@@ -36,7 +36,7 @@ public class ServerInfoController extends BaseController<ServerInfoView, ServerI
      * Standard ctor
      * Nothing to be done
      */
-    private ServerInfoController(){
+    private NetworkInfoController(){
         // Nothing to be done
     }
 
@@ -44,9 +44,9 @@ public class ServerInfoController extends BaseController<ServerInfoView, ServerI
      * Ctor
      * @param view The view to control
      */
-    public ServerInfoController(ServerInfoView view){
+    public NetworkInfoController(NetworkInfoView view){
         // Parent
-        super(view, new ServerInfoModel());
+        super(view, new NetworkInfoModel());
     }
 
     /*****************************************

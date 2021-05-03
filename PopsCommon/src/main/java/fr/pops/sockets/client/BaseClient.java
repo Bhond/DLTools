@@ -19,10 +19,11 @@
  ******************************************************************************/
 package fr.pops.sockets.client;
 
+import fr.pops.sockets.communicationpipeline.CommunicationPipeline;
 import fr.pops.sockets.cst.EnumCst;
 import fr.pops.sockets.cst.IntCst;
+import fr.pops.sockets.resquest.DisconnectionRequest;
 import fr.pops.sockets.resquest.Request;
-import fr.pops.sockets.communicationpipeline.CommunicationPipeline;
 import fr.pops.sockets.resquesthandler.RequestHandler;
 
 import java.io.IOException;
@@ -130,7 +131,9 @@ public abstract class BaseClient {
             this.requestHandler = requestHandler;
             this.communicationPipeline = pipeline;
             this.communicationPipeline.onInit(this, this.channel, this.buffer);
-        } catch (IOException ignored) {}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /*****************************************
@@ -160,10 +163,8 @@ public abstract class BaseClient {
      * Close the client
      */
     public void close(){
-        try{
-            this.channel.close();
-            this.buffer = null;
-        } catch (IOException ignored) {}
+        this.send(new DisconnectionRequest(this.getType().getId()));
+        this.communicationPipeline.close();
     }
 
     /*****************************************
@@ -199,5 +200,10 @@ public abstract class BaseClient {
      */
     public RequestHandler getRequestHandler() {
         return this.requestHandler;
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
     }
 }

@@ -30,6 +30,13 @@ public abstract class DblCst {
 
     /*****************************************
      *
+     * Network view
+     *
+     *****************************************/
+    public final static double EARTH_SPHERE_RADIUS = 200d;
+
+    /*****************************************
+     *
      * Candlestick plot
      *
      *****************************************/

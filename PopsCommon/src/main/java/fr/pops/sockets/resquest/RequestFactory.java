@@ -53,7 +53,7 @@ public class RequestFactory {
      * Build request from the given raw representation
      *
      * TODO: Avoid reading the request and fill in the new request class with
-     *       all of the parameters which leads to reading th id again
+     *       all of the parameters which leads to reading the id again
      *       Cloning the buffer array is mandatory right now due to the
      *       lack of idea for another solution
      *
@@ -74,10 +74,12 @@ public class RequestFactory {
         switch (requestType){
             case AUTHENTICATE:
                 return new AuthenticateRequest(rawParams, length);
+            case DISCONNECTION:
+                return new DisconnectionRequest(rawParams, length);
             case PING:
                 return new PingRequest(rawParams, length);
-            case GET_SERVER_INFO:
-                return new GetServerInfoRequest(rawParams, length);
+            case GET_NETWORK_INFO:
+                return new GetNetworkInfoRequest(rawParams, length);
             case GET_CURRENT_STOCK_INFO:
                 return new GetCurrentStockInfoRequest(rawParams, length);
             default:

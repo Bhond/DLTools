@@ -25,7 +25,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
-public class QuoteData extends HBox {
+public class QuoteInfo extends HBox implements Cloneable {
 
     /*****************************************
      *
@@ -50,7 +50,7 @@ public class QuoteData extends HBox {
      * Standard ctor
      * Body is temporary, for tests
      */
-    public QuoteData(){
+    public QuoteInfo(){
         // Global style class
         this.getStyleClass().add(StrCst.STYLE_CLASS_QUOTE_DATA);
 
@@ -85,7 +85,7 @@ public class QuoteData extends HBox {
      * @param symbol The stock's symbol
      * @param price The current price of the quote
      */
-    public QuoteData(String symbol, double price) {
+    public QuoteInfo(String symbol, double price) {
         // Fields
         this.symbol = symbol;
         this.lastPrice = price;
@@ -113,7 +113,7 @@ public class QuoteData extends HBox {
         HBox.setHgrow(this.price, Priority.ALWAYS);
 
         // Build hierarchy
-        this.getChildren().addAll(this.symbolLabel, this.centralBox, this.price);
+        this.getChildren().addAll(this.symbolLabel, this.centralBox, this.arrow, this.price);
     }
 
     /*****************************************
@@ -149,8 +149,19 @@ public class QuoteData extends HBox {
      * @param price The price to display
      */
     public void setPrice(double price) {
-        this.price.setText(String.valueOf(price));
+        this.price.setText(String.format("%6.2f", price));
         if (this.lastPrice != price) this.updateStyle(this.lastPrice < price);
         this.lastPrice = price;
+    }
+
+    @Override
+    protected QuoteInfo clone() {
+        QuoteInfo clone = null;
+        try {
+            clone = (QuoteInfo) super.clone();
+        } catch (CloneNotSupportedException e){
+            e.printStackTrace();
+        }
+        return clone;
     }
 }
