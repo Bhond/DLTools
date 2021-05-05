@@ -1,0 +1,57 @@
+/*****************************************
+*
+* Stylesheet for TabPanes
+*
+*****************************************/
+@import "Colors.css"
+@import "Fonts.css"
+
+/* TabPane */
+.tab .tab-header-area .tab-header-background
+{
+    -fx-background-color: transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: -fx-palette-robin-egg-blue;
+}
+
+.tabPane .tab-label
+{
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-palette-ghost-white;
+    -fx-font-family: 'Stellar';
+    -fx-font-size: 10pt;
+}
+
+.tabPane .tab-label
+{
+    -fx-border-color: transparent;
+}
+
+.tab
+{
+    -fx-background-color: transparent;
+    -fx-background-insets: 0.0;
+    -fx-background-radius: 0.0;
+    -fx-padding: 0 30 0 30;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.tab:selected
+{
+    -fx-background-color: transparent;
+    -fx-background-insets: 0.0;
+    -fx-background-radius: 0.0;
+    -fx-border-width: 0 0 5 0;
+    -fx-border-color: -fx-palette-robin-egg-blue;
+}
+
+.tab .tab-close-button
+{
+    -fx-background-color: -fx-palette-ghost-white;
+}
+
+.tab .tab-close-button:hover
+{
+    -fx-effect: dropshadow(gaussian, -fx-palette-orange, 8, 0.3, 0, 0);
+}

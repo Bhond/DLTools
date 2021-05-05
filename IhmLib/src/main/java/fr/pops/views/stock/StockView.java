@@ -28,10 +28,8 @@ import fr.pops.customnodes.plot.candlestickplot.CandlestickPlot;
 import fr.pops.utils.Utils;
 import fr.pops.views.base.BaseView;
 import fr.pops.views.updater.Updater;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TextField;
+import javafx.geometry.Side;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -54,14 +52,13 @@ public class StockView extends BaseView<StockController> {
     // Layouts
     private HBox topBox;
     private VBox topLeftBox;
-    private HBox bottomBox;
 
     // Controls
     // Quote info list
     private ListView<QuoteInfo> stockDisplayedListView;
 
     // Quote data chart
-    private CandlestickPlot stockDataPlot;
+    private TabPane chartsTabPane;
 
     // New quote
     private HBox addStockBox;
@@ -125,21 +122,17 @@ public class StockView extends BaseView<StockController> {
         this.topBox = new HBox();
         VBox.setVgrow(this.topBox, Priority.ALWAYS);
         this.topLeftBox = new VBox();
-        this.bottomBox = new HBox();
-        VBox.setVgrow(this.bottomBox, Priority.ALWAYS);
+        this.topBox.setSpacing(10);
 
         // Configure the components managing the quote infos
         this.configureQuoteInfoDisplay();
 
-        // Create plot displaying the stock data in real time
-        this.stockDataPlot = new CandlestickPlot();
-        this.stockDataPlot.onDragOverProperty().set(event -> this.controller.onDragOverChart(event, this.stockDataPlot));
-        VBox.setVgrow(this.stockDataPlot, Priority.ALWAYS);
-        HBox.setHgrow(this.stockDataPlot, Priority.ALWAYS);
+        // Configure the tab pane that holds all the charts
+        this.configureChartTabPane();
 
         // Build hierarchy
         this.topLeftBox.getChildren().addAll(this.stockDisplayedListView, this.addStockBox);
-        this.topBox.getChildren().addAll(this.topLeftBox, this.stockDataPlot);
+        this.topBox.getChildren().addAll(this.topLeftBox, this.chartsTabPane);
         this.rootLayout.getChildren().add(this.topBox);
     }
 
@@ -163,8 +156,10 @@ public class StockView extends BaseView<StockController> {
 
         // Add stock box
         this.addStockBox = new HBox();
+        this.addStockBox.setSpacing(5);
         // Stock data text field
         this.addStockDataTextField = new TextField(StrCst.ADD_QUOTE_TEXT_FIELD_DEFAULT);
+        this.addStockDataTextField.getStyleClass().add(StrCst.STYLE_CLASS_TEXT_FIELD);
         this.addStockDataTextField.onMouseClickedProperty().set((event) -> {
             if (this.addStockDataTextField.textProperty().get().equals(StrCst.ADD_QUOTE_TEXT_FIELD_DEFAULT)){
                 this.addStockDataTextField.clear();
@@ -187,17 +182,74 @@ public class StockView extends BaseView<StockController> {
         this.addStockBox.getChildren().addAll(this.addStockDataTextField, this.addStockDataButton);
     }
 
+    /**
+     * Configure the tab pane holding all the displayed candlestick charts
+     */
+    private void configureChartTabPane(){
+        this.chartsTabPane = new TabPane();
+        this.chartsTabPane.setSide(Side.BOTTOM);
+        this.chartsTabPane.onDragOverProperty().set(event -> this.controller.onDragOverChartTabPane(event));
+        this.chartsTabPane.onDragDroppedProperty().set(event -> this.controller.onDragDroppedChartTabPane(event));
+        VBox.setVgrow(this.chartsTabPane, Priority.ALWAYS);
+        HBox.setHgrow(this.chartsTabPane, Priority.ALWAYS);
+    }
+
     /*****************************************
      *
      * Update
      *
      *****************************************/
+    /**
+     * Add candlestick chart for the stock data
+     * If symbol is already present, it is selected
+     * @param symbol The symbol of the quote data to display
+     */
+    public void addCandlestickChart(String symbol){
+        if (this.controller.getQuoteInfo(symbol).isPlotted()){
+            // Select the tab that displays the given symbol
+            for (Tab tab : this.chartsTabPane.getTabs()){
+                if (tab.getText().equals(symbol)){
+                    this.chartsTabPane.getSelectionModel().select(tab);
+                    break;
+                }
+            }
+        } else {
+            // Create new tab
+            Tab tab = new Tab(symbol);
+            HBox hBox = new HBox();
+            VBox vBox = new VBox();
+            HBox.setHgrow(vBox, Priority.ALWAYS);
+            VBox.setVgrow(hBox, Priority.ALWAYS);
+
+            // Create plot displaying the stock data in real time
+            QuoteInfo info = this.controller.getQuoteInfo(symbol);
+            if (info != null){
+                tab.onClosedProperty().set((event) -> {
+                    this.controller.removeDisplayedChart(info);
+                    tab.contentProperty().set(null);
+                    info.setPlotted(false);
+                });
+                CandlestickPlot plot = new CandlestickPlot();
+                plot.onDragOverProperty().set(event -> this.controller.onDragOverChartTabPane(event));
+                plot.onDragDroppedProperty().set(event -> this.controller.onDragDroppedChartTabPane(event));
+                VBox.setVgrow(plot, Priority.ALWAYS);
+                HBox.setHgrow(plot, Priority.ALWAYS);
+                tab.contentProperty().set(plot);
+                this.chartsTabPane.getTabs().add(tab);
+                this.controller.addDisplayedChart(info, plot);
+                this.controller.getQuoteInfo(symbol).setPlotted(true);
+            }
+        }
+    }
+
+
     public void updateStockInfo(String symbol, long lastAccessTime, double price){
         // Retrieve existing QuoteInfo in the list view
         QuoteInfo info = this.controller.getQuoteInfo(symbol);
         if (info == null){
             if (!symbol.equals("invalid")){
-                Updater.update(this.controller, EnumCst.ListViewOps.ADD, new QuoteInfo(symbol, price, lastAccessTime));
+                info = new QuoteInfo(symbol, price, lastAccessTime);
+                Updater.update(this.controller, EnumCst.ListViewOps.ADD, info);
             }
         } else {
             Updater.update(info, price);
@@ -206,14 +258,17 @@ public class StockView extends BaseView<StockController> {
 
         // Update candleStick if necessary
         if (info.isPlotted()){
-            CandleData lastCandle = this.stockDataPlot.getLastCandleData();
-            SimpleDateFormat simpleDateFormat = this.stockDataPlot.getSimpleDateFormat();
-            boolean sameDisplayedDate = lastCandle != null && simpleDateFormat.format(new Date(lastAccessTime)).equals(simpleDateFormat.format(lastCandle.getDateTime().getTime()));
-            if (sameDisplayedDate){
-                Updater.update(this.stockDataPlot, price);
-            } else {
-                CandleData candleData = new CandleData(new Date(lastAccessTime), price, price, price, price, 0);
-                Updater.update(this.stockDataPlot, candleData);
+            CandlestickPlot plot = this.controller.getDisplayedChart(info);
+            if (plot != null){
+                CandleData lastCandle = plot.getLastCandleData();
+                SimpleDateFormat simpleDateFormat = plot.getSimpleDateFormat();
+                boolean sameDisplayedDate = lastCandle != null && simpleDateFormat.format(new Date(lastAccessTime)).equals(simpleDateFormat.format(lastCandle.getDateTime().getTime()));
+                if (sameDisplayedDate){
+                    Updater.update(plot, price);
+                } else {
+                    CandleData candleData = new CandleData(new Date(lastAccessTime), price, price, price, price, 0);
+                    Updater.update(plot, candleData);
+                }
             }
         }
     }

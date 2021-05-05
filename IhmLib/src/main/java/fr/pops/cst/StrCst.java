@@ -109,4 +109,5 @@ public abstract class StrCst {
     public final static String STYLE_CLASS_QUOTE_DATA_SYMBOL = "quote-data-symbol";
     public final static String STYLE_CLASS_QUOTE_DATA_ARROW= "quote-data-arrow";
     public final static String STYLE_CLASS_QUOTE_DATA_PRICE = "quote-data-price";
+    public static final String STYLE_CLASS_TEXT_FIELD = "textField";
 }

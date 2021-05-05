@@ -32,6 +32,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.*;
 
+import java.util.HashMap;
+
 public class StockController extends BaseController<StockView, StockModel>{
 
     /*****************************************
@@ -39,6 +41,7 @@ public class StockController extends BaseController<StockView, StockModel>{
      * Attributes
      *
      *****************************************/
+    private HashMap<QuoteInfo, CandlestickPlot> displayedCharts;
     private ObservableValue<ObservableList<QuoteInfo>> displayedQuotes;
 
     /*****************************************
@@ -61,6 +64,9 @@ public class StockController extends BaseController<StockView, StockModel>{
     public StockController(StockView view){
         // Parent
         super(view, new StockModel());
+
+        // Initialization
+        this.onInit();
     }
 
     /*****************************************
@@ -72,6 +78,8 @@ public class StockController extends BaseController<StockView, StockModel>{
      * Initialize the controller
      */
     private void onInit(){
+        // Initialize the displayed chars map
+        this.displayedCharts  = new HashMap<>();
     }
 
     /*****************************************
@@ -122,12 +130,25 @@ public class StockController extends BaseController<StockView, StockModel>{
     /**
      * Drag quote info towards the chart
      * @param dragEvent Drag event triggering the method
-     * @param candlestickPlot The candlestick plot to display the quote data on
      */
-    public void onDragOverChart(DragEvent dragEvent, CandlestickPlot candlestickPlot){
+    public void onDragOverChartTabPane(DragEvent dragEvent){
         if (dragEvent.getDragboard().hasString()){
             dragEvent.acceptTransferModes(TransferMode.ANY);
         }
+    }
+
+    /**
+     * Drag dropped quote info towards the chart
+     * @param dragEvent Drag dropped event triggering the method
+     */
+    public void onDragDroppedChartTabPane(DragEvent dragEvent){
+        boolean success = false;
+        if (dragEvent.getDragboard().hasString()){
+            this.view.addCandlestickChart(dragEvent.getDragboard().getString());
+            success = true;
+        }
+        dragEvent.setDropCompleted(success);
+        dragEvent.consume();
     }
 
     /*****************************************
@@ -148,6 +169,15 @@ public class StockController extends BaseController<StockView, StockModel>{
             }
         }
         return result;
+    }
+
+    /**
+     * Retrieve the candlestick plot associated to the input quote info
+     * @param info The info of the candlestick plot to retrieve
+     * @return The candlestick plot corresponding to the given input quote info
+     */
+    public CandlestickPlot getDisplayedChart(QuoteInfo info) {
+        return this.displayedCharts.getOrDefault(info, null);
     }
 
     /*****************************************
@@ -187,5 +217,22 @@ public class StockController extends BaseController<StockView, StockModel>{
      */
     public void setDisplayedQuotes(ObservableValue<ObservableList<QuoteInfo>> displayedQuotes) {
         this.displayedQuotes = displayedQuotes;
+    }
+
+    /**
+     * Add the input pair to the corresponding list
+     * @param info The info as the key
+     * @param plot The candlestick chart as the value
+     */
+    public void addDisplayedChart(QuoteInfo info, CandlestickPlot plot){
+        this.displayedCharts.put(info, plot);
+    }
+
+    /**
+     * Remove the input pair to the corresponding list
+     * @param info The info as the key to remove
+     */
+    public void removeDisplayedChart(QuoteInfo info){
+        this.displayedCharts.remove(info);
     }
 }

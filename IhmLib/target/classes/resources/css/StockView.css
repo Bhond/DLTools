@@ -6,6 +6,7 @@
 @import "Colors.css"
 @import "Fonts.css"
 @import "BaseListView.css"
+@import "BaseTabPane.css"
 
 /* root */
 .root
@@ -65,4 +66,38 @@
 .button:hover
 {
     -fx-effect: dropshadow(gaussian, -fx-palette-orange, 8, 0.3, 0, 0);
+}
+
+/* Tab pane */
+.viewsTabPane .tab-header-area .tab-header-background
+{
+    -fx-background-color: transparent;
+}
+
+.viewsTabPane .tab-label
+{
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-palette-ghost-white;
+    -fx-font-family: 'Stellar';
+    -fx-font-size: 10pt;
+}
+
+.tab:selected
+{
+    -fx-background-color: transparent;
+    -fx-background-insets: 0.0;
+    -fx-background-radius: 0.0;
+    -fx-border-width: 0 0 5 0;
+    -fx-border-color: -fx-palette-orange;
+}
+
+/* Labels */
+.textField
+{
+    -fx-background-color: transparent;
+    -fx-font-size: 10pt;
+    -fx-text-fill: -fx-palette-ghost-white;
+    -fx-font-family: 'Stellar';
+    -fx-border-width: 1pt;
+    -fx-border-color: -fx-palette-ghost-white;
 }
