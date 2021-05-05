@@ -37,9 +37,12 @@ public class QuoteInfo extends HBox implements Cloneable {
     private HBox centralBox;
     private HBox arrow;
     private Label price;
+
     // State
     private String symbol = "";
     private double lastPrice = 0.0d;
+    private long lastAccessedTime = 0L;
+    private boolean isPlotted = false;
 
     /*****************************************
      *
@@ -85,10 +88,11 @@ public class QuoteInfo extends HBox implements Cloneable {
      * @param symbol The stock's symbol
      * @param price The current price of the quote
      */
-    public QuoteInfo(String symbol, double price) {
+    public QuoteInfo(String symbol, double price, long lastAccessedTime) {
         // Fields
         this.symbol = symbol;
         this.lastPrice = price;
+        this.lastAccessedTime = lastAccessedTime;
 
         // Global style class
         this.getStyleClass().add(StrCst.STYLE_CLASS_QUOTE_DATA);
@@ -134,6 +138,18 @@ public class QuoteInfo extends HBox implements Cloneable {
 
     /*****************************************
      *
+     * Methods
+     *
+     *****************************************/
+    /**
+     * @return True if the info is displayed on a candlestick chart
+     */
+    public boolean isPlotted() {
+        return this.isPlotted;
+    }
+
+    /*****************************************
+     *
      * Setter
      *
      *****************************************/
@@ -154,6 +170,20 @@ public class QuoteInfo extends HBox implements Cloneable {
         this.lastPrice = price;
     }
 
+    /**
+     * Set it to true when the data is displayed on a candlestick
+     * chart
+     * @param isPlotted True if it is plotted
+     */
+    public void setPlotted(boolean isPlotted){
+        this.isPlotted = isPlotted;
+    }
+
+    /*****************************************
+     *
+     * Clone
+     *
+     *****************************************/
     @Override
     protected QuoteInfo clone() {
         QuoteInfo clone = null;

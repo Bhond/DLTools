@@ -19,16 +19,27 @@
  ******************************************************************************/
 package fr.pops.controllers.viewcontrollers;
 
+import fr.pops.client.Client;
+import fr.pops.cst.StrCst;
 import fr.pops.customnodes.plot.candlestickplot.CandlestickPlot;
+import fr.pops.sockets.resquest.GetCurrentStockInfoRequest;
 import fr.pops.viewmodels.StockModel;
 import fr.pops.views.stock.QuoteInfo;
 import fr.pops.views.stock.StockView;
-import javafx.event.ActionEvent;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.*;
 
-
 public class StockController extends BaseController<StockView, StockModel>{
+
+    /*****************************************
+     *
+     * Attributes
+     *
+     *****************************************/
+    private ObservableValue<ObservableList<QuoteInfo>> displayedQuotes;
 
     /*****************************************
      *
@@ -40,7 +51,7 @@ public class StockController extends BaseController<StockView, StockModel>{
      * Nothing to be done
      */
     private StockController(){
-        // Nothing to be done
+        this.onInit();
     }
 
     /**
@@ -54,17 +65,36 @@ public class StockController extends BaseController<StockView, StockModel>{
 
     /*****************************************
      *
+     * Initialisation
+     *
+     *****************************************/
+    /**
+     * Initialize the controller
+     */
+    private void onInit(){
+    }
+
+    /*****************************************
+     *
      * Actions
      *
      *****************************************/
     /**
      * Add stock data to the screen
-     * @param actionEvent Action event triggering the method
      */
-    public void onAddStock(ActionEvent actionEvent){
-        System.out.println("Adding stock");
+    public void onAddQuoteInfo(TextField addStockTextField){
+        String inputSymbol = addStockTextField.textProperty().get();
+        if (!inputSymbol.isEmpty() && !inputSymbol.equals(StrCst.ADD_QUOTE_TEXT_FIELD_DEFAULT)){
+            Client.getInstance().send(new GetCurrentStockInfoRequest(inputSymbol));
+        }
     }
 
+    /**
+     * Remove stock data from the screen
+     */
+    public void onAddQuoteInfo(){
+        System.out.println("Not implemented yet");
+    }
 
     /**
      * Detect drag event
@@ -102,14 +132,60 @@ public class StockController extends BaseController<StockView, StockModel>{
 
     /*****************************************
      *
+     * Getter
+     *
+     *****************************************/
+    /**
+     * @param symbol The symbol of the quote info to retrieve
+     * @return The Quote info corresponding to the input symbol
+     */
+    public QuoteInfo getQuoteInfo(String symbol){
+        QuoteInfo result = null;
+        for (QuoteInfo quoteInfo : this.displayedQuotes.getValue()){
+            if (quoteInfo.getSymbol().equals(symbol)){
+                result = quoteInfo;
+                break;
+            }
+        }
+        return result;
+    }
+
+    /*****************************************
+     *
      * Setters
      *
      *****************************************/
     /**
      * Add current stock price to the chart displaying it
      */
-    public void addCurrentStockPrice(long lastAccessTime, double value){
-        this.view.addCurrentPrice(lastAccessTime, value);
+    public void addCurrentStockPrice(String symbol, long lastAccessTime, double value){
+        this.view.updateStockInfo(symbol, lastAccessTime, value);
     }
 
+    /**
+     * Add quote to the quotes' list
+     * @param info The info to add
+     */
+    public void addQuote(QuoteInfo info) {
+        this.displayedQuotes.getValue().add(info);
+        this.model.addQuoteInfo(info);
+    }
+
+    /**
+     * Remove quote from the quotes' list
+     * @param info The info to remove
+     */
+    public void removeQuote(QuoteInfo info){
+        this.displayedQuotes.getValue().remove(info);
+        this.model.removeQuoteInfo(info);
+    }
+
+    /**
+     * Set the displayed quotes list so that
+     * when this one is modified, the list view is aware of the modification
+     * @param displayedQuotes The list view items
+     */
+    public void setDisplayedQuotes(ObservableValue<ObservableList<QuoteInfo>> displayedQuotes) {
+        this.displayedQuotes = displayedQuotes;
+    }
 }

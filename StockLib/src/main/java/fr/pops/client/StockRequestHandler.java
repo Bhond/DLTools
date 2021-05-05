@@ -24,6 +24,7 @@ import fr.pops.sockets.cst.EnumCst;
 import fr.pops.sockets.resquest.GetCurrentStockInfoRequest;
 import fr.pops.sockets.resquest.Request;
 import fr.pops.sockets.resquesthandler.RequestHandler;
+import fr.pops.stockinfo.StockInfo;
 import fr.pops.stockinfo.StockInfoManager;
 
 public class StockRequestHandler extends RequestHandler {
@@ -77,7 +78,11 @@ public class StockRequestHandler extends RequestHandler {
         // Select next operation
         switch (request.getType()){
             case GET_CURRENT_STOCK_INFO:
-                operation = EnumCst.RequestOperations.WRITE_BACK;
+                if (((GetCurrentStockInfoRequest) request).isInvalid()){
+                    operation = EnumCst.RequestOperations.NONE;
+                } else {
+                    operation = EnumCst.RequestOperations.WRITE_BACK;
+                }
                 break;
             default:
                 operation = EnumCst.RequestOperations.NONE;
@@ -86,15 +91,54 @@ public class StockRequestHandler extends RequestHandler {
         return operation;
     }
 
+    /*****************************************
+     *
+     * GetCurrentStockInfoRequest
+     *
+     *****************************************/
     /**
      * Handle GetCurrentStockInfo request
      * @param request The request to handle
      */
     private void getCurrentStockInfoHandling(GetCurrentStockInfoRequest request){
-        StockInfoManager.getInstance().getStockInfo().updateStockInfo();
-        long lastAccessTime = StockInfoManager.getInstance().getStockInfo().getLastAccessedTime();
-        request.setAccessTime(lastAccessTime); // currentPrice
-        double currentPrice = StockInfoManager.getInstance().getStockInfo().getPrice();
+        String symbol = request.getSymbol();
+        if (StockInfoManager.getInstance().containsInfo(symbol)){
+            StockInfo info = StockInfoManager.getInstance().getStockInfo(symbol);
+            this.fillInGetCurrentStockInfoRequest(request, info);
+        } else {
+            StockInfo info = this.createStockInfo(request, symbol);
+            if (info != null){
+                this.fillInGetCurrentStockInfoRequest(request, info);
+            }
+        }
+    }
+
+    /**
+     * Create a new stock info
+     * @param symbol The symbol to retrieve info from
+     * @return The corresponding stock info
+     */
+    private StockInfo createStockInfo(GetCurrentStockInfoRequest request, String symbol){
+        StockInfo info = new StockInfo(symbol);
+        if (info.isValid()){
+            StockInfoManager.getInstance().addStockInfo(info);
+        } else {
+            request.invalidate();
+            info = null;
+        }
+        return info;
+    }
+
+    /**
+     * Fill in GetCurrentStockInfoRequest fields
+     * @param request The request to fill in
+     * @param info The info
+     */
+    private void fillInGetCurrentStockInfoRequest(GetCurrentStockInfoRequest request, StockInfo info){
+        info.updateStockInfo();
+        long lastAccessTime = info.getLastAccessedTime();
+        request.setAccessTime(lastAccessTime);
+        double currentPrice = info.getPrice();
         request.setCurrentStockPrice(currentPrice);
     }
 }

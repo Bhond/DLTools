@@ -21,9 +21,11 @@
  ******************************************************************************/
 package fr.pops.views.updater;
 
+import fr.pops.controllers.viewcontrollers.StockController;
 import fr.pops.cst.EnumCst;
 import fr.pops.customnodes.plot.candlestickplot.CandleData;
 import fr.pops.customnodes.plot.candlestickplot.CandlestickPlot;
+import fr.pops.views.stock.QuoteInfo;
 import javafx.application.Platform;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
@@ -89,6 +91,14 @@ public abstract class Updater {
      * ListView
      *
      *****************************************/
+    /**
+     * Update the list view
+     * Either add or remove the item
+     * @param listView The list view to update
+     * @param op The operation to perform
+     * @param item The item to add or remove from the list view
+     * @param <T> The type of the item
+     */
     public static <T> void update(ListView<T> listView, EnumCst.ListViewOps op, T item){
         switch (op){
             case ADD:
@@ -100,6 +110,14 @@ public abstract class Updater {
         }
     }
 
+    /**
+     * Update the list view
+     * Either add or remove the collection of items
+     * @param listView The list view to update
+     * @param op The operation to perform
+     * @param items The collection of items to add or remove from the list view
+     * @param <T> The type of the item
+     */
     public static <T> void update(ListView<T> listView, EnumCst.ListViewOps op, Collection<T> items){
         switch (op){
             case ADD:
@@ -111,5 +129,35 @@ public abstract class Updater {
         }
     }
 
+    /*****************************************
+     *
+     * Controllers
+     *
+     *****************************************/
+    /**
+     * Update the controller
+     * @param controller The controller to update
+     * @param op The operation to perform
+     * @param info The quote info to add or remove
+     */
+    public static void update(StockController controller, EnumCst.ListViewOps op, QuoteInfo info){
+        switch (op){
+            case ADD:
+                Platform.runLater(() -> controller.addQuote(info));
+                break;
+            case REMOVE:
+                Platform.runLater(() -> controller.removeQuote(info));
+                break;
+        }
+    }
+
+    /**
+     * Set the current price of the given quote
+     * @param info The quote info to update
+     * @param price The new price to display
+     */
+    public static void update(QuoteInfo info, double price){
+        Platform.runLater(() -> info.setPrice(price));
+    }
 
 }

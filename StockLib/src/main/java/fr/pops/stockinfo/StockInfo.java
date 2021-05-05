@@ -39,6 +39,7 @@ public class StockInfo {
      *****************************************/
     // Stock
     private Stock stock;
+    private boolean isValid;
 
     // String values
     private String symbol;
@@ -79,8 +80,8 @@ public class StockInfo {
     public StockInfo(String symbol){
         // Initialisation
         this.symbol = symbol;
+        this.isValid = this.retrieveStock();
         this.calendar = new GregorianCalendar();
-        this.retrieveStock();
     }
 
     /*****************************************
@@ -91,25 +92,32 @@ public class StockInfo {
     /**
      * Retrieve the stock associated to the symbol
      */
-    private void retrieveStock(){
+    private boolean retrieveStock(){
+        boolean isValid = true;
         try {
             this.stock = YahooFinance.get(this.symbol);
+            if (this.stock == null){
+                isValid = false;
+            }
         } catch (IOException e){
-            System.out.println("Can't find stock for symbol: " + this.symbol);
+            isValid = false;
         }
+        return isValid;
     }
 
     /**
      * Update stock info
      */
     public void updateStockInfo(){
-        this.retrieveStock();
-        this.lastAccessedTime = System.currentTimeMillis();
-        this.change = this.stock.getQuote().getChange();
-        this.price = this.stock.getQuote().getPrice();
-        this.bid = this.stock.getQuote().getBid();
-        this.ask = this.stock.getQuote().getAsk();
-        this.peg = this.stock.getStats().getPeg();
+        this.isValid = this.retrieveStock();
+        if (this.isValid){
+            this.lastAccessedTime = System.currentTimeMillis();
+            this.change = this.stock.getQuote().getChange();
+            this.price = this.stock.getQuote().getPrice();
+            this.bid = this.stock.getQuote().getBid();
+            this.ask = this.stock.getQuote().getAsk();
+            this.peg = this.stock.getStats().getPeg();
+        }
     }
 
     /*****************************************
@@ -203,5 +211,24 @@ public class StockInfo {
     public String historicalToJSON(Calendar from, int field, int amount, Calendar to, Interval interval){
         this.getHistoricalData(from, field, amount, to, interval);
         return this.historicalToJSON();
+    }
+
+    /*****************************************
+     *
+     * Getter
+     *
+     *****************************************/
+    /**
+     * @return This stock info symbol
+     */
+    public String getSymbol() {
+        return this.symbol;
+    }
+
+    /**
+     * @return True if the stock info is valid
+     */
+    public boolean isValid() {
+        return this.isValid;
     }
 }

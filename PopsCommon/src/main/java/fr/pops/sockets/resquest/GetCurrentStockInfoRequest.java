@@ -33,7 +33,8 @@ public class GetCurrentStockInfoRequest extends Request{
     // Stock info
     private long accessTime = 0L;
     private double currentPrice = 0.0d;
-    private String stockName = "OIL";
+    private String stockName = "";
+    private boolean invalid = false;
 
     /*****************************************
      *
@@ -47,6 +48,14 @@ public class GetCurrentStockInfoRequest extends Request{
     public GetCurrentStockInfoRequest(){
         super(EnumCst.RequestTypes.GET_CURRENT_STOCK_INFO);
         // Nothing to be done
+    }
+
+    /**
+     * Ctor
+     */
+    public GetCurrentStockInfoRequest(String symbol){
+        super(EnumCst.RequestTypes.GET_CURRENT_STOCK_INFO);
+        this.stockName = symbol;
     }
 
     /**
@@ -116,7 +125,7 @@ public class GetCurrentStockInfoRequest extends Request{
     /**
      * @return The stock name
      */
-    public String getStockName() {
+    public String getSymbol() {
         return this.stockName;
     }
 
@@ -134,6 +143,13 @@ public class GetCurrentStockInfoRequest extends Request{
         return this.currentPrice;
     }
 
+    /**
+     * @return True is the symbol is invalid
+     */
+    public boolean isInvalid() {
+        return this.invalid;
+    }
+
     /*****************************************
      *
      * Setter
@@ -148,6 +164,14 @@ public class GetCurrentStockInfoRequest extends Request{
                                this.stockName.length() * Character.BYTES, // Stock name
                                Long.BYTES,                                // Access time
                                Double.BYTES);                             // Current stock price
+    }
+
+    /**
+     * Invalidate this request
+     */
+    public void invalidate(){
+        this.stockName = "invalid";
+        this.invalid = true;
     }
 
     /**

@@ -22,6 +22,7 @@ package fr.pops.controllers.viewcontrollers;
 import fr.pops.controllers.controllermanager.ControllerManager;
 import fr.pops.viewmodels.BaseModel;
 import fr.pops.views.base.BaseView;
+import fr.pops.views.stock.QuoteInfo;
 
 public abstract class BaseController<viewT extends BaseView, modelT extends BaseModel<?>> {
 
@@ -89,4 +90,5 @@ public abstract class BaseController<viewT extends BaseView, modelT extends Base
     public modelT getModel() {
         return this.model;
     }
+
 }

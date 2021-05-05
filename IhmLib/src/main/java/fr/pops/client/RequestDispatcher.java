@@ -43,29 +43,54 @@ public abstract class RequestDispatcher {
     public static void dispatch(Request request){
 
         // Dispatch the request in the controllers
-        BaseController<?,?> controller;
         switch (request.getType()){
             case PING:
-                controller = ControllerManager.getInstance().getFirst(NetworkInfoController.class);
-                if (controller != null){
-                    ((NetworkInfoController) controller).setPingValue(((PingRequest) request).getResponseDelay());
-                }
+                dispatchPingRequest((PingRequest) request);
                 break;
             case GET_NETWORK_INFO:
-                controller =  ControllerManager.getInstance().getFirst(NetworkInfoController.class);
-                if (controller != null){
-                    ((NetworkInfoController) controller).setFrequency(((GetNetworkInfoRequest) request).getFrequency());
-                    ((NetworkInfoController) controller).setConnectedClients(((GetNetworkInfoRequest) request).getClientTypes());
-                }
+                dispatchGetNetworkInfoRequest((GetNetworkInfoRequest) request);
                 break;
             case GET_CURRENT_STOCK_INFO:
-                controller =  ControllerManager.getInstance().getFirst(StockController.class);
-                if (controller != null){
-                    long lastAccessTime = ((GetCurrentStockInfoRequest) request).getAccessTime();
-                    double price = ((GetCurrentStockInfoRequest) request).getCurrentStockPrice();
-                    ((StockController) controller).addCurrentStockPrice(lastAccessTime, price);
-                }
+                dispatchGetCurrentStockInfoRequest((GetCurrentStockInfoRequest) request);
                 break;
+        }
+    }
+
+
+    /**
+     * Dispatch ping Request
+     * @param request The ping request
+     */
+    private static void dispatchPingRequest(PingRequest request) {
+        BaseController<?, ?> controller = ControllerManager.getInstance().getFirst(NetworkInfoController.class);
+        if (controller != null){
+            ((NetworkInfoController) controller).setPingValue(request.getResponseDelay());
+        }
+    }
+
+    /**
+     * Dispatch the request
+     * @param request The request
+     */
+    private static void dispatchGetNetworkInfoRequest(GetNetworkInfoRequest request) {
+        BaseController<?, ?> controller =  ControllerManager.getInstance().getFirst(NetworkInfoController.class);
+        if (controller != null){
+            ((NetworkInfoController) controller).setFrequency(request.getFrequency());
+            ((NetworkInfoController) controller).setConnectedClients(request.getClientTypes());
+        }
+    }
+
+    /**
+     * Dispatch the request
+     * @param request The request
+     */
+    private static void dispatchGetCurrentStockInfoRequest(GetCurrentStockInfoRequest request) {
+        BaseController<?, ?> controller =  ControllerManager.getInstance().getFirst(StockController.class);
+        if (controller != null){
+            long lastAccessTime = request.getAccessTime();
+            double price = request.getCurrentStockPrice();
+            String symbol = request.getSymbol();
+            ((StockController) controller).addCurrentStockPrice(symbol, lastAccessTime, price);
         }
     }
 }

@@ -56,6 +56,8 @@ public abstract class StrCst {
     public final static String FORMAT_VALUE_FREQUENCY = "%3.0f Hz";
 
     // Stock info
+    public static final String ADD_QUOTE_BUTTON_LABEL = "Add";
+    public static final String ADD_QUOTE_TEXT_FIELD_DEFAULT = "New symbol";
 
     /*****************************************
      *
@@ -107,5 +109,4 @@ public abstract class StrCst {
     public final static String STYLE_CLASS_QUOTE_DATA_SYMBOL = "quote-data-symbol";
     public final static String STYLE_CLASS_QUOTE_DATA_ARROW= "quote-data-arrow";
     public final static String STYLE_CLASS_QUOTE_DATA_PRICE = "quote-data-price";
-
 }
