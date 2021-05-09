@@ -72,7 +72,7 @@ public class MainViewController extends BaseController<MainView, BaseModel<?>> {
      * @param actionEvent The clicked action event
      */
     public void onServerViewMenuItemClicked(ActionEvent actionEvent){
-        this.mainView.addView(EnumCst.Views.SERVER);
+        this.mainView.addView(EnumCst.Views.NETWORK_INFO);
     }
 
     /**

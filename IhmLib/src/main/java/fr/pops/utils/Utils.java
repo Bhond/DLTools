@@ -1,5 +1,9 @@
 package fr.pops.utils;
 
+import org.json.JSONObject;
+
+import java.util.Map;
+
 public abstract class Utils {
 
     /*****************************************
@@ -17,5 +21,36 @@ public abstract class Utils {
         return Utils.class.getResource(path).toString();
     }
 
+    /*****************************************
+     *
+     * String formatter
+     *
+     *****************************************/
+    /**
+     * @return The class's name stripped from the package's name
+     */
+    public static String stripClassName(Class classz){
+        String[] fullName = classz.getName().split("\\.");
+        return fullName[fullName.length-1]; // Return last
+    }
+
+    /*****************************************
+     *
+     * JSON utils
+     *
+     *****************************************/
+    /**
+     * Concatenate two json objects
+     * @param jsonObject0 The first json object
+     * @param jsonObject1 The second json object
+     * @return The concatenation of the two input jsons
+     */
+    public static JSONObject concatenate(JSONObject jsonObject0, JSONObject jsonObject1){
+        // Build map from json object
+        Map<String, Object> map = jsonObject0.toMap();
+        // Append second map to the first one
+        map.putAll(jsonObject1.toMap());
+        return new JSONObject(map);
+    }
 
 }

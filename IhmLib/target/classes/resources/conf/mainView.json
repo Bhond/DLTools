@@ -1,0 +1,29 @@
+{
+    "type": "MAIN",
+    "class": "MainView",
+    "subviews": {
+        "NetworkInfoView": {
+            "type": "NETWORK_INFO",
+            "fields": {},
+            "class": "NetworkInfoView"
+        },
+        "StockView": {
+            "type": "STOCK",
+            "fields": {"quoteInfos": {
+                "GME": {
+                    "lastAccessedTime": 1620593511637,
+                    "price": 161.11
+                },
+                "TSLA": {
+                    "lastAccessedTime": 1620594246529,
+                    "price": 672.08
+                },
+                "AMC": {
+                    "lastAccessedTime": 1620593515416,
+                    "price": 9.51
+                }
+            }},
+            "class": "StockView"
+        }
+    }
+}

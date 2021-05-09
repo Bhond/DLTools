@@ -57,6 +57,7 @@ public abstract class StrCst {
 
     // Stock info
     public static final String ADD_QUOTE_BUTTON_LABEL = "Add";
+    public static final String REMOVE_QUOTE_BUTTON_LABEL = "Remove";
     public static final String ADD_QUOTE_TEXT_FIELD_DEFAULT = "New symbol";
 
     /*****************************************
@@ -68,6 +69,7 @@ public abstract class StrCst {
     public final static String PATH_CSS_DIRECTORY = "/resources/css/";
     public final static String PATH_MEDIA_DIRECTORY = "/resources/media/";
     public final static String PATH_IMAGES_DIRECTORY = fr.pops.cst.StrCst.PATH_MEDIA_DIRECTORY + "images/";
+    public final static String PATH_CONF__DIRECTORY = "/resources/conf/";
     // Custom nodes
     public final static String PATH_BASE_PLOT_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "BasePlot.css";
     public final static String PATH_CANDLESTICK_PLOT_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "CandleStickPlot.css";
@@ -77,6 +79,9 @@ public abstract class StrCst {
     public final static String PATH_STOCK_VIEW_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "StockView.css";
     // Earth texture
     public final static String PATH_EARTH_TEXTURE =  fr.pops.cst.StrCst.PATH_IMAGES_DIRECTORY + "earth.png";
+
+    // Jsons
+    public final static String JSON_CONF_MAIN_VIEW = "mainView.json";
 
     /*****************************************
      *
@@ -110,4 +115,10 @@ public abstract class StrCst {
     public final static String STYLE_CLASS_QUOTE_DATA_ARROW= "quote-data-arrow";
     public final static String STYLE_CLASS_QUOTE_DATA_PRICE = "quote-data-price";
     public static final String STYLE_CLASS_TEXT_FIELD = "textField";
+
+    /*****************************************
+     *
+     * JSON key
+     *
+     *****************************************/
 }

@@ -98,20 +98,12 @@ public class StockController extends BaseController<StockView, StockModel>{
     }
 
     /**
-     * Remove stock data from the screen
-     */
-    public void onAddQuoteInfo(){
-        System.out.println("Not implemented yet");
-    }
-
-    /**
      * Detect drag event
      * @param mouseEvent Mouse event triggering the method
      * @param view The list view from which the item is dragged
      */
     public void onDragDetected(MouseEvent mouseEvent, ListView<QuoteInfo> view){
         QuoteInfo info = view.getSelectionModel().getSelectedItem();
-        System.out.println("Dragging: " + info.getSymbol());
         this.onQuoteInfoDragged(mouseEvent, info);
     }
 

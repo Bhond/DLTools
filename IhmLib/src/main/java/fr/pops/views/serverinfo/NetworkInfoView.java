@@ -44,8 +44,10 @@ import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class NetworkInfoView extends BaseView<NetworkInfoController> {
 
@@ -95,7 +97,7 @@ public class NetworkInfoView extends BaseView<NetworkInfoController> {
      */
     public NetworkInfoView(Stage stage){
         // Parent
-        super(stage, StrCst.NAME_SERVER_VIEW);
+        super(stage, StrCst.NAME_SERVER_VIEW, fr.pops.cst.EnumCst.Views.NETWORK_INFO);
 
         // Initialization
         this.onInit();
@@ -243,5 +245,41 @@ public class NetworkInfoView extends BaseView<NetworkInfoController> {
                 Updater.update(this.clientInfoListView, fr.pops.cst.EnumCst.ListViewOps.ADD, new ClientInfo(type));
             }
         }
+    }
+
+    /*****************************************
+     *
+     * Load / Save
+     *
+     *****************************************/
+    /**
+     * Map the view to json format
+     *
+     * @return The mapping between object fields and json fields
+     */
+    @Override
+    public Map<String, Object> viewToJsonMap() {
+        // Initialization
+        Map<String, Object> brace = new HashMap<>();
+
+        return brace;
+    }
+
+    /**
+     * Cast the json object stored in the fields
+     * to a view
+     * @return The view built from the JSONObject stored in the fields
+     */
+    @Override
+    public void jsonToView(Map<String, Object> map) {
+        System.out.println("Network info json");
+    }
+
+    /**
+     * Read the fields stored in the json
+     */
+    @Override
+    protected void readFields(Map<String, Object> fields) {
+
     }
 }

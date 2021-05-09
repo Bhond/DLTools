@@ -138,7 +138,7 @@ public class QuoteInfo extends HBox implements Cloneable {
 
     /*****************************************
      *
-     * Methods
+     * Getter
      *
      *****************************************/
     /**
@@ -148,6 +148,19 @@ public class QuoteInfo extends HBox implements Cloneable {
         return this.isPlotted;
     }
 
+    /**
+     * @return The price displayed
+     */
+    public double getPrice() {
+        return this.lastPrice;
+    }
+
+    /**
+     * @return The time the current price was retrieve
+     */
+    public long getLastAccessedTime() {
+        return lastAccessedTime;
+    }
     /*****************************************
      *
      * Setter

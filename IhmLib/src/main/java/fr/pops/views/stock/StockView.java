@@ -34,9 +34,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class StockView extends BaseView<StockController> {
 
@@ -61,9 +64,10 @@ public class StockView extends BaseView<StockController> {
     private TabPane chartsTabPane;
 
     // New quote
-    private HBox addStockBox;
+    private HBox stockManagingBox;
     private TextField addStockDataTextField;
     private Button addStockDataButton;
+    private Button removeStockDataButton;
 
     /*****************************************
      *
@@ -84,7 +88,7 @@ public class StockView extends BaseView<StockController> {
      */
     public StockView(Stage stage){
         // Parent
-        super(stage, StrCst.NAME_STOCK_VIEW);
+        super(stage, StrCst.NAME_STOCK_VIEW, EnumCst.Views.STOCK);
 
         // Initialisation
         this.onInit();
@@ -131,7 +135,7 @@ public class StockView extends BaseView<StockController> {
         this.configureChartTabPane();
 
         // Build hierarchy
-        this.topLeftBox.getChildren().addAll(this.stockDisplayedListView, this.addStockBox);
+        this.topLeftBox.getChildren().addAll(this.stockDisplayedListView, this.stockManagingBox);
         this.topBox.getChildren().addAll(this.topLeftBox, this.chartsTabPane);
         this.rootLayout.getChildren().add(this.topBox);
     }
@@ -155,8 +159,8 @@ public class StockView extends BaseView<StockController> {
         });
 
         // Add stock box
-        this.addStockBox = new HBox();
-        this.addStockBox.setSpacing(5);
+        this.stockManagingBox = new HBox();
+        this.stockManagingBox.setSpacing(5);
         // Stock data text field
         this.addStockDataTextField = new TextField(StrCst.ADD_QUOTE_TEXT_FIELD_DEFAULT);
         this.addStockDataTextField.getStyleClass().add(StrCst.STYLE_CLASS_TEXT_FIELD);
@@ -172,6 +176,7 @@ public class StockView extends BaseView<StockController> {
                 }
             }
         });
+
         // Stock data button
         this.addStockDataButton = new Button(StrCst.ADD_QUOTE_BUTTON_LABEL);
         this.addStockDataButton.setOnAction(a -> {
@@ -179,7 +184,14 @@ public class StockView extends BaseView<StockController> {
             this.addStockDataTextField.textProperty().setValue(StrCst.ADD_QUOTE_TEXT_FIELD_DEFAULT);
         });
         this.addStockDataButton.getStyleClass().add(StrCst.STYLE_CLASS_STANDARD_BUTTON);
-        this.addStockBox.getChildren().addAll(this.addStockDataTextField, this.addStockDataButton);
+
+        // Remove Stock data button
+        this.removeStockDataButton = new Button(StrCst.REMOVE_QUOTE_BUTTON_LABEL);
+        this.removeStockDataButton.setOnAction(a ->  this.addStockDataTextField.textProperty().setValue(StrCst.ADD_QUOTE_TEXT_FIELD_DEFAULT));
+        this.removeStockDataButton.getStyleClass().add(StrCst.STYLE_CLASS_STANDARD_BUTTON);
+
+        // Build hierarchy
+        this.stockManagingBox.getChildren().addAll(this.addStockDataTextField, this.addStockDataButton, this.removeStockDataButton);
     }
 
     /**
@@ -199,6 +211,14 @@ public class StockView extends BaseView<StockController> {
      * Update
      *
      *****************************************/
+    /**
+     * Add the quote info to its list view
+     * @param info The info to add
+     */
+    private void addQuoteInfo(QuoteInfo info){
+        this.controller.addQuote(info);
+    }
+
     /**
      * Add candlestick chart for the stock data
      * If symbol is already present, it is selected
@@ -238,11 +258,18 @@ public class StockView extends BaseView<StockController> {
                 this.chartsTabPane.getTabs().add(tab);
                 this.controller.addDisplayedChart(info, plot);
                 this.controller.getQuoteInfo(symbol).setPlotted(true);
+                this.chartsTabPane.getSelectionModel().select(tab);
             }
         }
     }
 
-
+    /**
+     * Update stock info from received request
+     * If it is new, it is created
+     * @param symbol The symbol of the stock to update
+     * @param lastAccessTime The time the data was last accessed
+     * @param price The current price of the stock
+     */
     public void updateStockInfo(String symbol, long lastAccessTime, double price){
         // Retrieve existing QuoteInfo in the list view
         QuoteInfo info = this.controller.getQuoteInfo(symbol);
@@ -262,7 +289,8 @@ public class StockView extends BaseView<StockController> {
             if (plot != null){
                 CandleData lastCandle = plot.getLastCandleData();
                 SimpleDateFormat simpleDateFormat = plot.getSimpleDateFormat();
-                boolean sameDisplayedDate = lastCandle != null && simpleDateFormat.format(new Date(lastAccessTime)).equals(simpleDateFormat.format(lastCandle.getDateTime().getTime()));
+                boolean sameDisplayedDate = lastCandle != null && simpleDateFormat.format(new Date(lastAccessTime))
+                                                                                  .equals(simpleDateFormat.format(lastCandle.getDateTime().getTime()));
                 if (sameDisplayedDate){
                     Updater.update(plot, price);
                 } else {
@@ -280,6 +308,81 @@ public class StockView extends BaseView<StockController> {
     private void updateListHeight() {
         final double height = Math.min(stockDisplayedListView.getItems().size(), 100) * stockDisplayedListView.getFixedCellSize();
         stockDisplayedListView.setPrefHeight(height + stockDisplayedListView.getFixedCellSize());
+    }
+
+    /*****************************************
+     *
+     * Load / Save
+     *
+     *****************************************/
+    /**
+     * Map the view to json format
+     *
+     * @return The mapping between object fields and json fields
+     */
+    @Override
+    public Map<String, Object> viewToJsonMap() {
+        // Initialization
+        Map<String, Object> brace = new HashMap<>();
+
+        // Store quote info displayed
+        Map<String, Object> infos = new HashMap<>();
+        for (QuoteInfo info : this.stockDisplayedListView.getItems()){
+            Map<String, Object> infoMap = new HashMap<>();
+            infoMap.put("price", info.getPrice());
+            infoMap.put("lastAccessedTime", info.getLastAccessedTime());
+            infos.put(info.getSymbol(), infoMap);
+        }
+        brace.put("quoteInfos", infos);
+
+        return brace;
+    }
+
+    /**
+     * Cast the json object stored in the fields
+     * to a view
+     */
+    @Override
+    public void jsonToView(Map<String, Object> map) {
+        super.jsonToView(map);
+    }
+
+    /**
+     * Read the fields stored in the json
+     */
+    @Override
+    protected void readFields(Map<String, Object> fields) {
+        // Loop over the fields
+        for (String field : fields.keySet()){
+            // Build the quote infos
+            if (field.equals("quoteInfos")){
+                Map<String, Object> infos = (Map<String, Object>) fields.get(field);
+                this.buildQuoteInfos(infos);
+            }
+        }
+    }
+
+    /**
+     * Create quote infos from saved ones
+     * The keys are the symbols of the saved quotes
+     * @param infos The infos to create
+     */
+    private void buildQuoteInfos(Map<String, Object> infos){
+        // Loop over all the symbols
+        for (String symbol : infos.keySet()){
+            double price = 0;
+            long lastAccessedTime = 0L;
+            Map<String, Object> data = (Map<String, Object>) infos.get(symbol);
+            JSONObject o = new JSONObject(data);
+            // Loop over the data
+            for (String dataName : data.keySet()){
+                price = o.getDouble("price");
+                lastAccessedTime = o.getLong("lastAccessedTime");
+            }
+            // Build info from read fields
+            QuoteInfo info = new QuoteInfo(symbol, price, lastAccessedTime);
+            this.addQuoteInfo(info);
+        }
     }
 
 }

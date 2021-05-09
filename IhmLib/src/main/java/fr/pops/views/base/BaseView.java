@@ -21,15 +21,22 @@ package fr.pops.views.base;
 
 import fr.pops.controllers.viewcontrollers.BaseController;
 import fr.pops.cst.DblCst;
+import fr.pops.cst.EnumCst;
 import fr.pops.cst.StrCst;
+import fr.pops.jsonparser.Recordable;
+import fr.pops.utils.Utils;
 import javafx.geometry.Pos;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.json.JSONObject;
 
-public abstract class BaseView<controllerT extends BaseController<?,?>> {
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+public abstract class BaseView<controllerT extends BaseController<?,?>> implements Recordable {
 
     /*****************************************
      *
@@ -38,12 +45,16 @@ public abstract class BaseView<controllerT extends BaseController<?,?>> {
      *****************************************/
     // General
     private String name;
+    private EnumCst.Views type;
     protected controllerT controller;
 
     // Basic components
     protected Stage stage;
     protected AnchorPane root;
     protected VBox rootLayout;
+
+    // Load / save
+    protected String fieldsName = "fields";
 
     /*****************************************
      *
@@ -63,10 +74,11 @@ public abstract class BaseView<controllerT extends BaseController<?,?>> {
      * @param stage Stage of the view
      * @param name Name of the view, used in misc occasions
      */
-    protected BaseView(Stage stage, String name){
+    protected BaseView(Stage stage, String name, EnumCst.Views type){
         // Initialization
         this.stage = stage;
         this.name = name;
+        this.type = type;
         this.configureRoot();
     }
 
@@ -129,4 +141,79 @@ public abstract class BaseView<controllerT extends BaseController<?,?>> {
     public String getName() {
         return this.name;
     }
+
+    /*****************************************
+     *
+     * Record / Load
+     *
+     *****************************************/
+    /**
+     * Cast the instance of the object into a JSONObject
+     */
+    @Override
+    public final JSONObject record() {
+        // Initialization
+        Map<String, Object> topBrace = new LinkedHashMap<>();
+
+        // General parameters
+        topBrace.put("class", Utils.stripClassName(this.getClass()));
+        topBrace.put("type", this.type);
+
+        // Transform children
+        Map<String, Object> fieldsBrace = this.viewToJsonMap();
+        if (fieldsBrace != null){
+            topBrace.put(this.fieldsName, fieldsBrace);
+        }
+
+        // Return created object
+        return new JSONObject(topBrace);
+    }
+
+    /**
+     * Load JSONObject
+     * The json object load from file
+     */
+    @Override
+    public void load(JSONObject jsonObject) {
+        this.jsonToView(jsonObject.toMap());
+    }
+
+    /**
+     * Map the view to json format
+     * @return The mapping between object fields and json fields
+     */
+    protected Map<String, Object> viewToJsonMap(){
+        return null;
+    }
+
+    /**
+     * Cast the json object stored in the fields
+     * to a view
+     */
+    public void jsonToView(Map<String, Object> map){
+        // Read top brace
+        this.readTopBrace(map);
+    }
+
+    /**
+     * Cast the json object stored in the fields
+     * to a view
+     */
+    protected final void readTopBrace(Map<String, Object> topBrace){
+
+        // Loop over top brace's fields
+        for (String s : topBrace.keySet()){
+            if (s.equals(this.fieldsName)){
+                Map<String, Object> fields = (Map<String, Object>) topBrace.get(s);
+                this.readFields(fields);
+            }
+        }
+    }
+
+    /**
+     * Read the fields stored in the json
+     * @param fields The fields to read
+     */
+    protected abstract void readFields(Map<String, Object> fields);
+
 }

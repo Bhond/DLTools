@@ -27,8 +27,7 @@ import fr.pops.cst.StrCst;
 import fr.pops.systeminfo.DisplayInfo;
 import fr.pops.utils.Utils;
 import fr.pops.views.base.BaseView;
-import fr.pops.views.serverinfo.NetworkInfoView;
-import fr.pops.views.stock.StockView;
+import fr.pops.views.viewfactory.ViewFactory;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -37,6 +36,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainView extends BaseView<MainViewController> {
 
@@ -77,6 +80,7 @@ public class MainView extends BaseView<MainViewController> {
 
     // Main layout, contains all of the objects
     private TabPane viewsTabPane;
+    private Map<Tab, BaseView<?>> views;
 
     /*****************************************
      *
@@ -90,7 +94,7 @@ public class MainView extends BaseView<MainViewController> {
      */
     public MainView(Stage stage){
         // Parent
-        super(stage, StrCst.ZE_NAME);
+        super(stage, StrCst.ZE_NAME, EnumCst.Views.MAIN);
 
         // Initialize the view
         this.onInit();
@@ -106,6 +110,9 @@ public class MainView extends BaseView<MainViewController> {
      */
     @Override
     protected void onInit(){
+        // General parameters
+        this.configureGeneralParameters();
+
         // Root
         this.configureRoot();
 
@@ -114,6 +121,11 @@ public class MainView extends BaseView<MainViewController> {
 
         // Add content views
         this.configureContentViews();
+    }
+
+    private void configureGeneralParameters(){
+        // Fields name
+        this.fieldsName = "subviews";
     }
 
     /**
@@ -131,6 +143,12 @@ public class MainView extends BaseView<MainViewController> {
         // Build hierarchy
         this.rootLayout.getChildren().addAll(this.topBar,
                                              this.viewsTabPane);
+
+        // Load stored values
+        JSONObject jsonObject = this.readFromFile(Utils.getResource("/resources/conf/mainView.json").substring(6));
+
+        // Modify view from saved values
+        this.load(jsonObject);
     }
 
     /**
@@ -176,7 +194,11 @@ public class MainView extends BaseView<MainViewController> {
         // Close window
         this.closeWindowButton = new Button(StrCst.LABEL_CLOSE_WINDOW_BUTTON);
         this.closeWindowButton.getStyleClass().add(StrCst.STYLE_CLASS_CONTROL_WINDOW_BUTTON);
-        this.closeWindowButton.setOnAction(a -> this.controller.onCloseWindow(a));
+        this.closeWindowButton.setOnAction(a -> {
+            JSONObject o = this.record();
+            this.saveToFile(o, Utils.getResource("/resources/conf/mainView.json").substring(6));
+            this.controller.onCloseWindow(a);
+        });
 
         // Add buttons to the menu bar
         this.topBar.getChildren().addAll(this.menuBarLayout,
@@ -221,6 +243,7 @@ public class MainView extends BaseView<MainViewController> {
      */
     private void configureMainLayout(){
         // Content Grid pane
+        this.views = new HashMap<>();
         this.viewsTabPane = new TabPane();
         VBox.setVgrow(this.viewsTabPane, Priority.ALWAYS);
         HBox.setHgrow(this.viewsTabPane, Priority.ALWAYS);
@@ -247,29 +270,27 @@ public class MainView extends BaseView<MainViewController> {
      */
     public void addView(EnumCst.Views viewType){
         // Switch on the type of the view to add
-        BaseView view = null;
-        switch (viewType){
-            case SERVER:
-                view = new NetworkInfoView(this.stage);
-                break;
-            case NEURAL_NETWORK:
-                System.out.println("Not implemented yet...");
-                break;
-            case STOCK:
-                view = new StockView(this.stage);
-                break;
-            default:
-                System.out.println("Unknown view");
-                break;
-        }
+        BaseView view = ViewFactory.get(this.stage, viewType);
 
+        // Add view to active views
+        this.addView(view);
+    }
+
+    /**
+     * Add a view
+     * @param view The view to display
+     */
+    public void addView(BaseView<?> view){
         // Add view to active views
         if (view != null){
             Tab tab = new Tab();
             tab.setText(view.getName());
             tab.setContent(view.getRoot());
             tab.getStyleClass().add("viewTab");
+            tab.setOnClosed((event -> this.views.remove(tab)));
             this.viewsTabPane.getTabs().add(tab);
+            this.viewsTabPane.getSelectionModel().select(tab);
+            this.views.put(tab, view);
         }
     }
 
@@ -305,4 +326,68 @@ public class MainView extends BaseView<MainViewController> {
         return this.root;
     }
 
+    /*****************************************
+     *
+     * Load / Save
+     *
+     *****************************************/
+    /**
+     * Map the view to json format
+     * @return The mapping between object fields and json fields
+     */
+    @Override
+    public Map<String, Object> viewToJsonMap(){
+        // Initialize the brace
+        Map<String, Object> brace = new HashMap<>();
+
+        // Map the active views and call this method for each of them
+        for (BaseView<?> view : this.views.values()) {
+            Map<String, Object> child = view.record().toMap();
+            brace.put(Utils.stripClassName(view.getClass()), child);
+        }
+        return brace;
+    }
+
+    /**
+     * Cast the json object stored in the fields
+     * to a view
+     */
+    @Override
+    public void jsonToView(Map<String, Object> map) {
+        super.jsonToView(map);
+    }
+
+    /**
+     * Read the fields stored in the json
+     * @param fields The fields to read
+     */
+    @Override
+    protected void readFields(Map<String, Object> fields) {
+        // Build the subviews
+        this.buildSubviews(fields);
+    }
+
+    /**
+     * Build subviews from json map
+     * @param views The JSON map of the views
+     */
+    private void buildSubviews(Map<String, Object> views){
+        // Loop over the key set
+        for (String v : views.keySet()) {
+            // Retrieve the view's fields
+            Map<String, Object> viewFields = (Map<String, Object>) views.get(v);
+
+            // Retrieve the type
+            String type = (String) viewFields.get("type");
+
+            // Create view with the factory
+            BaseView<?> view = ViewFactory.get(this.stage, type);
+
+            // Fill in the view's fields from the map
+            view.jsonToView(viewFields);
+
+            // Add view to the managing set
+            this.addView(view);
+        }
+    }
 }

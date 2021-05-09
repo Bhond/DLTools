@@ -1,5 +1,6 @@
 module PopsCommon {
     requires java.desktop;
+    requires org.json;
 
     // Beans
     exports fr.pops.beans.bean;
@@ -14,4 +15,6 @@ module PopsCommon {
     exports fr.pops.commoncst;
     exports fr.pops.nn.popsmath;
     exports fr.pops.math.functions;
+    exports fr.pops.jsonparser;
+
 }
