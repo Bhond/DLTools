@@ -1,3 +1,23 @@
+/*******************************************************************************
+ *
+ *                         PPPP     OOOO     PPPP    SSSS
+ *                        PP  PP   OO  OO   PP  PP  SS
+ *                        PP  PP  OO    OO  PP  PP  SS
+ *                        PP  PP  OO    OO  PP  PP   SSSS
+ *                        PPPP    OO    OO  PPPP        SS
+ *                        PP       OO  OO   PP          SS
+ *                        PP        OOOO    PP       SSSS
+ *
+ * Name: IRecordable.java
+ *
+ * Description: Interface defining interfacing methods to record the
+ *              implementing object into a json file
+ *
+ * Author: Charles MERINO
+ *
+ * Date: 11/05/2021
+ *
+ ******************************************************************************/
 package fr.pops.jsonparser;
 
 import org.json.JSONObject;
@@ -8,7 +28,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public interface Recordable {
+public interface IRecordable {
 
     /**
      * Save the input json object to file

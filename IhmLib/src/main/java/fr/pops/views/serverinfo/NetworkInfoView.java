@@ -272,7 +272,6 @@ public class NetworkInfoView extends BaseView<NetworkInfoController> {
      */
     @Override
     public void jsonToView(Map<String, Object> map) {
-        System.out.println("Network info json");
     }
 
     /**

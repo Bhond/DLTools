@@ -1,3 +1,22 @@
+/*******************************************************************************
+ *
+ *                         PPPP     OOOO     PPPP    SSSS
+ *                        PP  PP   OO  OO   PP  PP  SS
+ *                        PP  PP  OO    OO  PP  PP  SS
+ *                        PP  PP  OO    OO  PP  PP   SSSS
+ *                        PPPP    OO    OO  PPPP        SS
+ *                        PP       OO  OO   PP          SS
+ *                        PP        OOOO    PP       SSSS
+ *
+ * Name: ViewFactory.java
+ *
+ * Description: Abstract class used to create views from a given type
+ *
+ * Author: Charles MERINO
+ *
+ * Date: 20/04/2021
+ *
+ ******************************************************************************/
 package fr.pops.views.viewfactory;
 
 import fr.pops.cst.EnumCst;

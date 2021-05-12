@@ -45,6 +45,7 @@ public class StockView extends BaseView<StockController> {
 
     /**
      * TODO: Make Quote info draggable with a new scene
+     *       Delete in the controller the QuoteInfo being removed when no update request is expected
      */
 
     /*****************************************
@@ -153,7 +154,8 @@ public class StockView extends BaseView<StockController> {
         this.stockDisplayedListView.onDragDetectedProperty().set(event -> this.controller.onDragDetected(event, this.stockDisplayedListView));
         this.controller.setDisplayedQuotes(this.stockDisplayedListView.itemsProperty());
         this.stockDisplayedListView.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
-            if (!observableValue.getValue()){
+            boolean removingQuote = this.removeStockDataButton.focusedProperty().get();
+            if (!observableValue.getValue() && !removingQuote){
                 this.stockDisplayedListView.getSelectionModel().clearSelection();
             }
         });
@@ -187,7 +189,10 @@ public class StockView extends BaseView<StockController> {
 
         // Remove Stock data button
         this.removeStockDataButton = new Button(StrCst.REMOVE_QUOTE_BUTTON_LABEL);
-        this.removeStockDataButton.setOnAction(a ->  this.addStockDataTextField.textProperty().setValue(StrCst.ADD_QUOTE_TEXT_FIELD_DEFAULT));
+        this.removeStockDataButton.setOnAction(a -> {
+            this.controller.onRemoveQuoteInfo(this.stockDisplayedListView, this.chartsTabPane);
+            this.stockDisplayedListView.getSelectionModel().clearSelection();
+        });
         this.removeStockDataButton.getStyleClass().add(StrCst.STYLE_CLASS_STANDARD_BUTTON);
 
         // Build hierarchy
@@ -271,10 +276,12 @@ public class StockView extends BaseView<StockController> {
      * @param price The current price of the stock
      */
     public void updateStockInfo(String symbol, long lastAccessTime, double price){
+        // Exit if the quote is being removed
+        if (this.controller.isQuoteInfoRemoved(symbol)) return;
         // Retrieve existing QuoteInfo in the list view
         QuoteInfo info = this.controller.getQuoteInfo(symbol);
         if (info == null){
-            if (!symbol.equals("invalid")){
+            if (!symbol.equals(StrCst.INVALID_QUOTE)){
                 info = new QuoteInfo(symbol, price, lastAccessTime);
                 Updater.update(this.controller, EnumCst.ListViewOps.ADD, info);
             }
@@ -329,11 +336,11 @@ public class StockView extends BaseView<StockController> {
         Map<String, Object> infos = new HashMap<>();
         for (QuoteInfo info : this.stockDisplayedListView.getItems()){
             Map<String, Object> infoMap = new HashMap<>();
-            infoMap.put("price", info.getPrice());
-            infoMap.put("lastAccessedTime", info.getLastAccessedTime());
+            infoMap.put(StrCst.JSON_KEY_PRICE, info.getPrice());
+            infoMap.put(StrCst.JSON_KEY_LAST_ACCESSED_TIME, info.getLastAccessedTime());
             infos.put(info.getSymbol(), infoMap);
         }
-        brace.put("quoteInfos", infos);
+        brace.put(StrCst.JSON_KEY_QUOTE_INFOS, infos);
 
         return brace;
     }
@@ -355,7 +362,7 @@ public class StockView extends BaseView<StockController> {
         // Loop over the fields
         for (String field : fields.keySet()){
             // Build the quote infos
-            if (field.equals("quoteInfos")){
+            if (field.equals(StrCst.JSON_KEY_QUOTE_INFOS)){
                 Map<String, Object> infos = (Map<String, Object>) fields.get(field);
                 this.buildQuoteInfos(infos);
             }
@@ -375,10 +382,8 @@ public class StockView extends BaseView<StockController> {
             Map<String, Object> data = (Map<String, Object>) infos.get(symbol);
             JSONObject o = new JSONObject(data);
             // Loop over the data
-            for (String dataName : data.keySet()){
-                price = o.getDouble("price");
-                lastAccessedTime = o.getLong("lastAccessedTime");
-            }
+            price = o.getDouble(StrCst.JSON_KEY_PRICE);
+            lastAccessedTime = o.getLong(StrCst.JSON_KEY_LAST_ACCESSED_TIME);
             // Build info from read fields
             QuoteInfo info = new QuoteInfo(symbol, price, lastAccessedTime);
             this.addQuoteInfo(info);

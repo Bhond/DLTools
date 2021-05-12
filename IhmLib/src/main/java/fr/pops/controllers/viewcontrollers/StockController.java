@@ -29,10 +29,14 @@ import fr.pops.views.stock.StockView;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.*;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 public class StockController extends BaseController<StockView, StockModel>{
 
@@ -43,6 +47,7 @@ public class StockController extends BaseController<StockView, StockModel>{
      *****************************************/
     private HashMap<QuoteInfo, CandlestickPlot> displayedCharts;
     private ObservableValue<ObservableList<QuoteInfo>> displayedQuotes;
+    private List<QuoteInfo> removedQuoteInfos;
 
     /*****************************************
      *
@@ -80,6 +85,8 @@ public class StockController extends BaseController<StockView, StockModel>{
     private void onInit(){
         // Initialize the displayed chars map
         this.displayedCharts  = new HashMap<>();
+        // Initialize the remove displayed infos list
+        this.removedQuoteInfos = new LinkedList<>();
     }
 
     /*****************************************
@@ -94,6 +101,27 @@ public class StockController extends BaseController<StockView, StockModel>{
         String inputSymbol = addStockTextField.textProperty().get();
         if (!inputSymbol.isEmpty() && !inputSymbol.equals(StrCst.ADD_QUOTE_TEXT_FIELD_DEFAULT)){
             Client.getInstance().send(new GetCurrentStockInfoRequest(inputSymbol));
+        }
+    }
+
+    /**
+     * Remove stock data from the screen
+     */
+    public void onRemoveQuoteInfo(ListView<QuoteInfo> quoteInfoListView, TabPane chartsTabPane){
+        QuoteInfo selectedQuoteInfo = quoteInfoListView.getSelectionModel().getSelectedItem();
+        if (selectedQuoteInfo != null){
+            if (selectedQuoteInfo.isPlotted()){
+                for (Tab tab : chartsTabPane.getTabs()){
+                    if (tab.getText().equals(selectedQuoteInfo.getSymbol())){
+                        chartsTabPane.getTabs().remove(tab);
+                        break;
+                    }
+                }
+            }
+
+            this.removedQuoteInfos.add(selectedQuoteInfo);
+            this.displayedQuotes.getValue().remove(selectedQuoteInfo);
+            this.model.removeQuoteInfo(selectedQuoteInfo);
         }
     }
 
@@ -170,6 +198,29 @@ public class StockController extends BaseController<StockView, StockModel>{
      */
     public CandlestickPlot getDisplayedChart(QuoteInfo info) {
         return this.displayedCharts.getOrDefault(info, null);
+    }
+
+    /**
+     * @param info The info to control
+     * @return True if the info is being removed
+     */
+    public boolean isQuoteInfoRemoved(QuoteInfo info){
+        return this.removedQuoteInfos.contains(info);
+    }
+
+    /**
+     * @param symbol The symbol of the quote info to control
+     * @return True if the info is being removed
+     */
+    public boolean isQuoteInfoRemoved(String symbol){
+        boolean isBeingRemoved = false;
+        for (QuoteInfo quoteInfo : this.removedQuoteInfos){
+            if (quoteInfo.getSymbol().equals(symbol)){
+                isBeingRemoved = true;
+                break;
+            }
+        }
+        return isBeingRemoved;
     }
 
     /*****************************************

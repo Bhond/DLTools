@@ -56,6 +56,7 @@ public abstract class StrCst {
     public final static String FORMAT_VALUE_FREQUENCY = "%3.0f Hz";
 
     // Stock info
+    public static final String INVALID_QUOTE = "invalid";
     public static final String ADD_QUOTE_BUTTON_LABEL = "Add";
     public static final String REMOVE_QUOTE_BUTTON_LABEL = "Remove";
     public static final String ADD_QUOTE_TEXT_FIELD_DEFAULT = "New symbol";
@@ -69,7 +70,7 @@ public abstract class StrCst {
     public final static String PATH_CSS_DIRECTORY = "/resources/css/";
     public final static String PATH_MEDIA_DIRECTORY = "/resources/media/";
     public final static String PATH_IMAGES_DIRECTORY = fr.pops.cst.StrCst.PATH_MEDIA_DIRECTORY + "images/";
-    public final static String PATH_CONF__DIRECTORY = "/resources/conf/";
+    public final static String PATH_CONF_DIRECTORY = "/resources/conf/";
     // Custom nodes
     public final static String PATH_BASE_PLOT_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "BasePlot.css";
     public final static String PATH_CANDLESTICK_PLOT_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "CandleStickPlot.css";
@@ -81,7 +82,7 @@ public abstract class StrCst {
     public final static String PATH_EARTH_TEXTURE =  fr.pops.cst.StrCst.PATH_IMAGES_DIRECTORY + "earth.png";
 
     // Jsons
-    public final static String JSON_CONF_MAIN_VIEW = "mainView.json";
+    public final static String PATH_JSON_CONF_MAIN_VIEW = PATH_CONF_DIRECTORY + "mainView.json";
 
     /*****************************************
      *
@@ -121,4 +122,12 @@ public abstract class StrCst {
      * JSON key
      *
      *****************************************/
+    // General
+    public static final String JSON_KEY_CLASS = "class";
+    public static final String JSON_KEY_TYPE = "type";
+
+    // Stock
+    public static final String JSON_KEY_QUOTE_INFOS = "quoteInfos";
+    public static final String JSON_KEY_PRICE = "price";
+    public static final String JSON_KEY_LAST_ACCESSED_TIME = "lastAccessedTime";
 }

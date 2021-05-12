@@ -145,10 +145,12 @@ public class MainView extends BaseView<MainViewController> {
                                              this.viewsTabPane);
 
         // Load stored values
-        JSONObject jsonObject = this.readFromFile(Utils.getResource("/resources/conf/mainView.json").substring(6));
+        JSONObject jsonObject = this.readFromFile(Utils.getResourceWithoutFilePrefix(StrCst.PATH_JSON_CONF_MAIN_VIEW));
 
         // Modify view from saved values
-        this.load(jsonObject);
+        if (jsonObject != null){
+            this.load(jsonObject);
+        }
     }
 
     /**
@@ -378,7 +380,7 @@ public class MainView extends BaseView<MainViewController> {
             Map<String, Object> viewFields = (Map<String, Object>) views.get(v);
 
             // Retrieve the type
-            String type = (String) viewFields.get("type");
+            String type = (String) viewFields.get(StrCst.JSON_KEY_TYPE);
 
             // Create view with the factory
             BaseView<?> view = ViewFactory.get(this.stage, type);

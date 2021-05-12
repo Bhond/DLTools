@@ -23,7 +23,7 @@ import fr.pops.controllers.viewcontrollers.BaseController;
 import fr.pops.cst.DblCst;
 import fr.pops.cst.EnumCst;
 import fr.pops.cst.StrCst;
-import fr.pops.jsonparser.Recordable;
+import fr.pops.jsonparser.IRecordable;
 import fr.pops.utils.Utils;
 import javafx.geometry.Pos;
 import javafx.scene.layout.AnchorPane;
@@ -36,7 +36,7 @@ import org.json.JSONObject;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public abstract class BaseView<controllerT extends BaseController<?,?>> implements Recordable {
+public abstract class BaseView<controllerT extends BaseController<?,?>> implements IRecordable {
 
     /*****************************************
      *
@@ -156,8 +156,8 @@ public abstract class BaseView<controllerT extends BaseController<?,?>> implemen
         Map<String, Object> topBrace = new LinkedHashMap<>();
 
         // General parameters
-        topBrace.put("class", Utils.stripClassName(this.getClass()));
-        topBrace.put("type", this.type);
+        topBrace.put(StrCst.JSON_KEY_CLASS, Utils.stripClassName(this.getClass()));
+        topBrace.put(StrCst.JSON_KEY_TYPE, this.type);
 
         // Transform children
         Map<String, Object> fieldsBrace = this.viewToJsonMap();

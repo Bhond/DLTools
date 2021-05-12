@@ -11,16 +11,12 @@
             "type": "STOCK",
             "fields": {"quoteInfos": {
                 "GME": {
-                    "lastAccessedTime": 1620593511637,
-                    "price": 161.11
-                },
-                "TSLA": {
-                    "lastAccessedTime": 1620594246529,
-                    "price": 672.08
+                    "lastAccessedTime": 1620852253641,
+                    "price": 144.79
                 },
                 "AMC": {
-                    "lastAccessedTime": 1620593515416,
-                    "price": 9.51
+                    "lastAccessedTime": 1620852256653,
+                    "price": 10.32
                 }
             }},
             "class": "StockView"
