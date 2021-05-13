@@ -24,7 +24,7 @@ import fr.pops.nn.bias.Bias;
 import fr.pops.nn.networks.CNN;
 import fr.pops.nn.networks.Classifier;
 import fr.pops.nn.networks.NeuralNetworkConfiguration;
-import fr.pops.ndarray.INDArray;
+import fr.pops.math.ndarray.INDArray;
 import fr.pops.nn.weights.weight.Weight;
 
 public class StochasticGradientDescent implements ISolver {

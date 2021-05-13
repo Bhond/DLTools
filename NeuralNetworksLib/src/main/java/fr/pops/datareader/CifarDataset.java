@@ -22,7 +22,7 @@ package fr.pops.datareader;
 import fr.pops.popscst.cst.EnumCst;
 import fr.pops.popscst.cst.StrCst;
 import fr.pops.main.PopsMain;
-import fr.pops.ndarray.BaseNDArray;
+import fr.pops.math.ndarray.BaseNDArray;
 
 import java.io.DataInputStream;
 import java.io.IOException;

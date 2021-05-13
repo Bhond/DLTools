@@ -23,8 +23,8 @@
  ******************************************************************************/
 package fr.pops.datareader;
 
-import fr.pops.ndarray.BaseNDArray;
-import fr.pops.ndarray.INDArray;
+import fr.pops.math.ndarray.BaseNDArray;
+import fr.pops.math.ndarray.INDArray;
 
 import java.io.*;
 import java.util.*;

@@ -21,16 +21,16 @@
 package fr.pops.nn.layers;
 
 import fr.pops.activator.Activator;
-import fr.pops.ndarray.BaseNDArray;
-import fr.pops.ndarray.INDArray;
-import fr.pops.ndarray.Shape;
+import fr.pops.math.ndarray.BaseNDArray;
+import fr.pops.math.ndarray.INDArray;
+import fr.pops.math.ndarray.Shape;
 import fr.pops.nn.bias.Bias;
 import fr.pops.nn.weights.weight.KernelFilter;
 import fr.pops.nn.weights.weight.Weight;
 import fr.pops.optimizer.Optimizer;
 import fr.pops.popscst.cst.EnumCst;
 import fr.pops.popscst.defaultvalues.LayerDefaultValues;
-import fr.pops.popsmath.ArrayUtil;
+import fr.pops.math.ArrayUtil;
 
 @SuppressWarnings("unused")
 public class ConvolutionLayer extends Layer {

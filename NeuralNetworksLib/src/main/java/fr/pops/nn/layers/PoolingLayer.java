@@ -20,14 +20,14 @@
  ******************************************************************************/
 package fr.pops.nn.layers;
 
-import fr.pops.ndarray.BaseNDArray;
-import fr.pops.ndarray.INDArray;
-import fr.pops.ndarray.Shape;
+import fr.pops.math.ndarray.BaseNDArray;
+import fr.pops.math.ndarray.INDArray;
+import fr.pops.math.ndarray.Shape;
 import fr.pops.nn.weights.weight.Weight;
 import fr.pops.popscst.cst.EnumCst;
 import fr.pops.popscst.defaultvalues.LayerDefaultValues;
-import fr.pops.popsmath.ArrayUtil;
-import fr.pops.popsmath.PopsMath;
+import fr.pops.math.ArrayUtil;
+import fr.pops.math.PopsMath;
 import java.util.AbstractMap;
 
 public class PoolingLayer extends Layer {

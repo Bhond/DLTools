@@ -22,7 +22,7 @@ package fr.pops.ihmloop;
 import fr.pops.controllers.controllermanager.ControllerManager;
 import fr.pops.controllers.viewcontrollers.BaseController;
 import fr.pops.cst.EnumCst;
-import fr.pops.nn.popsmath.PopsMath;
+import fr.pops.math.PopsMath;
 import fr.pops.viewmodels.BaseModel;
 
 import java.util.concurrent.Executors;

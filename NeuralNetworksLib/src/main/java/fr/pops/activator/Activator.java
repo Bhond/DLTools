@@ -20,9 +20,9 @@
  ******************************************************************************/
 package fr.pops.activator;
 
+import fr.pops.math.ArrayUtil;
 import fr.pops.popscst.cst.EnumCst;
-import fr.pops.ndarray.INDArray;
-import fr.pops.popsmath.*;
+import fr.pops.math.ndarray.INDArray;
 
 public abstract class Activator {
 
@@ -34,15 +34,15 @@ public abstract class Activator {
     public static INDArray activate(EnumCst.ActivationFunction activationFunction, INDArray arr){
         INDArray res;
         if (activationFunction == EnumCst.ActivationFunction.SIGMOID){
-            res = ArrayUtil.apply(PopsMath.sigmoid, arr);
+            res = fr.pops.math.ArrayUtil.apply(fr.pops.math.PopsMath.sigmoid, arr);
         } else if (activationFunction == EnumCst.ActivationFunction.RELU){
-            res =  ArrayUtil.apply(PopsMath.ReLu, arr);
+            res =  fr.pops.math.ArrayUtil.apply(fr.pops.math.PopsMath.ReLu, arr);
         } else if (activationFunction == EnumCst.ActivationFunction.SOFTMAX){
-            res =  PopsMath.softmax.apply(arr);
+            res =  fr.pops.math.PopsMath.softmax.apply(arr);
         } else if (activationFunction == EnumCst.ActivationFunction.TANH){
-            res =  ArrayUtil.apply(PopsMath.tanh, arr);
+            res =  fr.pops.math.ArrayUtil.apply(fr.pops.math.PopsMath.tanh, arr);
         } else if (activationFunction == EnumCst.ActivationFunction.IDENTITY) {
-            res = ArrayUtil.apply(PopsMath.identity, arr);
+            res = fr.pops.math.ArrayUtil.apply(fr.pops.math.PopsMath.identity, arr);
         } else {
             res = arr;
             System.out.println("Unknown activation function. Please check input.");
@@ -58,15 +58,15 @@ public abstract class Activator {
     public static INDArray dActivate(EnumCst.DActivationFunction dActivationFunction, INDArray arr){
         INDArray res;
         if (dActivationFunction == EnumCst.DActivationFunction.dSIGMOID){
-            res = ArrayUtil.apply(PopsMath.dsigmoid, arr);
+            res = fr.pops.math.ArrayUtil.apply(fr.pops.math.PopsMath.dsigmoid, arr);
         } else if (dActivationFunction == EnumCst.DActivationFunction.dRELU) {
-            res = ArrayUtil.apply(PopsMath.dRelu, arr);
+            res = fr.pops.math.ArrayUtil.apply(fr.pops.math.PopsMath.dRelu, arr);
         } else if (dActivationFunction == EnumCst.DActivationFunction.dSOFTMAX){
-            res =  PopsMath.dsoftmax.apply(arr);
+            res =  fr.pops.math.PopsMath.dsoftmax.apply(arr);
         } else if (dActivationFunction == EnumCst.DActivationFunction.dTANH) {
-            res = ArrayUtil.apply(PopsMath.dtanh, arr);
+            res = fr.pops.math.ArrayUtil.apply(fr.pops.math.PopsMath.dtanh, arr);
         } else if (dActivationFunction == EnumCst.DActivationFunction.dIDENTITY) {
-            res = ArrayUtil.apply(PopsMath.identity, arr);
+            res = ArrayUtil.apply(fr.pops.math.PopsMath.identity, arr);
         } else {
             res = arr;
             System.out.println("Unknown derivative of the activation function. Please check input.");

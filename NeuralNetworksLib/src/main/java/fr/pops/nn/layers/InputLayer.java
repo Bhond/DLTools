@@ -19,8 +19,8 @@
  ******************************************************************************/
 package fr.pops.nn.layers;
 
-import fr.pops.ndarray.BaseNDArray;
-import fr.pops.ndarray.INDArray;
+import fr.pops.math.ndarray.BaseNDArray;
+import fr.pops.math.ndarray.INDArray;
 import fr.pops.nn.weights.weight.Weight;
 import fr.pops.popscst.cst.EnumCst;
 

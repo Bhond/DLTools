@@ -19,10 +19,10 @@
  ******************************************************************************/
 package fr.pops.xmlparser.utils;
 
-import fr.pops.nn.ndarray.BaseNDArray;
-import fr.pops.nn.ndarray.INDArray;
-import fr.pops.nn.ndarray.Shape;
 import fr.pops.commoncst.StrCst;
+import fr.pops.math.ndarray.BaseNDArray;
+import fr.pops.math.ndarray.INDArray;
+import fr.pops.math.ndarray.Shape;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;

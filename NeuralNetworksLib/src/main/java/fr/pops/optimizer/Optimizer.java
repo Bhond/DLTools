@@ -19,8 +19,8 @@
  ******************************************************************************/
 package fr.pops.optimizer;
 
-import fr.pops.ndarray.INDArray;
-import fr.pops.popsmath.*;
+import fr.pops.math.ArrayUtil;
+import fr.pops.math.ndarray.INDArray;
 
 @SuppressWarnings("unused")
 public class Optimizer {
@@ -61,9 +61,9 @@ public class Optimizer {
      */
     private static INDArray Adagrad(double baseLearningRate, INDArray previousLearningRates, INDArray gradient){
         // w^2
-        INDArray squaredGradient = ArrayUtil.hadamard(gradient, gradient);
+        INDArray squaredGradient = fr.pops.math.ArrayUtil.hadamard(gradient, gradient);
         // v(t+1) = v(t) + w^2
-        INDArray updatedLearningRates = ArrayUtil.add(previousLearningRates, squaredGradient);
+        INDArray updatedLearningRates = fr.pops.math.ArrayUtil.add(previousLearningRates, squaredGradient);
         // res = eta / sqrt(v(t+1) + epsilon)
         INDArray toto = ArrayUtil.apply(x -> ((-1) * baseLearningRate * Math.pow(x + EPSILON, -(1/Math.sqrt(2)))), updatedLearningRates);
         return toto;

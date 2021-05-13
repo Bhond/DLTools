@@ -20,8 +20,8 @@
  ******************************************************************************/
 package fr.pops.nn.weights.weightInit;
 
-import fr.pops.ndarray.INDArray;
-import fr.pops.ndarray.Shape;
+import fr.pops.math.ndarray.INDArray;
+import fr.pops.math.ndarray.Shape;
 import fr.pops.popscst.cst.EnumCst;
 
 public abstract class WeightInitUtil {

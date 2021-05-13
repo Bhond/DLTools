@@ -19,7 +19,7 @@
  ******************************************************************************/
 package fr.pops.datareader;
 
-import fr.pops.ndarray.INDArray;
+import fr.pops.math.ndarray.INDArray;
 
 import java.util.ArrayList;
 import java.util.Collection;

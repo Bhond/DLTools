@@ -23,9 +23,9 @@
 package fr.pops.speechrecognizer;
 
 import fr.pops.datareader.WaveReader;
-import fr.pops.popsmath.Complex;
-import fr.pops.popsmath.FFT;
-import fr.pops.popsmath.Specter;
+import fr.pops.math.Complex;
+import fr.pops.math.FFT;
+import fr.pops.math.Specter;
 
 import java.util.ArrayList;
 import java.util.List;

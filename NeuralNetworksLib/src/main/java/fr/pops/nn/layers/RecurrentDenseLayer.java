@@ -23,14 +23,14 @@
 package fr.pops.nn.layers;
 
 import fr.pops.activator.Activator;
+import fr.pops.math.ArrayUtil;
 import fr.pops.nn.weights.weight.Weight;
 import fr.pops.nn.weights.weight.StandardWeight;
 import fr.pops.popscst.cst.EnumCst;
-import fr.pops.ndarray.BaseNDArray;
-import fr.pops.ndarray.INDArray;
+import fr.pops.math.ndarray.BaseNDArray;
+import fr.pops.math.ndarray.INDArray;
 import fr.pops.optimizer.Optimizer;
 import fr.pops.popscst.defaultvalues.LayerDefaultValues;
-import fr.pops.popsmath.*;
 
 @SuppressWarnings("unused")
 public class RecurrentDenseLayer extends DenseLayer {
@@ -70,9 +70,9 @@ public class RecurrentDenseLayer extends DenseLayer {
      */
     @Override
     public void computeZ(Layer previousLayer){
-        INDArray wa  = ArrayUtil.dot(this.weight.getValue(), previousLayer.getActivations());
-        INDArray wh = ArrayUtil.dot(this.weightsBetweenTimeSteps.getValue(), this.activations);
-        INDArray z = ArrayUtil.add(ArrayUtil.add(wa, wh), this.bias.getValue());
+        INDArray wa  = fr.pops.math.ArrayUtil.dot(this.weight.getValue(), previousLayer.getActivations());
+        INDArray wh = fr.pops.math.ArrayUtil.dot(this.weightsBetweenTimeSteps.getValue(), this.activations);
+        INDArray z = fr.pops.math.ArrayUtil.add(fr.pops.math.ArrayUtil.add(wa, wh), this.bias.getValue());
         this.z = z;
     }
 
@@ -96,9 +96,9 @@ public class RecurrentDenseLayer extends DenseLayer {
     public INDArray computeSigmaUnsafe(Weight weight, INDArray sigma){
         // Compute sigma
         INDArray eta = Activator.dActivate(this.dActivationFunction, this.z);
-        INDArray weightsT =  ArrayUtil.transpose(weight.getValue());
-        INDArray tmp = ArrayUtil.dot(eta, weightsT);
-        INDArray newSigma = ArrayUtil.dot(tmp, sigma);
+        INDArray weightsT =  fr.pops.math.ArrayUtil.transpose(weight.getValue());
+        INDArray tmp = fr.pops.math.ArrayUtil.dot(eta, weightsT);
+        INDArray newSigma = fr.pops.math.ArrayUtil.dot(tmp, sigma);
 
         // Complete internal weight gradient
         this.weightsBetweenTimeSteps.computeWeightsIndividualGradient(newSigma, this.previousActivations);
@@ -132,11 +132,11 @@ public class RecurrentDenseLayer extends DenseLayer {
                     this.weightsBetweenTimeSteps.getLearningRates(),
                     this.weightsBetweenTimeSteps.getGradient());
         } else {
-            lambda = ArrayUtil.apply(x -> x * (-1) * baseLearningRate, new BaseNDArray.BaseNDArrayBuilder().zeros(this.weightsBetweenTimeSteps.getValue().getShape()).build());
+            lambda = fr.pops.math.ArrayUtil.apply(x -> x * (-1) * baseLearningRate, new BaseNDArray.BaseNDArrayBuilder().zeros(this.weightsBetweenTimeSteps.getValue().getShape()).build());
         }
 
-        INDArray weightGrad = ArrayUtil.dot(lambda, this.weightsBetweenTimeSteps.getGradient());
-        INDArray weightUpdate = ArrayUtil.add(this.weightsBetweenTimeSteps.getValue(), weightGrad);
+        INDArray weightGrad = fr.pops.math.ArrayUtil.dot(lambda, this.weightsBetweenTimeSteps.getGradient());
+        INDArray weightUpdate = fr.pops.math.ArrayUtil.add(this.weightsBetweenTimeSteps.getValue(), weightGrad);
         this.weightsBetweenTimeSteps.setValue(weightUpdate);
 
         // Biases
@@ -148,10 +148,10 @@ public class RecurrentDenseLayer extends DenseLayer {
                     this.bias.getGradient());
         } else {
             double eta = (-1) * baseLearningRate / batchSize;
-            lambdaBiases = ArrayUtil.apply(x -> x * eta,  new BaseNDArray.BaseNDArrayBuilder().ones(this.bias.getGradient().getShape()).build());
+            lambdaBiases = fr.pops.math.ArrayUtil.apply(x -> x * eta,  new BaseNDArray.BaseNDArrayBuilder().ones(this.bias.getGradient().getShape()).build());
         }
 
-        INDArray biasGrad = ArrayUtil.hadamard(lambdaBiases, this.bias.getGradient());
+        INDArray biasGrad = fr.pops.math.ArrayUtil.hadamard(lambdaBiases, this.bias.getGradient());
         INDArray biasUpdate = ArrayUtil.add(this.bias.getValue(), biasGrad);
         this.bias.setValue(biasUpdate);
     }

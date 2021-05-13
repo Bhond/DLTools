@@ -25,7 +25,7 @@ package fr.pops.server;
 import fr.pops.client.ClientSession;
 import fr.pops.commoncst.IntCst;
 import fr.pops.cst.DoubleCst;
-import fr.pops.nn.popsmath.PopsMath;
+import fr.pops.math.PopsMath;
 import fr.pops.sockets.cst.EnumCst;
 import fr.pops.sockets.resquest.Request;
 

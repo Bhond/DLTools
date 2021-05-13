@@ -48,7 +48,7 @@ public class StockModel extends BaseModel<StockController> {
         // Parent
         super();
         // Change stepping family
-        this.modelSteppingFamily = EnumCst.ModelSteppingFamily.FAMILY_1_ON_100;
+        this.modelSteppingFamily = EnumCst.ModelSteppingFamily.FAMILY_1_ON_1000;
 
         // Create new list
         this.infos = new HashSet<>();

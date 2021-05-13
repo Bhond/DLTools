@@ -21,8 +21,8 @@
 package fr.pops.nn.networks;
 
 import fr.pops.guesser.FeedForward;
-import fr.pops.ndarray.INDArray;
-import fr.pops.ndarray.Shape;
+import fr.pops.math.ndarray.INDArray;
+import fr.pops.math.ndarray.Shape;
 import fr.pops.nn.layers.FlattenLayer;
 import fr.pops.popscst.cst.EnumCst;
 import fr.pops.solver.StochasticGradientDescent;

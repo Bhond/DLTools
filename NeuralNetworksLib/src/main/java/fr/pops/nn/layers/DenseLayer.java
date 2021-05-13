@@ -22,15 +22,15 @@
 package fr.pops.nn.layers;
 
 import fr.pops.activator.Activator;
+import fr.pops.math.ArrayUtil;
 import fr.pops.nn.weights.weight.StandardWeight;
 import fr.pops.nn.weights.weight.Weight;
 import fr.pops.nn.bias.Bias;
 import fr.pops.optimizer.Optimizer;
 import fr.pops.popscst.cst.EnumCst;
-import fr.pops.ndarray.BaseNDArray;
-import fr.pops.ndarray.INDArray;
+import fr.pops.math.ndarray.BaseNDArray;
+import fr.pops.math.ndarray.INDArray;
 import fr.pops.popscst.defaultvalues.LayerDefaultValues;
-import fr.pops.popsmath.*;
 
 @SuppressWarnings("unused")
 public class DenseLayer extends Layer {
@@ -107,7 +107,7 @@ public class DenseLayer extends Layer {
     @Override
     public void computeZ(Layer previousLayer){
         // Compute z
-        this.z = ArrayUtil.add(ArrayUtil.dot(this.weight.getValue(), previousLayer.getActivations()), this.bias.getValue());
+        this.z = fr.pops.math.ArrayUtil.add(fr.pops.math.ArrayUtil.dot(this.weight.getValue(), previousLayer.getActivations()), this.bias.getValue());
     }
 
     /**
@@ -127,9 +127,9 @@ public class DenseLayer extends Layer {
     @Override
     public INDArray computeSigmaUnsafe(Weight weight, INDArray sigma){
         INDArray eta = Activator.dActivate(this.dActivationFunction, this.z);
-        INDArray weightsT =  ArrayUtil.transpose(weight.getValue());
-        INDArray tmp = ArrayUtil.dot(weightsT, sigma);
-        return ArrayUtil.hadamard(eta, tmp);
+        INDArray weightsT =  fr.pops.math.ArrayUtil.transpose(weight.getValue());
+        INDArray tmp = fr.pops.math.ArrayUtil.dot(weightsT, sigma);
+        return fr.pops.math.ArrayUtil.hadamard(eta, tmp);
     }
 
     /**
@@ -139,9 +139,9 @@ public class DenseLayer extends Layer {
     @Override
     public void transmitSigma(Layer layer) {
         INDArray eta = Activator.dActivate(layer.getDActivationFunction(), layer.getZ());
-        INDArray weightsT =  ArrayUtil.transpose(this.weight.getValue());
-        INDArray tmp = ArrayUtil.dot(weightsT, this.sigma);
-        INDArray sigmaToTransmit = ArrayUtil.hadamard(eta, tmp);
+        INDArray weightsT =  fr.pops.math.ArrayUtil.transpose(this.weight.getValue());
+        INDArray tmp = fr.pops.math.ArrayUtil.dot(weightsT, this.sigma);
+        INDArray sigmaToTransmit = fr.pops.math.ArrayUtil.hadamard(eta, tmp);
         layer.setSigma(sigmaToTransmit);
     }
 
@@ -195,11 +195,11 @@ public class DenseLayer extends Layer {
                     this.weight.getGradient());
         } else {
              double eta = (-1) * learningRate / batchSize;
-             lambdaWeights = ArrayUtil.apply(x -> x * eta, new BaseNDArray.BaseNDArrayBuilder().ones(this.weight.getGradient().getShape()).build());
+             lambdaWeights = fr.pops.math.ArrayUtil.apply(x -> x * eta, new BaseNDArray.BaseNDArrayBuilder().ones(this.weight.getGradient().getShape()).build());
         }
         // Actual update
-        INDArray weightsGrad = ArrayUtil.hadamard(lambdaWeights, this.weight.getGradient());
-        INDArray weightsUpdate = ArrayUtil.add(this.weight.getValue(), weightsGrad);
+        INDArray weightsGrad = fr.pops.math.ArrayUtil.hadamard(lambdaWeights, this.weight.getGradient());
+        INDArray weightsUpdate = fr.pops.math.ArrayUtil.add(this.weight.getValue(), weightsGrad);
         this.weight.setValue(weightsUpdate);
     }
 
@@ -222,10 +222,10 @@ public class DenseLayer extends Layer {
                     this.bias.getGradient());
         } else {
             double eta = (-1) * learningRate / batchSize;
-            lambdaBiases = ArrayUtil.apply(x -> x * eta,  new BaseNDArray.BaseNDArrayBuilder().ones(this.bias.getGradient().getShape()).build());
+            lambdaBiases = fr.pops.math.ArrayUtil.apply(x -> x * eta,  new BaseNDArray.BaseNDArrayBuilder().ones(this.bias.getGradient().getShape()).build());
         }
         // Actual update
-        INDArray biasGrad = ArrayUtil.hadamard(lambdaBiases, this.bias.getGradient());
+        INDArray biasGrad = fr.pops.math.ArrayUtil.hadamard(lambdaBiases, this.bias.getGradient());
         INDArray biasUpdate = ArrayUtil.add(this.bias.getValue(), biasGrad);
         this.bias.setValue(biasUpdate);
     }

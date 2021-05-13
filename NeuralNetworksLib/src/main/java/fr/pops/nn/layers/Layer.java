@@ -23,8 +23,8 @@ import fr.pops.activator.Activator;
 import fr.pops.nn.weights.weight.Weight;
 import fr.pops.popscst.cst.EnumCst;
 import fr.pops.nn.bias.Bias;
-import fr.pops.popsmath.ArrayUtil;
-import fr.pops.ndarray.INDArray;
+import fr.pops.math.ArrayUtil;
+import fr.pops.math.ndarray.INDArray;
 
 import java.io.Serializable;
 

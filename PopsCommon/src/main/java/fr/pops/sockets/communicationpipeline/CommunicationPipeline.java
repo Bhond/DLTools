@@ -20,7 +20,7 @@
  ******************************************************************************/
 package fr.pops.sockets.communicationpipeline;
 
-import fr.pops.nn.popsmath.PopsMath;
+import fr.pops.math.PopsMath;
 import fr.pops.sockets.client.BaseClient;
 import fr.pops.sockets.resquest.AuthenticateRequest;
 import fr.pops.sockets.resquest.Request;

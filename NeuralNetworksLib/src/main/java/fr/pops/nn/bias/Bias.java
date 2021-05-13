@@ -19,10 +19,10 @@
  ******************************************************************************/
 package fr.pops.nn.bias;
 
-import fr.pops.ndarray.BaseNDArray;
-import fr.pops.ndarray.INDArray;
-import fr.pops.ndarray.Shape;
-import fr.pops.popsmath.*;
+import fr.pops.math.ArrayUtil;
+import fr.pops.math.ndarray.BaseNDArray;
+import fr.pops.math.ndarray.INDArray;
+import fr.pops.math.ndarray.Shape;
 
 public class Bias {
 

@@ -20,7 +20,7 @@
 package fr.pops.nn.networks;
 
 import fr.pops.guesser.IGuesser;
-import fr.pops.ndarray.INDArray;
+import fr.pops.math.ndarray.INDArray;
 import fr.pops.popscst.cst.EnumCst;
 import fr.pops.solver.ISolver;
 import fr.pops.trainer.ITrainer;

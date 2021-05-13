@@ -20,8 +20,8 @@
 package fr.pops.scorer;
 
 import fr.pops.nn.layers.Layer;
-import fr.pops.popsmath.ArrayUtil;
-import fr.pops.ndarray.INDArray;
+import fr.pops.math.ArrayUtil;
+import fr.pops.math.ndarray.INDArray;
 
 public abstract class Error {
 

@@ -22,9 +22,8 @@ package fr.pops.scorer;
 import fr.pops.datareader.DataReader;
 import fr.pops.nn.layers.Layer;
 import fr.pops.nn.networks.NeuralNetworkProperties;
-import fr.pops.popsmath.Matrix;
-import fr.pops.popsmath.PopsMath;
-import fr.pops.popsmath.Vector;
+import fr.pops.math.Matrix;
+import fr.pops.math.Vector;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -67,8 +66,8 @@ public class Scorer implements Serializable {
      * @param outputLayer
      */
     public void fillConfusionMatrix(int step, DataReader dr, Layer outputLayer){
-        int valueGuessed = PopsMath.indexOfMinMaxValue((Vector) outputLayer.getActivations(), "max");
-        int lbl = PopsMath.indexOfMinMaxValue((Vector) dr.getLabel(step), "max") ;
+        int valueGuessed = Vector.indexOfMinMaxValue((Vector) outputLayer.getActivations(), "max");
+        int lbl = Vector.indexOfMinMaxValue((Vector) dr.getLabel(step), "max") ;
         this.confusionMatrix.setValue(lbl, valueGuessed, this.confusionMatrix.getValue(lbl, valueGuessed)+1);
     }
 
@@ -79,7 +78,7 @@ public class Scorer implements Serializable {
         int nbOfRows = this.confusionMatrix.getNbRows();
         double res = 0;
         for(int i = 0; i < nbOfRows; i++){
-            double buf = PopsMath.sumRow(i, this.confusionMatrix) - this.confusionMatrix.getValue(i,i);
+            double buf = Matrix.sumRow(i, this.confusionMatrix) - this.confusionMatrix.getValue(i,i);
             buf = this.confusionMatrix.getValue(i,i) / (this.confusionMatrix.getValue(i,i) + buf);
             res += buf;
         }
@@ -93,7 +92,7 @@ public class Scorer implements Serializable {
         int nbOfColmuns = this.confusionMatrix.getNbColumns();
         double res = 0;
         for(int j = 0; j < nbOfColmuns; j++){
-            double buf = PopsMath.sumColumn(j, this.confusionMatrix) - this.confusionMatrix.getValue(j,j);
+            double buf = Matrix.sumColumn(j, this.confusionMatrix) - this.confusionMatrix.getValue(j,j);
             buf = this.confusionMatrix.getValue(j,j) / (this.confusionMatrix.getValue(j,j) + buf);
             res += buf;
         }

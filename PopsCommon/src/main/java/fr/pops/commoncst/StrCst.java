@@ -113,4 +113,11 @@ public abstract class StrCst {
     public static final String BIAS = "Bias";
     public static final String BIAS_VALUES = "BiasValues";
 
+    /*****************************************
+     *
+     * String format
+     *
+     *****************************************/
+    public final static String INDARRAY_VALUES_FORMAT = "%6.3f";
+
 }

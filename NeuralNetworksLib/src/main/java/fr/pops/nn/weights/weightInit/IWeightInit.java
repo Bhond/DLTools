@@ -19,8 +19,8 @@
  ******************************************************************************/
 package fr.pops.nn.weights.weightInit;
 
-import fr.pops.ndarray.INDArray;
-import fr.pops.ndarray.Shape;
+import fr.pops.math.ndarray.INDArray;
+import fr.pops.math.ndarray.Shape;
 
 public interface IWeightInit {
 

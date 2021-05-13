@@ -21,7 +21,7 @@
 package fr.pops.solver;
 
 import fr.pops.nn.networks.RNN;
-import fr.pops.ndarray.INDArray;
+import fr.pops.math.ndarray.INDArray;
 
 public class StochasticGradientDescentThroughTime implements ISolver {
 

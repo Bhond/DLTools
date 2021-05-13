@@ -1,9 +1,0 @@
-fr\pops\cst\StrCst.class
-fr\pops\client\StockRequestHandler.class
-fr\pops\stockinfo\StockInfo.class
-fr\pops\stockinfo\StockInfo$1.class
-fr\pops\stockinfo\StockInfoManager.class
-fr\pops\client\Client.class
-fr\pops\client\StockRequestHandler$1.class
-fr\pops\client\StockCommunicationPipeline.class
-fr\pops\stocklibmain\Main.class

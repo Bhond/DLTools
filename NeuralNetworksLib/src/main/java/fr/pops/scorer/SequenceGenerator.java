@@ -20,9 +20,8 @@
 package fr.pops.scorer;
 
 import fr.pops.nn.networks.NeuralNetwork;
-import fr.pops.ndarray.INDArray;
-import fr.pops.popsmath.PopsMath;
-import fr.pops.popsmath.Vector;
+import fr.pops.math.Vector;
+import fr.pops.math.ndarray.INDArray;
 
 public abstract class SequenceGenerator {
 
@@ -48,7 +47,7 @@ public abstract class SequenceGenerator {
             // Forward pass
             neuralNetwork.guess();
             // Retrieve predicted value
-            char val = neuralNetwork.getNeuralNetworkConfiguration().getDataReader().getFromDictionary(PopsMath.indexOfMinMaxValue((Vector) neuralNetwork.getNeuralNetworkConfiguration().getLayers().get(neuralNetwork.getNeuralNetworkConfiguration().getNbLayers()-1).getActivations(), "max"));
+            char val = neuralNetwork.getNeuralNetworkConfiguration().getDataReader().getFromDictionary(Vector.indexOfMinMaxValue((Vector) neuralNetwork.getNeuralNetworkConfiguration().getLayers().get(neuralNetwork.getNeuralNetworkConfiguration().getNbLayers()-1).getActivations(), "max"));
             message += val;
             // Set predicted output as a new input
             neuralNetwork.getNeuralNetworkConfiguration().getLayers().get(0).setActivations(neuralNetwork.getNeuralNetworkConfiguration().getLayers().get(neuralNetwork.getNeuralNetworkConfiguration().getNbLayers()-1).getActivations());

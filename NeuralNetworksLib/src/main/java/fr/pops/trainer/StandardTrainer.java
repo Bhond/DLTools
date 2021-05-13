@@ -24,11 +24,11 @@
 package fr.pops.trainer;
 
 import fr.pops.consoledisplay.ConsoleDisplay;
-import fr.pops.ndarray.INDArray;
+import fr.pops.math.ndarray.INDArray;
 import fr.pops.nn.networks.NeuralNetwork;
-import fr.pops.popsmath.ArrayUtil;
-import fr.pops.popsmath.PopsMath;
-import fr.pops.popsmath.Vector;
+import fr.pops.math.ArrayUtil;
+import fr.pops.math.PopsMath;
+import fr.pops.math.Vector;
 import fr.pops.scorer.Error;
 import fr.pops.updater.Updater;
 
@@ -71,8 +71,8 @@ public class StandardTrainer implements ITrainer {
                 neuralNetwork.backpropagate(dError);
 
                 // TMP
-                int valueGuessed = PopsMath.indexOfMinMaxValue(Vector.toVector(neuralNetwork.getNeuralNetworkConfiguration().getLayers().get(neuralNetwork.getNeuralNetworkConfiguration().getLayers().size()-1).getActivations().getData()), "max");
-                int lbl = PopsMath.indexOfMinMaxValue(Vector.toVector(neuralNetwork.getNeuralNetworkConfiguration().getDataReader().getLabel(neuralNetwork.getCurrentEpoch()).getData()), "max") ;
+                int valueGuessed = Vector.indexOfMinMaxValue(Vector.toVector(neuralNetwork.getNeuralNetworkConfiguration().getLayers().get(neuralNetwork.getNeuralNetworkConfiguration().getLayers().size()-1).getActivations().getData()), "max");
+                int lbl = Vector.indexOfMinMaxValue(Vector.toVector(neuralNetwork.getNeuralNetworkConfiguration().getDataReader().getLabel(neuralNetwork.getCurrentEpoch()).getData()), "max") ;
                 if (valueGuessed == lbl){
                     wellGuessed++;
                 }

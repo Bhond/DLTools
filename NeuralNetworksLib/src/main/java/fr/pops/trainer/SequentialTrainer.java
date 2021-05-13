@@ -22,7 +22,7 @@ package fr.pops.trainer;
 
 import fr.pops.datareader.Sequence;
 import fr.pops.nn.networks.NeuralNetwork;
-import fr.pops.ndarray.INDArray;
+import fr.pops.math.ndarray.INDArray;
 import fr.pops.scorer.Error;
 import fr.pops.scorer.SequenceGenerator;
 import fr.pops.updater.Updater;

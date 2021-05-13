@@ -21,7 +21,7 @@
  ******************************************************************************/
 package fr.pops.datareader;
 
-import fr.pops.popsmath.Complex;
+import fr.pops.math.Complex;
 
 import java.io.DataInputStream;
 import java.io.IOException;

@@ -22,8 +22,8 @@ package fr.pops.datareader;
 import fr.pops.popscst.cst.EnumCst;
 import fr.pops.main.PopsMain;
 import fr.pops.popscst.cst.StrCst;
-import fr.pops.ndarray.BaseNDArray;
-import fr.pops.ndarray.INDArray;
+import fr.pops.math.ndarray.BaseNDArray;
+import fr.pops.math.ndarray.INDArray;
 
 import java.io.DataInputStream;
 import java.io.IOException;

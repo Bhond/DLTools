@@ -19,11 +19,11 @@
  ******************************************************************************/
 package fr.pops.nn.weights.weightInit;
 
-import fr.pops.ndarray.BaseNDArray;
-import fr.pops.ndarray.INDArray;
-import fr.pops.ndarray.Shape;
-import fr.pops.popsmath.ArrayUtil;
-import fr.pops.popsmath.PopsMath;
+import fr.pops.math.ndarray.BaseNDArray;
+import fr.pops.math.ndarray.INDArray;
+import fr.pops.math.ndarray.Shape;
+import fr.pops.math.ArrayUtil;
+import fr.pops.math.PopsMath;
 
 public class WeightInitRelu implements IWeightInit {
 
