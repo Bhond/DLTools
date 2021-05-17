@@ -10,7 +10,7 @@
 /* Root */
 .root
 {
-	-fx-background-color: linear-gradient(-fx-palette-black, -fx-palette-electric-blue);
+	-fx-background-color: -fx-palette-fogra39;/* linear-gradient(-fx-palette-black, -fx-palette-electric-blue); */
 }
 
 /* Buttons */

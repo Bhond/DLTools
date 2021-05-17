@@ -45,8 +45,6 @@ public abstract class Layer implements Serializable {
     protected INDArray activations;
     protected INDArray sigma;
     protected boolean isReady;
-    protected Bias bias;
-
 
     /*****************************************
      *
@@ -162,7 +160,7 @@ public abstract class Layer implements Serializable {
     /**
      * @return The bias of the layer
      */
-    public Bias getBias() { return this.bias; }
+    public abstract Bias getBias();
 
     /**
      * @return The z value of the layer: The pre-activations

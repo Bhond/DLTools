@@ -40,11 +40,12 @@ public abstract class StrCst {
 
     // Menu bar
     public final static String MENUBAR_LABEL_VIEWS = "Views";
+    public final static String MENUBAR_NEURAL_NETWORK_VIEWS = "Neural Networks";
 
     // View names
     public final static String NAME_SERVER_VIEW = "Network info";
-    public final static String NAME_NEURAL_NETWORK_VIEW = "Neural Network";
     public final static String NAME_STOCK_VIEW = "Stock";
+    public final static String NAME_MNIST_VIEW = "MNIST";
 
     // String format
     public final static String FORMAT_SIMPLE_DATE = "HH:mm";
@@ -61,6 +62,11 @@ public abstract class StrCst {
     public static final String REMOVE_QUOTE_BUTTON_LABEL = "Remove";
     public static final String ADD_QUOTE_TEXT_FIELD_DEFAULT = "New symbol";
 
+    // MNIST
+    public static final String LABEL_DISPLAY = "Display";
+    public static final String LABEL_NEURAL_NETWORK = "Neural Network";
+    public static final String LABEL_FRONT = "Front";
+
     /*****************************************
      *
      * Paths
@@ -69,17 +75,21 @@ public abstract class StrCst {
     // Directory
     public final static String PATH_CSS_DIRECTORY = "/resources/css/";
     public final static String PATH_MEDIA_DIRECTORY = "/resources/media/";
-    public final static String PATH_IMAGES_DIRECTORY = fr.pops.cst.StrCst.PATH_MEDIA_DIRECTORY + "images/";
+    public final static String PATH_IMAGES_DIRECTORY = StrCst.PATH_MEDIA_DIRECTORY + "images/";
     public final static String PATH_CONF_DIRECTORY = "/resources/conf/";
+    // Icon
+    public final static String PATH_MAIN_ICON = PATH_IMAGES_DIRECTORY + "mainIcon.png";
     // Custom nodes
-    public final static String PATH_BASE_PLOT_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "BasePlot.css";
-    public final static String PATH_CANDLESTICK_PLOT_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "CandleStickPlot.css";
+    public final static String PATH_BASE_PLOT_CSS = StrCst.PATH_CSS_DIRECTORY + "BasePlot.css";
+    public final static String PATH_CANDLESTICK_PLOT_CSS = StrCst.PATH_CSS_DIRECTORY + "CandleStickPlot.css";
+    public final static String PATH_LABEL_VALUE_PAIR_CSS = StrCst.PATH_CSS_DIRECTORY + "LabelValuePair.css";
     // Views
-    public final static String PATH_MAIN_VIEW_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "MainView.css";
-    public final static String PATH_SERVER_INFO_VIEW_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "NetworkInfoView.css";
-    public final static String PATH_STOCK_VIEW_CSS = fr.pops.cst.StrCst.PATH_CSS_DIRECTORY + "StockView.css";
+    public final static String PATH_MAIN_VIEW_CSS = StrCst.PATH_CSS_DIRECTORY + "MainView.css";
+    public final static String PATH_SERVER_INFO_VIEW_CSS = StrCst.PATH_CSS_DIRECTORY + "NetworkInfoView.css";
+    public final static String PATH_STOCK_VIEW_CSS = StrCst.PATH_CSS_DIRECTORY + "StockView.css";
+    public final static String PATH_MNIST_VIEW_CSS = StrCst.PATH_CSS_DIRECTORY + "MNISTView.css";
     // Earth texture
-    public final static String PATH_EARTH_TEXTURE =  fr.pops.cst.StrCst.PATH_IMAGES_DIRECTORY + "earth.png";
+    public final static String PATH_EARTH_TEXTURE = StrCst.PATH_IMAGES_DIRECTORY + "earth.png";
 
     // Jsons
     public final static String PATH_JSON_CONF_MAIN_VIEW = PATH_CONF_DIRECTORY + "mainView.json";
@@ -103,6 +113,9 @@ public abstract class StrCst {
     public static final String STYLE_CLASS_LISTVIEW = "listView";
     public final static String STYLE_CLASS_STANDARD_BUTTON = "button";
     public final static String STYLE_CLASS_LABEL_VALUE_PAIR_BOX = "labelValuePairBox";
+    public final static String STYLE_CLASS_HBOX = "hbox";
+    public final static String STYLE_CLASS_LABEL_PAIR = "labelPair";
+    public final static String STYLE_CLASS_VALUE_PAIR = "valuePair";
 
     // Candlestic
     public final static String STYLE_CLASS_CANDLESTICK_BODY = "candlestick-body";
@@ -116,6 +129,9 @@ public abstract class StrCst {
     public final static String STYLE_CLASS_QUOTE_DATA_ARROW= "quote-data-arrow";
     public final static String STYLE_CLASS_QUOTE_DATA_PRICE = "quote-data-price";
     public static final String STYLE_CLASS_TEXT_FIELD = "textField";
+
+    // NeuralNetwork
+    public final static String STYLE_CLASS_ACCORDION = "accordionPane";
 
     /*****************************************
      *

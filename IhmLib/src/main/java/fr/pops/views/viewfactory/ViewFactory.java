@@ -21,6 +21,7 @@ package fr.pops.views.viewfactory;
 
 import fr.pops.cst.EnumCst;
 import fr.pops.views.base.BaseView;
+import fr.pops.views.mnist.MNISTView;
 import fr.pops.views.serverinfo.NetworkInfoView;
 import fr.pops.views.stock.StockView;
 import javafx.stage.Stage;
@@ -50,6 +51,8 @@ public abstract class ViewFactory {
                 return new NetworkInfoView(stage);
             case STOCK:
                 return new StockView(stage);
+            case MNIST:
+                return new MNISTView(stage);
             default:
                 return null;
         }

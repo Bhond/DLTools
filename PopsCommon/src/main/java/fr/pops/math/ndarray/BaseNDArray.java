@@ -173,6 +173,15 @@ public class BaseNDArray implements INDArray {
     }
 
     /**
+     * Stack the given INDArray inside the one calling the method
+     * @param arr The array to push
+     */
+    @Override
+    public INDArray concatenate(INDArray arr) {
+        return null;
+    }
+
+    /**
      * Extract a specific channel of the calling BaseNDArray
      * @param channel The index of the channel to extract
      */

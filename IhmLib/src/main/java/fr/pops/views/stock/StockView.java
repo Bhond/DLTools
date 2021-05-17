@@ -135,9 +135,24 @@ public class StockView extends BaseView<StockController> {
         // Configure the tab pane that holds all the charts
         this.configureChartTabPane();
 
-        // Build hierarchy
+        // Hierarchy
+        this.buildHierarchy();
+    }
+
+    /**
+     * Build the hierarchy of the view
+     */
+    @Override
+    protected void buildHierarchy() {
+
+        // Stock managing box
+        this.stockManagingBox.getChildren().addAll(this.addStockDataTextField, this.addStockDataButton, this.removeStockDataButton);
+
+        // Content
         this.topLeftBox.getChildren().addAll(this.stockDisplayedListView, this.stockManagingBox);
         this.topBox.getChildren().addAll(this.topLeftBox, this.chartsTabPane);
+
+        // Root
         this.rootLayout.getChildren().add(this.topBox);
     }
 
@@ -195,8 +210,6 @@ public class StockView extends BaseView<StockController> {
         });
         this.removeStockDataButton.getStyleClass().add(StrCst.STYLE_CLASS_STANDARD_BUTTON);
 
-        // Build hierarchy
-        this.stockManagingBox.getChildren().addAll(this.addStockDataTextField, this.addStockDataButton, this.removeStockDataButton);
     }
 
     /**

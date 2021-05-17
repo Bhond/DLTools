@@ -7,6 +7,7 @@
 @import "Fonts.css"
 @import "BaseListView.css"
 @import "BaseTabPane.css"
+@import "BaseButton.css"
 
 /* root */
 .root
@@ -50,22 +51,6 @@
 {
     -fx-background-color: -fx-palette-orange;
     -fx-rotate: 90;
-}
-
-/* Buttons */
-.button
-{
-    -fx-background-color: transparent;
-    -fx-text-fill: -fx-palette-ghost-white;
-    -fx-font-size: 10pt;
-    -fx-font-family: 'Stellar';
-    -fx-border-width: 1pt;
-    -fx-border-color: -fx-palette-ghost-white;
-}
-
-.button:hover
-{
-    -fx-effect: dropshadow(gaussian, -fx-palette-orange, 8, 0.3, 0, 0);
 }
 
 /* Tab pane */

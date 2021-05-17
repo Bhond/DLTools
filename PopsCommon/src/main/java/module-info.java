@@ -15,5 +15,6 @@ module PopsCommon {
     exports fr.pops.commoncst;
     exports fr.pops.math;
     exports fr.pops.jsonparser;
+    exports fr.pops.math.ndarray;
 
 }

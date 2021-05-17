@@ -24,6 +24,7 @@ import fr.pops.controllers.viewcontrollers.MainViewController;
 import fr.pops.cst.EnumCst;
 import fr.pops.cst.IntCst;
 import fr.pops.cst.StrCst;
+import fr.pops.customnodes.neuralnetworks.networks.NeuralNetwork;
 import fr.pops.systeminfo.DisplayInfo;
 import fr.pops.utils.Utils;
 import fr.pops.views.base.BaseView;
@@ -39,6 +40,7 @@ import javafx.stage.Stage;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class MainView extends BaseView<MainViewController> {
@@ -74,13 +76,15 @@ public class MainView extends BaseView<MainViewController> {
     private MenuBar menuBar;
     private Menu viewsMenu;
 
+    // Views menu
     private MenuItem serverViewMenuItem;
-    private MenuItem neuralNetworkViewMenuItem;
     private MenuItem stockViewMenuItem;
+    private MenuItem mnistViewMenuItem;
 
     // Main layout, contains all of the objects
     private TabPane viewsTabPane;
     private Map<Tab, BaseView<?>> views;
+    private HashSet<NeuralNetwork> neuralNetworkScenes;
 
     /*****************************************
      *
@@ -118,14 +122,17 @@ public class MainView extends BaseView<MainViewController> {
 
         // Content pane
         this.configureContentPane();
-
-        // Add content views
-        this.configureContentViews();
     }
 
+    /**
+     * Configure general parameters
+     */
     private void configureGeneralParameters(){
         // Fields name
         this.fieldsName = "subviews";
+
+        // Neural networks
+        this.neuralNetworkScenes = new HashSet<>();
     }
 
     /**
@@ -140,10 +147,6 @@ public class MainView extends BaseView<MainViewController> {
         // Main layout
         this.configureMainLayout();
 
-        // Build hierarchy
-        this.rootLayout.getChildren().addAll(this.topBar,
-                                             this.viewsTabPane);
-
         // Load stored values
         JSONObject jsonObject = this.readFromFile(Utils.getResourceWithoutFilePrefix(StrCst.PATH_JSON_CONF_MAIN_VIEW));
 
@@ -151,6 +154,32 @@ public class MainView extends BaseView<MainViewController> {
         if (jsonObject != null){
             this.load(jsonObject);
         }
+
+        // Hierarchy
+        this.buildHierarchy();
+    }
+
+    /**
+     * Build the hierarchy of the view
+     */
+    @Override
+    protected void buildHierarchy() {
+
+        // Build hierarchy
+        this.viewsMenu.getItems().addAll(this.serverViewMenuItem,
+                this.stockViewMenuItem,
+                this.mnistViewMenuItem);
+        this.menuBar.getMenus().addAll(this.viewsMenu);
+        this.menuBarLayout.getChildren().add(this.menuBar);
+
+        // Add buttons to the menu bar
+        this.topBar.getChildren().addAll(this.menuBarLayout,
+                this.minimizeWindowButton,
+                this.closeWindowButton);
+
+        // Root
+        this.rootLayout.getChildren().addAll(this.topBar,
+                this.viewsTabPane);
     }
 
     /**
@@ -202,10 +231,6 @@ public class MainView extends BaseView<MainViewController> {
             this.controller.onCloseWindow(a);
         });
 
-        // Add buttons to the menu bar
-        this.topBar.getChildren().addAll(this.menuBarLayout,
-                                          this.minimizeWindowButton,
-                                          this.closeWindowButton);
     }
 
     /**
@@ -225,40 +250,25 @@ public class MainView extends BaseView<MainViewController> {
         this.serverViewMenuItem = new MenuItem(StrCst.NAME_SERVER_VIEW);
         this.serverViewMenuItem.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR_MENU_ITEM);
         this.serverViewMenuItem.setOnAction(a -> this.controller.onServerViewMenuItemClicked(a));
-        this.neuralNetworkViewMenuItem = new MenuItem(StrCst.NAME_NEURAL_NETWORK_VIEW);
-        this.neuralNetworkViewMenuItem.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR_MENU_ITEM);
-        this.neuralNetworkViewMenuItem.setOnAction(a -> this.controller.onNeuralNetworkViewMenuItemClicked(a));
         this.stockViewMenuItem = new MenuItem(StrCst.NAME_STOCK_VIEW);
         this.stockViewMenuItem.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR_MENU_ITEM);
         this.stockViewMenuItem.setOnAction(a -> this.controller.onStockViewMenuItemClicked(a));
+        this.mnistViewMenuItem = new MenuItem(StrCst.NAME_MNIST_VIEW);
+        this.mnistViewMenuItem.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR_MENU_ITEM);
+        this.mnistViewMenuItem.setOnAction(a -> this.controller.onMNISTViewMenuItemClicked(a));
 
-        // Build hierarchy
-        this.viewsMenu.getItems().addAll(this.serverViewMenuItem,
-                                         this.neuralNetworkViewMenuItem,
-                                         this.stockViewMenuItem);
-        this.menuBar.getMenus().add(viewsMenu);
-        this.menuBarLayout.getChildren().add(this.menuBar);
     }
 
     /**
      * Build main pane
      */
     private void configureMainLayout(){
-        // Content Grid pane
+        // Content pane
         this.views = new HashMap<>();
         this.viewsTabPane = new TabPane();
         VBox.setVgrow(this.viewsTabPane, Priority.ALWAYS);
         HBox.setHgrow(this.viewsTabPane, Priority.ALWAYS);
         this.viewsTabPane.getStyleClass().add(StrCst.STYLE_CLASS_VIEWS_TAB_PANE);
-    }
-
-    /**
-     * Add content views
-     * Nothing to be done
-     * TODO: Configure content depending on user's preferences
-     */
-    private void configureContentViews(){
-        // Nothing to be done
     }
 
     /*****************************************
@@ -272,7 +282,7 @@ public class MainView extends BaseView<MainViewController> {
      */
     public void addView(EnumCst.Views viewType){
         // Switch on the type of the view to add
-        BaseView view = ViewFactory.get(this.stage, viewType);
+        BaseView<?> view = ViewFactory.get(this.stage, viewType);
 
         // Add view to active views
         this.addView(view);

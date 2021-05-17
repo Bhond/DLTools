@@ -49,6 +49,7 @@ public class ConvolutionLayer extends Layer {
     private Shape transmitterKernelShape;
     private Shape previousLayerActivationsShape;
     private boolean nInSpecified;
+    protected Bias bias;
 
     /*****************************************
      *
@@ -312,9 +313,20 @@ public class ConvolutionLayer extends Layer {
      * Parent getters
      *
      *****************************************/
+    /**
+     * @return The weights of the layer
+     */
     @Override
     public KernelFilter getWeight() {
         return this.weight;
+    }
+
+    /**
+     * @return The bias of the layer
+     */
+    @Override
+    public Bias getBias() {
+        return this.bias;
     }
 
     /*****************************************

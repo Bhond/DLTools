@@ -23,6 +23,7 @@ package fr.pops.nn.layers;
 import fr.pops.math.ndarray.BaseNDArray;
 import fr.pops.math.ndarray.INDArray;
 import fr.pops.math.ndarray.Shape;
+import fr.pops.nn.bias.Bias;
 import fr.pops.nn.weights.weight.Weight;
 import fr.pops.popscst.cst.EnumCst;
 import fr.pops.popscst.defaultvalues.LayerDefaultValues;
@@ -201,6 +202,14 @@ public class PoolingLayer extends Layer {
      */
     @Override
     public Weight getWeight() {
+        return null;
+    }
+
+    /**
+     * @return Null, Pooling don't have any bias
+     */
+    @Override
+    public Bias getBias() {
         return null;
     }
 

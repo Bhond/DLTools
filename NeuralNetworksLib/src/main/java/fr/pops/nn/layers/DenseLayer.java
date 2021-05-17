@@ -41,6 +41,7 @@ public class DenseLayer extends Layer {
      *
      *****************************************/
     protected StandardWeight weight;
+    protected Bias bias;
 
     /*****************************************
      *
@@ -235,9 +236,20 @@ public class DenseLayer extends Layer {
      * Parent getters
      *
      *****************************************/
+    /**
+     * @return The weights of the layer
+     */
     @Override
     public StandardWeight getWeight() {
         return this.weight;
+    }
+
+    /**
+     * @return The bias of the layer
+     */
+    @Override
+    public Bias getBias() {
+        return this.bias;
     }
 
     /*****************************************

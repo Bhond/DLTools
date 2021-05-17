@@ -1,0 +1,23 @@
+/*****************************************
+*
+* Stylesheet for the label-value pair
+*
+*****************************************/
+@import "Colors.css"
+@import "Fonts.css"
+
+/* Label */
+.labelPair
+{
+    -fx-text-fill: -fx-palette-ghost-white;
+    -fx-font-size: 20pt;
+    -fx-font-family: 'Stellar';
+}
+
+/* Value */
+.valuePair
+{
+    -fx-text-fill: -fx-palette-ghost-white;
+    -fx-font-size: 20pt;
+    -fx-font-family: 'Stellar';
+}

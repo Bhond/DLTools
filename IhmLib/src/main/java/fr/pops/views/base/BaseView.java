@@ -122,6 +122,11 @@ public abstract class BaseView<controllerT extends BaseController<?,?>> implemen
      */
     protected abstract void configureContentPane();
 
+    /**
+     * Build the hierarchy of the view
+     */
+    protected abstract void buildHierarchy();
+
     /*****************************************
      *
      * Getter

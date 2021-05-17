@@ -76,19 +76,19 @@ public class MainViewController extends BaseController<MainView, BaseModel<?>> {
     }
 
     /**
-     * Triggers the display of the neural network view
-     * @param actionEvent The clicked action event
-     */
-    public void onNeuralNetworkViewMenuItemClicked(ActionEvent actionEvent){
-        this.mainView.addView(EnumCst.Views.NEURAL_NETWORK);
-    }
-
-    /**
      * Triggers the display of the stock view
      * @param actionEvent The clicked action event
      */
     public void onStockViewMenuItemClicked(ActionEvent actionEvent){
         this.mainView.addView(EnumCst.Views.STOCK);
+    }
+
+    /**
+     * Triggers the display of the MNIST view
+     * @param actionEvent The clicked action event
+     */
+    public void onMNISTViewMenuItemClicked(ActionEvent actionEvent){
+        this.mainView.addView(EnumCst.Views.MNIST);
     }
 
     /**

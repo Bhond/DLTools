@@ -55,6 +55,14 @@ public interface INDArray extends Serializable {
     public void merge(INDArray arr, int offset);
 
     /**
+     * Concatenate two INDArrays
+     * @param array The array to add at the end
+     *              of the array calling this method
+     * @return The concatenation of both arrays
+     */
+    public INDArray concatenate(INDArray array);
+
+    /**
      * Extract a specific channel of a BaseNDArray
      * @param channel The index of the channel to extract
      */

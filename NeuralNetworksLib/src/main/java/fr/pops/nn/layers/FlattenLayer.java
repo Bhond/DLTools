@@ -24,6 +24,7 @@ import fr.pops.activator.Activator;
 import fr.pops.math.ndarray.BaseNDArray;
 import fr.pops.math.ndarray.INDArray;
 import fr.pops.math.ndarray.Shape;
+import fr.pops.nn.bias.Bias;
 import fr.pops.nn.weights.weight.StandardWeight;
 import fr.pops.nn.weights.weight.Weight;
 import fr.pops.popscst.cst.EnumCst;
@@ -145,6 +146,14 @@ public class FlattenLayer extends Layer {
     @Override
     public Weight getWeight() {
         // Nothing to be done
+        return null;
+    }
+
+    /**
+     * @return The bias of the layer
+     */
+    @Override
+    public Bias getBias() {
         return null;
     }
 }

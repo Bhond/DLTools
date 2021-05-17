@@ -85,6 +85,11 @@ public abstract class PopsMath<T, R> implements Function<T, R> {
         return Math.min(Math.max(min, val), max);
     }
 
+    // Interpolation
+    public static double lerp(double a, double b, double amt){
+        return a + clamp(0d, 1d, amt) * (b - a);
+    }
+
     /**
      * Interface for two arguments functions
       */

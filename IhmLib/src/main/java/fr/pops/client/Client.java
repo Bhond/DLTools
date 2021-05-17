@@ -28,6 +28,7 @@ import fr.pops.sockets.cst.EnumCst;
 import fr.pops.views.main.MainView;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -92,7 +93,7 @@ public class Client extends BaseClient {
 
         // Set the scene
         this.scene = new Scene(this.root);
-        //stage.getIcons().add(new Image(getClass().getResourceAsStream(StrCst.PATH_MAIN_ICON)));
+        stage.getIcons().add(new Image(getClass().getResourceAsStream(StrCst.PATH_MAIN_ICON)));
 
         // Configure the stage
         this.stage.initStyle(StageStyle.UNDECORATED);

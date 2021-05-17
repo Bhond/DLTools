@@ -122,6 +122,9 @@ public class NetworkInfoView extends BaseView<NetworkInfoController> {
 
         // Content
         this.configureContentPane();
+
+        // Hierarchy
+        this.buildHierarchy();
     }
 
     /**
@@ -145,8 +148,6 @@ public class NetworkInfoView extends BaseView<NetworkInfoController> {
         this.pingBox.getStyleClass().add(StrCst.STYLE_CLASS_LABEL_VALUE_PAIR_BOX);
         this.pingLbl = new Label(StrCst.LABEL_PING);
         this.pingValue = new Label();
-        this.pingBox.getChildren().addAll(this.pingLbl, this.pingValue);
-        this.leftBox.getChildren().add(this.pingBox);
 
         // Frequency
         this.frequencyBox = new HBox();
@@ -154,8 +155,6 @@ public class NetworkInfoView extends BaseView<NetworkInfoController> {
         HBox.setHgrow(this.frequencyBox, Priority.NEVER);
         this.frequencyLbl = new Label(StrCst.LABEL_FREQUENCY);
         this.frequencyValue = new Label();
-        this.frequencyBox.getChildren().addAll(this.frequencyLbl, this.frequencyValue);
-        this.leftBox.getChildren().add(this.frequencyBox);
 
         // Connected clients;
         this.clientInfoListView = new ListView<>();
@@ -169,10 +168,29 @@ public class NetworkInfoView extends BaseView<NetworkInfoController> {
         // Earth animation
         this.configureEarthAnimation();
         this.earthAnimationTimer.start();
+    }
+
+    /**
+     * Build the hierarchy of the view
+     */
+    @Override
+    protected void buildHierarchy() {
+
+        // Ping
+        this.pingBox.getChildren().addAll(this.pingLbl, this.pingValue);
+        this.leftBox.getChildren().add(this.pingBox);
+
+        // Frequency
+        this.frequencyBox.getChildren().addAll(this.frequencyLbl, this.frequencyValue);
+        this.leftBox.getChildren().add(this.frequencyBox);
+
+        // Earth
         this.rightBox.getChildren().add(this.earth);
 
-        // Build hierarchy
+        // Content
         this.contentBox.getChildren().addAll(this.leftBox, this.rightBox);
+
+        // Root
         this.rootLayout.getChildren().add(this.contentBox);
     }
 

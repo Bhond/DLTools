@@ -24,12 +24,12 @@ package fr.pops.nn.layers;
 
 import fr.pops.activator.Activator;
 import fr.pops.math.ArrayUtil;
-import fr.pops.nn.weights.weight.Weight;
-import fr.pops.nn.weights.weight.StandardWeight;
-import fr.pops.popscst.cst.EnumCst;
 import fr.pops.math.ndarray.BaseNDArray;
 import fr.pops.math.ndarray.INDArray;
+import fr.pops.nn.weights.weight.StandardWeight;
+import fr.pops.nn.weights.weight.Weight;
 import fr.pops.optimizer.Optimizer;
+import fr.pops.popscst.cst.EnumCst;
 import fr.pops.popscst.defaultvalues.LayerDefaultValues;
 
 @SuppressWarnings("unused")
@@ -41,6 +41,7 @@ public class RecurrentDenseLayer extends DenseLayer {
      *
      *****************************************/
     private INDArray previousActivations;
+    private StandardWeight weights;
     private StandardWeight weightsBetweenTimeSteps;
 
     /*****************************************
