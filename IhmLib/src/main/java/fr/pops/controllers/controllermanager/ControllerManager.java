@@ -22,6 +22,8 @@
 package fr.pops.controllers.controllermanager;
 
 import fr.pops.controllers.viewcontrollers.BaseController;
+import fr.pops.controllers.viewcontrollers.NetworkInfoController;
+import fr.pops.sockets.cst.EnumCst;
 
 import java.util.HashSet;
 import java.util.List;
@@ -98,6 +100,16 @@ public class ControllerManager {
     public <controllerT extends BaseController<?,?>> BaseController<?,?> getFirst(Class<controllerT> controllerClass){
         List<BaseController<?,?>> result = controllers.stream().filter(c -> c.getClass().equals(controllerClass)).collect(Collectors.toList());
         return result.size() > 0 ? result.get(0) : null;
+    }
+
+    /**
+     * Check if a client is connected
+     * @param clientType The client to check
+     * @return True if the client is connected
+     */
+    public boolean isClientConnected(EnumCst.ClientTypes clientType){
+        NetworkInfoController controller = (NetworkInfoController) this.getFirst(NetworkInfoController.class);
+        return controller != null && controller.getConnectedClients().contains(clientType);
     }
 
     /**

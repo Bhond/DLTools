@@ -22,7 +22,7 @@ package fr.pops.views.viewfactory;
 import fr.pops.cst.EnumCst;
 import fr.pops.views.base.BaseView;
 import fr.pops.views.mnist.MNISTView;
-import fr.pops.views.serverinfo.NetworkInfoView;
+import fr.pops.views.networkinfo.NetworkInfoView;
 import fr.pops.views.stock.StockView;
 import javafx.stage.Stage;
 

@@ -180,7 +180,9 @@ public abstract class BaseClient {
      *                It needs to be encoded
      */
     public void send(Request request){
-        this.communicationPipeline.send(request);
+        if (this.communicationPipeline != null){
+            this.communicationPipeline.send(request);
+        }
     }
 
     /*****************************************
@@ -200,10 +202,5 @@ public abstract class BaseClient {
      */
     public RequestHandler getRequestHandler() {
         return this.requestHandler;
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
     }
 }

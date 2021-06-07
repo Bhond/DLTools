@@ -32,6 +32,9 @@ import fr.pops.math.ndarray.BaseNDArray;
 import fr.pops.math.ndarray.INDArray;
 import fr.pops.popscst.defaultvalues.LayerDefaultValues;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @SuppressWarnings("unused")
 public class DenseLayer extends Layer {
 
@@ -250,6 +253,32 @@ public class DenseLayer extends Layer {
     @Override
     public Bias getBias() {
         return this.bias;
+    }
+
+    /*****************************************
+     *
+     * Load / save
+     *
+     *****************************************/
+    /**
+     * Store the specific fields of the layer in a map
+     *
+     * @return The map storing the layer's specific values
+     */
+    @Override
+    protected Map<String, Object> layerToJsonMap() {
+        // Initialize
+        Map<String, Object> brace = new HashMap<>();
+
+        // Weights
+        Map<String, Object> weightsBrace = this.weight.record().toMap();
+        brace.put("weights", weightsBrace);
+
+        // Biases
+        Map<String, Object> biasesBrace = this.bias.record().toMap();
+        brace.put("biases", biasesBrace);
+
+        return brace;
     }
 
     /*****************************************

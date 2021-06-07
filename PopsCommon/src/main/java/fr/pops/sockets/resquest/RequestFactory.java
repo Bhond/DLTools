@@ -82,6 +82,10 @@ public class RequestFactory {
                 return new GetNetworkInfoRequest(rawParams, length);
             case GET_CURRENT_STOCK_INFO:
                 return new GetCurrentStockInfoRequest(rawParams, length);
+            case GET_MNIST_IMAGE:
+                return new GetMNISTImageRequest(rawParams, length);
+            case GET_MNIST_CONFIGURATION:
+                return new GetMNISTConfiguration(rawParams, length);
             default:
                 return null;
         }

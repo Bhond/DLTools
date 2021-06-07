@@ -19,11 +19,11 @@
  ******************************************************************************/
 package fr.pops.datareader;
 
-import fr.pops.popscst.cst.EnumCst;
 import fr.pops.main.PopsMain;
-import fr.pops.popscst.cst.StrCst;
 import fr.pops.math.ndarray.BaseNDArray;
 import fr.pops.math.ndarray.INDArray;
+import fr.pops.popscst.cst.EnumCst;
+import fr.pops.popscst.cst.StrCst;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -78,8 +78,7 @@ public class MNISTDataset extends DataReader {
 
         // Build data stream
         String fullPath = StrCst.PATH_MNIST + labelFile;
-        InputStream file = PopsMain.class.getResourceAsStream(fullPath);
-        System.out.println(file);
+        InputStream file = PopsMain.class.getResourceAsStream("/resources" + fullPath);
         DataInputStream dis = new DataInputStream(file);
 
         // First read the magic number
@@ -110,7 +109,7 @@ public class MNISTDataset extends DataReader {
 
         // Build data stream
         String fullPath = StrCst.PATH_MNIST + imageFile;
-        InputStream file = PopsMain.class.getResourceAsStream(fullPath);
+        InputStream file = PopsMain.class.getResourceAsStream("/resources" + fullPath);
         DataInputStream dis = new DataInputStream(file);
 
         // First read the magic number

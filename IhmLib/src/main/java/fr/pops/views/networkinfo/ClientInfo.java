@@ -18,7 +18,7 @@
  * Date: 02/05/2021
  *
  ******************************************************************************/
-package fr.pops.views.serverinfo;
+package fr.pops.views.networkinfo;
 
 import fr.pops.sockets.cst.EnumCst;
 import javafx.scene.control.Label;

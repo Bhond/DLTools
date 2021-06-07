@@ -19,9 +19,8 @@
  ******************************************************************************/
 package fr.pops.customnodes.heximage;
 
-import fr.pops.math.PopsMath;
+import fr.pops.math.ndarray.BaseNDArray;
 import fr.pops.math.ndarray.INDArray;
-import fr.pops.utils.Utils;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
@@ -57,7 +56,7 @@ public class HexImage extends GridPane {
      * Nothing to be done
      */
     private HexImage(){
-        // Nothing to be done
+        this(new BaseNDArray.BaseNDArrayBuilder().zeros(1,1,1).build());
     }
 
     /**
@@ -103,12 +102,48 @@ public class HexImage extends GridPane {
             Pane pxl = new Pane();
             pxl.setPrefHeight(50);
             pxl.setPrefWidth(50);
-            double[] col = Utils.getColorFromRamp("000000", "ffffff", PopsMath.rand(0,1));
+            double[] col = buildColorFromImage(i);
             Background bg = new Background(new BackgroundFill(new Color(col[0], col[1], col[2], 1), null, null));
             pxl.setBackground(bg);
             this.add(pxl, colIdx, rowIdx);
             rowIdx += colIdx != 0 && colIdx % (resolutionX - 1) == 0 ? 1 : 0;
             colIdx += colIdx != 0 && colIdx % (resolutionX - 1) == 0 ? -colIdx : 1;
         }
+    }
+
+    /**
+     * Create color from pixel values in the image
+     * The result changes according to the greyscale boolean
+     * and the shape of the image
+     * @return The rgb color values in a length 3 double array
+     */
+    private double[] buildColorFromImage(int pixelIdx){
+        double[] color = new double[3];
+        this.greyScale = this.image.getShape().getZAxisLength() == 1;
+        if (this.greyScale){
+            color[0] = this.image.getData()[pixelIdx];
+            color[1] = this.image.getData()[pixelIdx];
+            color[2] = this.image.getData()[pixelIdx];
+        } else {
+            color[0] = this.image.getData()[pixelIdx];
+            color[1] = this.image.getData()[pixelIdx + this.resolutionX * this.resolutionY];
+            color[2] = this.image.getData()[pixelIdx + 2 * this.resolutionX * this.resolutionY];
+        }
+        return color;
+    }
+
+    /*****************************************
+     *
+     * Setter
+     *
+     *****************************************/
+    /**
+     * Display the input image
+     * @param image The image to display
+     */
+    public void setImage(BaseNDArray image) {
+        this.image = image;
+        this.getChildren().removeAll(this.getChildren());
+        this.buildImage();
     }
 }

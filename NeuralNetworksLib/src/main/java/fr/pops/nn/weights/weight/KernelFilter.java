@@ -25,6 +25,7 @@ import fr.pops.math.ndarray.Shape;
 import fr.pops.nn.weights.weightInit.WeightInitUtil;
 import fr.pops.popscst.cst.EnumCst;
 import fr.pops.math.ArrayUtil;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -166,4 +167,22 @@ public class KernelFilter extends Weight {
      *
      *****************************************/
     public void setValue(int i, INDArray arr){ this.values.set(i, arr);}
+
+    /**
+     * Cast the instance of the object into a JSONObject
+     */
+    @Override
+    public JSONObject record() {
+        return null;
+    }
+
+    /**
+     * Load JSONObject
+     *
+     * @param jsonObject
+     */
+    @Override
+    public void load(JSONObject jsonObject) {
+
+    }
 }

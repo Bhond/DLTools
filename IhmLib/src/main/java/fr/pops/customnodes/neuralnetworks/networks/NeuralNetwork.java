@@ -20,21 +20,24 @@
  ******************************************************************************/
 package fr.pops.customnodes.neuralnetworks.networks;
 
+import fr.pops.client.Client;
 import fr.pops.commoncst.EnumCst;
 import fr.pops.cst.StrCst;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
+import fr.pops.customnodes.labelvaluepair.LabelValuePair;
+import fr.pops.sockets.resquest.GetMNISTConfiguration;
+import fr.pops.utils.Utils;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.control.Accordion;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.TitledPane;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.ScrollEvent;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.transform.Rotate;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 public abstract class NeuralNetwork extends HBox {
 
@@ -43,32 +46,37 @@ public abstract class NeuralNetwork extends HBox {
      * Attributes
      *
      *****************************************/
+    // Gui
+    protected int heightNeuralNetwork;
+    protected int widthNeuralNetwork;
+
     // General
     private EnumCst.NeuralNetworkTypes type;
+    protected HashMap<Integer, Integer> layersConf;
 
     // The group to plot
     protected HBox neuralNetworkBox;
     protected Group neuralNetworkGroup;
 
-    // Menu
-    private Accordion accordion;
+    // Configuration box
+    private VBox configurationBox;
+    private Label configurationTitleLabel;
+    private LabelValuePair neuralNetworkTypePair;
+    private LabelValuePair nbLayersPair;
+    private LabelValuePair learningRatePair;
+    // Box reg on
+    private LabelValuePair l1Pair;
+    private LabelValuePair l2Pair;
+    // Layers
+    private Label layersTitleLabel;
+    private int idxLayersLabel;
+    private List<Node> layersConfiguration;
+    // Controls
+    // Mode selection
+    private Button loadConfigurationButton;
+    private Button runButton;
 
-    // Display control menu
-    private TitledPane displayControlMenu;
-    private VBox displayControlMenuContent;
-    private Button backToFrontButton;
-
-    // Neural network  control menu
-    private TitledPane neuralNetworkControlMenu;
-    private VBox neuralNetworkControlMenuContent;
-
-    // Rotation control
-    private double anchorX = 0;
-    private double anchorY = 0;
-    private double anchorAngleX = 0;
-    private double anchorAngleY = 0;
-    private final DoubleProperty angleX = new SimpleDoubleProperty(0);
-    private final DoubleProperty angleY = new SimpleDoubleProperty(0);
+    // Score box
 
     /*****************************************
      *
@@ -82,6 +90,7 @@ public abstract class NeuralNetwork extends HBox {
     protected NeuralNetwork(EnumCst.NeuralNetworkTypes type){
         // Fields
         this.type = type;
+        this.layersConf = new HashMap<>();
     }
 
     /*****************************************
@@ -93,8 +102,15 @@ public abstract class NeuralNetwork extends HBox {
      * Initialize the scene
      */
     protected void onInit(){
+        // Style sheet
+        this.getStylesheets().add(Utils.getResource(StrCst.PATH_NEURAL_NETWORK_CSS));
+
+        // Styleclass
+        this.getStyleClass().add(StrCst.STYLE_CLASS_ROOT);
+
         // This
-        this.setSpacing(10);
+        this.heightNeuralNetwork = this.heightProperty().intValue();
+        this.widthNeuralNetwork = this.widthProperty().intValue();
         VBox.setVgrow(this, Priority.ALWAYS);
         this.setAlignment(Pos.CENTER);
 
@@ -103,9 +119,19 @@ public abstract class NeuralNetwork extends HBox {
         this.neuralNetworkBox.setAlignment(Pos.CENTER);
         HBox.setHgrow(this.neuralNetworkBox, Priority.ALWAYS);
         this.neuralNetworkGroup = new Group();
+        this.neuralNetworkBox.widthProperty().addListener((obs, oldValue, newValue) -> {
+            this.widthNeuralNetwork = newValue.intValue();
+            this.clear();
+            this.build();
+        });
+        this.neuralNetworkBox.heightProperty().addListener((obs, oldValue, newValue) -> {
+            this.heightNeuralNetwork = newValue.intValue();
+            this.clear();
+            this.build();
+        });
 
-        // Accordion
-        this.configureAccordionMenu();
+        // Configuration men
+        this.configureConfigurationMenu();
 
         // Add controls
         this.buildMouseControls();
@@ -115,46 +141,42 @@ public abstract class NeuralNetwork extends HBox {
     }
 
     /**
-     * Configure the accordion menu on the left side
-     */
-    protected void configureAccordionMenu(){
-        // Initialisation
-        this.accordion = new Accordion();
-        this.accordion.setPrefWidth(100);
-
-        // Display control menu
-        this.displayControlMenu = new TitledPane();
-        this.displayControlMenu.setText(StrCst.LABEL_DISPLAY);
-        this.displayControlMenu.getStyleClass().add(StrCst.STYLE_CLASS_ACCORDION);
-        this.configureDisplayControlMenuContent();
-
-        // Neural network control menu
-        this.neuralNetworkControlMenu = new TitledPane();
-        this.neuralNetworkControlMenu.setText(StrCst.LABEL_NEURAL_NETWORK);
-        this.neuralNetworkControlMenu.getStyleClass().add(StrCst.STYLE_CLASS_ACCORDION);
-        this.configureNeuralNetworkControlMenuContent();
-    }
-
-    /**
-     * Build the display control menu
-     */
-    private void configureDisplayControlMenuContent(){
-        // Create pane
-        this.displayControlMenuContent = new VBox();
-        this.displayControlMenuContent.setAlignment(Pos.TOP_CENTER);
-
-        // Control buttons
-        this.backToFrontButton = new Button(StrCst.LABEL_FRONT);
-        this.backToFrontButton.setOnAction(action -> this.backToFront());
-    }
-
-    /**
      * Build the neural network control menu
      */
-    private void configureNeuralNetworkControlMenuContent(){
+    private void configureConfigurationMenu(){
         // Create pane
-        this.neuralNetworkControlMenuContent = new VBox();
-        this.neuralNetworkControlMenuContent.setAlignment(Pos.CENTER);
+        this.configurationBox = new VBox();
+        this.configurationBox.setSpacing(10);
+
+        // Configuration
+        this.configurationTitleLabel = new Label("Configuration");
+        this.neuralNetworkTypePair = new LabelValuePair("Type:", this.type.name());
+        this.nbLayersPair = new LabelValuePair("Nb layers:", 0);
+        this.learningRatePair = new LabelValuePair("Learning rate:", 0d);
+        this.l1Pair = new LabelValuePair("l1:", 0d);
+        this.l2Pair = new LabelValuePair("l2:", 0d);
+        this.configureLayersConfiguration();
+
+        // Controls
+        this.loadConfigurationButton = new Button("Load");
+        this.loadConfigurationButton.setOnAction((actionEvent) -> Client.getInstance().send(new GetMNISTConfiguration()));
+        this.runButton = new Button("Run");
+        this.runButton.setOnAction((actionEvent) -> System.out.println("Running...") );
+    }
+
+    /**
+     * Configure the layers configuration content
+     */
+    private void configureLayersConfiguration(){
+        this.layersTitleLabel = new Label("Layers");
+        this.layersConfiguration = new LinkedList<>();
+        for (int i = 0; i < this.layersConf.size(); i++){
+            Label l = new Label("layer " + i);
+            LabelValuePair lvp = new LabelValuePair("nOut: ", this.layersConf.get(i));
+            lvp.setOrientation(LabelValuePair.ORIENTATION.VERTICAL);
+            this.layersConfiguration.add(l);
+            this.layersConfiguration.add(lvp);
+        }
     }
 
     /**
@@ -163,15 +185,33 @@ public abstract class NeuralNetwork extends HBox {
     private void buildHierarchy(){
         // Neural network
         this.neuralNetworkBox.getChildren().add(this.neuralNetworkGroup);
-        // Display control menu
-        this.displayControlMenuContent.getChildren().add(this.backToFrontButton);
-        this.displayControlMenu.setContent(this.displayControlMenuContent);
-        // Neural network control menu
-        this.neuralNetworkControlMenu.setContent(this.neuralNetworkControlMenuContent);
-        // Accordion
-        this.accordion.getPanes().addAll(this.displayControlMenu, this.neuralNetworkControlMenu);
+
+        // Configuration box
+        this.configurationBox.getChildren().addAll(this.configurationTitleLabel,
+                this.neuralNetworkTypePair,
+                this.nbLayersPair,
+                this.learningRatePair,
+                this.l1Pair,
+                this.l2Pair,
+                this.layersTitleLabel,
+                this.loadConfigurationButton,
+                this.runButton);
+        this.addLayersConfigurationToHierarchy();
+
         // Root
-        this.getChildren().addAll(this.neuralNetworkBox, this.accordion);
+        this.getChildren().addAll(this.neuralNetworkBox, this.configurationBox);
+    }
+
+    /**
+     * Add the layers' configuration below the proper label
+     */
+    private void addLayersConfigurationToHierarchy(){
+        int idx = this.idxLayersLabel;
+        if (this.idxLayersLabel <= 0){ // The node is copied. The address doesn't match
+            idx = this.configurationBox.getChildren().indexOf(this.layersTitleLabel);
+            this.idxLayersLabel = idx;
+        }
+        this.configurationBox.getChildren().addAll(idx + 1, this.layersConfiguration);
     }
 
     /*****************************************
@@ -184,6 +224,11 @@ public abstract class NeuralNetwork extends HBox {
      */
     public abstract void build();
 
+    /**
+     * Clear the neural network
+     */
+    public abstract void clear();
+
     /*****************************************
      *
      * Controls
@@ -193,32 +238,6 @@ public abstract class NeuralNetwork extends HBox {
      * Define the mouse controls
      */
     private void buildMouseControls(){
-        // Rotations
-        Rotate xRotate = new Rotate(0, Rotate.X_AXIS);
-        Rotate yRotate = new Rotate(0, Rotate.Y_AXIS);
-        this.neuralNetworkGroup.getTransforms().addAll(xRotate, yRotate);
-        xRotate.angleProperty().bind(angleX);
-        yRotate.angleProperty().bind(angleY);
-        this.setOnMousePressed(event -> {
-            if (event.getButton() == MouseButton.SECONDARY){
-                anchorX = event.getSceneX();
-                anchorY = event.getSceneY();
-                anchorAngleX = angleX.get();
-                anchorAngleY = angleY.get();
-            }
-        });
-        this.setOnMouseDragged(event -> {
-            if (event.getButton() == MouseButton.SECONDARY){
-                angleX.set(anchorAngleX - (anchorY - event.getSceneY()));
-                angleY.set(anchorAngleY + (anchorX - event.getSceneX()));
-            }
-        });
-
-        // Scroll -> Zoom +-
-        this.addEventHandler(ScrollEvent.SCROLL, event -> {
-            double dz = event.getDeltaY();
-            this.neuralNetworkGroup.translateZProperty().set(this.neuralNetworkGroup.getTranslateZ() + dz);
-        });
     }
 
     /*****************************************
@@ -232,11 +251,30 @@ public abstract class NeuralNetwork extends HBox {
      * Setter
      *
      *****************************************/
+
+    /*****************************************
+     *
+     * Update
+     *
+     *****************************************/
     /**
-     * Display the front view of the neural network
+     * Update the configuration
      */
-    public void backToFront(){
-        this.angleX.set(0);
-        this.angleY.set(0);
+    public void updateConfiguration(int nbLayers, HashMap<Integer, Integer> layersConf, double learningRate, boolean regularisationOn, double l1, double l2){
+        // Fill in pairs
+        this.nbLayersPair.setValue(nbLayers);
+        this.layersConf = layersConf;
+        this.learningRatePair.setValue(learningRate);
+        this.l1Pair.setValue(l1);
+        this.l2Pair.setValue(l2);
+
+        // Update the layers configuration
+        this.configurationBox.getChildren().removeAll(this.layersConfiguration);
+        this.configureLayersConfiguration();
+        this.addLayersConfigurationToHierarchy();
+
+        // Draw the layers
+        this.clear();
+        this.build();
     }
 }

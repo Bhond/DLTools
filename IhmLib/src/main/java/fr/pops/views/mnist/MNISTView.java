@@ -20,6 +20,7 @@
  ******************************************************************************/
 package fr.pops.views.mnist;
 
+import fr.pops.client.Client;
 import fr.pops.controllers.viewcontrollers.MNISTController;
 import fr.pops.cst.EnumCst;
 import fr.pops.cst.StrCst;
@@ -28,13 +29,17 @@ import fr.pops.customnodes.labelvaluepair.LabelValuePair;
 import fr.pops.customnodes.neuralnetworks.networks.NeuralNetwork;
 import fr.pops.customnodes.neuralnetworks.networks.NeuralNetworkFactory;
 import fr.pops.math.ndarray.BaseNDArray;
+import fr.pops.sockets.resquest.GetMNISTImageRequest;
 import fr.pops.utils.Utils;
 import fr.pops.views.base.BaseView;
+import fr.pops.views.updater.Updater;
+import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class MNISTView extends BaseView<MNISTController> {
@@ -55,6 +60,9 @@ public class MNISTView extends BaseView<MNISTController> {
 
     //Neural network
     private NeuralNetwork neuralNetwork;
+
+    private Button nextImageButton;
+    private int counter = 0;
 
     /*****************************************
      *
@@ -91,6 +99,9 @@ public class MNISTView extends BaseView<MNISTController> {
      */
     @Override
     protected void onInit() {
+        // Controller
+        this.controller = new MNISTController(this);
+
         // Root
         this.root.getStylesheets().add(Utils.getResource(StrCst.PATH_MNIST_VIEW_CSS));
 
@@ -121,6 +132,12 @@ public class MNISTView extends BaseView<MNISTController> {
         HBox.setHgrow(this.labelPair, Priority.ALWAYS);
         this.guessPair = new LabelValuePair("Guess:");
         HBox.setHgrow(this.guessPair, Priority.ALWAYS);
+        this.nextImageButton = new Button("Next image");
+        nextImageButton.setOnAction(actionEvent -> {
+            Client.getInstance().send(new GetMNISTImageRequest(counter));
+            counter++;
+        });
+
 
         // Neural network
         this.configureNeuralNetwork();
@@ -135,7 +152,7 @@ public class MNISTView extends BaseView<MNISTController> {
     @Override
     protected void buildHierarchy() {
         // Input box
-        this.inputOutputBox.getChildren().addAll(this.image, this.labelPair, this.guessPair);
+        this.inputOutputBox.getChildren().addAll(this.image, this.labelPair, this.guessPair, this.nextImageButton);
 
         // Content box
         this.contentBox.getChildren().addAll(this.inputOutputBox, this.neuralNetwork);
@@ -148,7 +165,7 @@ public class MNISTView extends BaseView<MNISTController> {
      * Configure the image
      */
     private void configureImage(){
-        this.image = new HexImage(new BaseNDArray.BaseNDArrayBuilder().randomize(28,28,1).build());
+        this.image = new HexImage(new BaseNDArray.BaseNDArrayBuilder().zeros(28,28,1).build());
     }
 
     /**
@@ -168,6 +185,28 @@ public class MNISTView extends BaseView<MNISTController> {
      * Update
      *
      *****************************************/
+    /**
+     * Update the image
+     * @param label The image to display
+     */
+    public void updateLabel(int label){
+        Updater.update(this.labelPair, String.valueOf(label));
+    }
+
+    /**
+     * Update the image
+     * @param image The image to display
+     */
+    public void updateImage(BaseNDArray image){
+        Updater.update(this.image, image);
+    }
+
+    /**
+     * Update the configuration
+     */
+    public void updateConfiguration(int nbLayers, HashMap<Integer, Integer> layers, double learningRate, boolean regularisationOn, double l1, double l2){
+        Updater.update(this.neuralNetwork, layers, nbLayers, learningRate, regularisationOn, l1, l2);
+    }
 
     /*****************************************
      *

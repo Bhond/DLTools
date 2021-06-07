@@ -29,8 +29,9 @@ public abstract class EnumCst {
     public enum ClientTypes {
         // Client types
         DEFAULT(0L),
-        IHM(7596087841016572405L),
-        STOCK(390208358890556977L);
+        IHM(  7596087841016572405L),
+        STOCK(390208358890556977L),
+        MNIST(32482398725739523L);
 
         // Attributes
         private long id;
@@ -74,7 +75,14 @@ public abstract class EnumCst {
      * Request types
      *
      *****************************************/
-    public enum RequestTypes { ERROR, AUTHENTICATE, DISCONNECTION, PING, GET_NETWORK_INFO, GET_CURRENT_STOCK_INFO }
+    public enum RequestTypes { ERROR,
+        AUTHENTICATE,
+        DISCONNECTION,
+        PING,
+        GET_NETWORK_INFO,
+        GET_CURRENT_STOCK_INFO,
+        GET_MNIST_IMAGE,
+        GET_MNIST_CONFIGURATION }
 
     /*****************************************
      *

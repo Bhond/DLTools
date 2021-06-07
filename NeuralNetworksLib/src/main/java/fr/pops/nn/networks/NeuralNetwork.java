@@ -20,17 +20,20 @@
 package fr.pops.nn.networks;
 
 import fr.pops.guesser.IGuesser;
+import fr.pops.jsonparser.IRecordable;
 import fr.pops.math.ndarray.INDArray;
 import fr.pops.popscst.cst.EnumCst;
 import fr.pops.solver.ISolver;
 import fr.pops.trainer.ITrainer;
+import org.json.JSONObject;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings({"unused"})
-public abstract class NeuralNetwork implements Serializable {
+public abstract class NeuralNetwork implements IRecordable {
 
 
     /*****************************************
@@ -138,4 +141,37 @@ public abstract class NeuralNetwork implements Serializable {
         changeSupport.removePropertyChangeListener(listener);
     }
 
+    /*****************************************
+     *
+     * Load / save
+     *
+     *****************************************/
+    /**
+     * Cast the instance of the object into a JSONObject
+     */
+    @Override
+    public JSONObject record() {
+        // Initialization
+        Map<String, Object> brace = new HashMap<>();
+
+        // General
+        brace.put("type", this.type);
+
+        // Configuration
+        JSONObject confObj = this.neuralNetworkConfiguration.record();
+        if (confObj != null){
+            Map<String, Object> confBrace = confObj.toMap();
+            brace.put("configuration", confBrace);
+        }
+        return new JSONObject(brace);
+    }
+
+    /**
+     * Load JSONObject
+     * @param jsonObject
+     */
+    @Override
+    public void load(JSONObject jsonObject) {
+
+    }
 }

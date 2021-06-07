@@ -19,12 +19,17 @@
  ******************************************************************************/
 package fr.pops.nn.bias;
 
+import fr.pops.jsonparser.IRecordable;
 import fr.pops.math.ArrayUtil;
 import fr.pops.math.ndarray.BaseNDArray;
 import fr.pops.math.ndarray.INDArray;
 import fr.pops.math.ndarray.Shape;
+import org.json.JSONObject;
 
-public class Bias {
+import java.util.HashMap;
+import java.util.Map;
+
+public class Bias implements IRecordable {
 
     /*****************************************
      *
@@ -128,10 +133,19 @@ public class Bias {
      * Getters
      *
      *****************************************/
+    /**
+     * @return The values of the bias
+     */
     public INDArray getValue(){return this.value;}
 
+    /**
+     * @return The gradient of the bias
+     */
     public INDArray getGradient(){return this.gradient;}
 
+    /**
+     * @return The learning rates of the bias
+     */
     public INDArray getLearningRates(){return this.learningRates;}
 
     /*****************************************
@@ -139,6 +153,40 @@ public class Bias {
      * Setters
      *
      *****************************************/
+    /**
+     * Set the value of the bias
+     * @param arr The values of the bias
+     */
     public void setValue(INDArray arr){this.value = arr;}
+
+    /*****************************************
+     *
+     * Load / save
+     *
+     *****************************************/
+    /**
+     * Cast the instance of the object into a JSONObject
+     */
+    @Override
+    public JSONObject record() {
+        // Initialization
+        Map<String, Object> brace = new HashMap<>();
+
+        // Fields
+        brace.put("type", this.getClass());
+        brace.put("value", this.value);
+
+        return new JSONObject(brace);
+    }
+
+    /**
+     * Load JSONObject
+     *
+     * @param jsonObject
+     */
+    @Override
+    public void load(JSONObject jsonObject) {
+
+    }
 
 }

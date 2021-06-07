@@ -120,6 +120,12 @@ public class ServerRequestHandler extends RequestHandler {
             case GET_CURRENT_STOCK_INFO:
                 operation = EnumCst.RequestOperations.TRANSFER;
                 break;
+            case GET_MNIST_IMAGE:
+                operation = EnumCst.RequestOperations.TRANSFER;
+                break;
+            case GET_MNIST_CONFIGURATION:
+                operation = EnumCst.RequestOperations.TRANSFER;
+                break;
             default:
                 operation = EnumCst.RequestOperations.NONE;
                 break;
@@ -139,6 +145,12 @@ public class ServerRequestHandler extends RequestHandler {
         switch (request.getType()) {
             case GET_CURRENT_STOCK_INFO:
                 toId = getOtherStockOrIhm(from);
+                break;
+            case GET_MNIST_IMAGE:
+                toId = getOtherMnistOrIhm(from);
+                break;
+            case GET_MNIST_CONFIGURATION:
+                toId = getOtherMnistOrIhm(from);
                 break;
             default:
                 toId = EnumCst.ClientTypes.DEFAULT.getId();
@@ -168,6 +180,31 @@ public class ServerRequestHandler extends RequestHandler {
                 toId = EnumCst.ClientTypes.STOCK.getId();
                 break;
             case STOCK:
+                toId = EnumCst.ClientTypes.IHM.getId();
+                break;
+            default:
+                toId = EnumCst.ClientTypes.DEFAULT.getId();
+                System.out.println("Input sender is neither Ihm nor Stock client. Unable to transfer request.");
+                break;
+        }
+        return toId;
+    }
+
+    /**
+     * Returns the appropriate receiver
+     * between the IHM and the Mnist clients
+     * @param from Ihm client's id or Mnis client's id
+     * @return The other id:
+     *          If from.id == Ihm.id return Mnist.id
+     *          If from.id == Mnist.id return Ihm.id
+     */
+    private long getOtherMnistOrIhm(long from) {
+        long toId;
+        switch (EnumCst.ClientTypes.getType(from)){
+            case IHM:
+                toId = EnumCst.ClientTypes.MNIST.getId();
+                break;
+            case MNIST:
                 toId = EnumCst.ClientTypes.IHM.getId();
                 break;
             default:

@@ -19,10 +19,11 @@
  ******************************************************************************/
 package fr.pops.nn.weights.weight;
 
+import fr.pops.jsonparser.IRecordable;
 import fr.pops.math.ndarray.INDArray;
 import fr.pops.popscst.cst.EnumCst;
 
-public abstract class Weight {
+public abstract class Weight implements IRecordable {
 
     /*****************************************
      *

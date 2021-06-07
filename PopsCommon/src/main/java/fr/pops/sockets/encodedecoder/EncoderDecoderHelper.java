@@ -21,9 +21,11 @@
  ******************************************************************************/
 package fr.pops.sockets.encodedecoder;
 
-import fr.pops.sockets.cst.IntCst;
+import fr.pops.math.ndarray.BaseNDArray;
+import fr.pops.math.ndarray.Shape;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -232,7 +234,7 @@ public class EncoderDecoderHelper {
      * @param b Boolean to encode
      */
     public void encodeBoolean(boolean b){
-        this.put(EncoderDecoder.encodeBoolean(b), IntCst.BOOLEAN_BYTE_SIZE);
+        this.put(EncoderDecoder.encodeBoolean(b), Integer.BYTES);
     }
 
     /**
@@ -241,7 +243,7 @@ public class EncoderDecoderHelper {
      * @return The boolean parsed from the buffer
      */
     public boolean decodeBoolean(){
-        return EncoderDecoder.decodeBoolean(this.pull(IntCst.BOOLEAN_BYTE_SIZE));
+        return EncoderDecoder.decodeBoolean(this.pull(Integer.BYTES));
     }
 
     /*****************************************
@@ -270,6 +272,52 @@ public class EncoderDecoderHelper {
     public String decodeString(){
         int length = this.decodeInt32();
         return EncoderDecoder.decodeString(this.pull(length));
+    }
+
+    /*****************************************
+     *
+     * BaseNDArray
+     *
+     *****************************************/
+    /**
+     * Concatenate a binary representation
+     * of the given BaseNDArray and the buffer
+     * The shape is encoded as well
+     * @param array Array to encode
+     */
+    public void encodeBaseNDArray(BaseNDArray array){
+        int size = array.getShape().getSize();
+        // Shape
+        this.encodeInt32(array.getShape().getXAxisLength());
+        this.encodeInt32(array.getShape().getYAxisLength());
+        this.encodeInt32(array.getShape().getZAxisLength());
+
+        // Array
+        for (int i = 0; i < size; i++){
+            byte[] arr = EncoderDecoder.encodeDouble(array.getData()[i]);
+            this.put(arr, arr.length);
+        }
+    }
+
+    /**
+     * Decode the given binary representation
+     * of a BaseNDArray in the buffer starting from the cursor position
+     * The array shape is decoded as well
+     * @return The BaseNDArray parsed from the buffer
+     */
+    public BaseNDArray decodeNDArray(){
+        // Shape
+        int xAxisLength = this.decodeInt32();
+        int yAxisLength = this.decodeInt32();
+        int zAxisLength = this.decodeInt32();
+        Shape shape = new Shape(xAxisLength, yAxisLength, zAxisLength);
+
+        // Array
+        double[] arr = new double[shape.getSize()];
+        for (int i = 0; i < arr.length; i++){
+            arr[i] = this.decodeDouble();
+        }
+        return new BaseNDArray.BaseNDArrayBuilder().withData(arr).withShape(shape).build();
     }
 
     /*****************************************

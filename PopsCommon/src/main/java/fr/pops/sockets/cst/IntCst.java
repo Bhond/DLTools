@@ -26,8 +26,6 @@ public class IntCst {
      * Encoder / decoder
      *
      *****************************************/
-    public static final int BOOLEAN_BYTE_SIZE = 1;
-
     public static final int BUFFER_8k_SIZE = 8192;
     public static final int BUFFER_16k_SIZE = 16384;
     public static final int BUFFER_32k_SIZE = 32768;

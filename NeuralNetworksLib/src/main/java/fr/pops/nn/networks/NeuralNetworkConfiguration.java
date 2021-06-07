@@ -22,17 +22,21 @@
 package fr.pops.nn.networks;
 
 import fr.pops.datareader.DataReader;
+import fr.pops.jsonparser.IRecordable;
 import fr.pops.nn.layers.InputLayer;
 import fr.pops.nn.layers.Layer;
 import fr.pops.popscst.cst.EnumCst;
 import fr.pops.popscst.cst.StrCst;
 import fr.pops.popscst.defaultvalues.NeuralNetworkDefaultValues;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("unused")
-public class NeuralNetworkConfiguration {
+public class NeuralNetworkConfiguration implements IRecordable {
 
     /*****************************************
      *
@@ -163,6 +167,47 @@ public class NeuralNetworkConfiguration {
     public void setL1(double l1){ this.l1LearningRate = l1; }
 
     public void setL2(double l2){ this.l2LearningRate = l2; }
+
+    /*****************************************
+     *
+     * Save / load
+     *
+     *****************************************/
+    /**
+     * Cast the instance of the object into a JSONObject
+     */
+    @Override
+    public JSONObject record() {
+        // Initialize the object
+        Map<String, Object> brace = new HashMap<>();
+
+        // General
+        brace.put("learningRate", this.learningRate);
+        brace.put("l1", this.l1LearningRate);
+        brace.put("l2", this.l2LearningRate);
+
+        // Layers
+        brace.put("nbLayers", this.layers.size());
+        for (int i = 0; i < this.layers.size(); i++){
+            JSONObject oLayer = this.layers.get(i).record();
+            if (oLayer != null){
+                Map<String, Object> layerBrace = oLayer.toMap();
+                brace.put("layer" + i, layerBrace);
+            }
+        }
+
+        return new JSONObject(brace);
+    }
+
+    /**
+     * Load JSONObject
+     *
+     * @param jsonObject
+     */
+    @Override
+    public void load(JSONObject jsonObject) {
+
+    }
 
     /*****************************************
      *

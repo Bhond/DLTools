@@ -2,11 +2,9 @@ package fr.pops.stocklibmain;
 
 import fr.pops.client.Client;
 
-import java.io.IOException;
-
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         // Create client
         Client client = new Client();
 

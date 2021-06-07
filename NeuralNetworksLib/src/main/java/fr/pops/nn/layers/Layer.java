@@ -20,15 +20,19 @@
 package fr.pops.nn.layers;
 
 import fr.pops.activator.Activator;
-import fr.pops.nn.weights.weight.Weight;
-import fr.pops.popscst.cst.EnumCst;
-import fr.pops.nn.bias.Bias;
+import fr.pops.jsonparser.IRecordable;
 import fr.pops.math.ArrayUtil;
 import fr.pops.math.ndarray.INDArray;
+import fr.pops.nn.bias.Bias;
+import fr.pops.nn.weights.weight.Weight;
+import fr.pops.popscst.cst.EnumCst;
+import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
-public abstract class Layer implements Serializable {
+public abstract class Layer implements Serializable, IRecordable {
 
     /*****************************************
      *
@@ -194,4 +198,48 @@ public abstract class Layer implements Serializable {
     }
 
     public void setSigma(INDArray sigma){ this.sigma = sigma; }
+
+    /*****************************************
+     *
+     * Load / save
+     *
+     *****************************************/
+    /**
+     * Cast the instance of the object into a JSONObject
+     */
+    @Override
+    public JSONObject record() {
+        // Initialization
+        Map<String, Object> brace = new HashMap<>();
+
+        // General
+        brace.put("type", this.type);
+        brace.put("nIn", this.nIn);
+        brace.put("nOut", this.nOut);
+        brace.put("activationFunction", this.activationFunction);
+
+        // Specific fields
+        Map<String, Object> specificBrace = this.layerToJsonMap();
+        if (specificBrace != null){
+            brace.put("specific", specificBrace);
+        }
+
+        return new JSONObject(brace);
+    }
+
+    /**
+     * Store the specific fields of the layer in a map
+     * @return The map storing the layer's specific values
+     */
+    protected Map<String, Object> layerToJsonMap(){ return null; }
+
+    /**
+     * Load JSONObject
+     *
+     * @param jsonObject
+     */
+    @Override
+    public void load(JSONObject jsonObject) {
+
+    }
 }

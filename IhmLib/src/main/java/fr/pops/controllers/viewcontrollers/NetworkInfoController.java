@@ -21,7 +21,7 @@ package fr.pops.controllers.viewcontrollers;
 
 import fr.pops.sockets.cst.EnumCst;
 import fr.pops.viewmodels.NetworkInfoModel;
-import fr.pops.views.serverinfo.NetworkInfoView;
+import fr.pops.views.networkinfo.NetworkInfoView;
 
 import java.util.List;
 
@@ -47,6 +47,18 @@ public class NetworkInfoController extends BaseController<NetworkInfoView, Netwo
     public NetworkInfoController(NetworkInfoView view){
         // Parent
         super(view, new NetworkInfoModel());
+    }
+
+    /*****************************************
+     *
+     * Getter
+     *
+     *****************************************/
+    /**
+     * @return The connected clients
+     */
+    public List<EnumCst.ClientTypes> getConnectedClients(){
+        return this.view.getConnectedClients();
     }
 
     /*****************************************

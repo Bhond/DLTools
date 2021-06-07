@@ -18,7 +18,7 @@
  * Date: 15/02/2021
  *
  ******************************************************************************/
-package fr.pops.views.serverinfo;
+package fr.pops.views.networkinfo;
 
 import fr.pops.controllers.viewcontrollers.NetworkInfoController;
 import fr.pops.cst.DblCst;
@@ -216,6 +216,22 @@ public class NetworkInfoView extends BaseView<NetworkInfoController> {
                 earth.rotateProperty().set(earth.getRotate() + 0.5);
             }
         };
+    }
+
+    /*****************************************
+     *
+     * Getter
+     *
+     *****************************************/
+    /**
+     * @return The connected clients
+     */
+    public List<EnumCst.ClientTypes> getConnectedClients() {
+        List<EnumCst.ClientTypes> result = new LinkedList<>();
+        for (ClientInfo info : this.clientInfoListView.getItems()){
+            result.add(info.getType());
+        }
+        return result;
     }
 
     /*****************************************

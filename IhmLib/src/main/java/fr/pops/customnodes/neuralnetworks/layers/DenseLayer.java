@@ -44,8 +44,10 @@ public class DenseLayer {
     private List<CubicCurve> weights;
 
     // Parameters
-    private final static int neuronRadius = 1; // TODO: correct this
-    private final static int distanceBetweenNeurons = 50; // TODO: correct this
+    private int height = 0;
+    private int nbNeurons = 0;
+    private final static int nbMaxNeuronsToDraw = 30;
+    private final static int neuronRadius = 1;
 
     // Graphics
     private final static String startColorRamp = "ff5000";
@@ -59,9 +61,9 @@ public class DenseLayer {
     /**
      * Standard ctor
      */
-    public DenseLayer(){
+    public DenseLayer(int height, int nbNeuron){
         // Initialize the layer
-        this.onInit();
+        this.onInit(height, nbNeuron);
     }
 
     /*****************************************
@@ -71,12 +73,18 @@ public class DenseLayer {
      *****************************************/
     /**
      * Initialize the layer
+     * @param i
+     * @param height The height of the layer to draw
      */
-    private void onInit(){
+    private void onInit(int height, int nbNeurons){
         // Initialize the displayed objects
         this.group = new Group();
         this.neurons = new LinkedList<>();
         this.weights = new LinkedList<>();
+
+        // Initialize the parameters
+        this.height = height;
+        this.nbNeurons = nbNeurons;
     }
 
     /*****************************************
@@ -100,20 +108,34 @@ public class DenseLayer {
      * Build the neurons
      */
     public void buildNeurons(){
-        // Loop over the neurons
-        int nbNeurons = (int) PopsMath.rand(10, 30);
-        int dy = distanceBetweenNeurons + 2 * neuronRadius;
-        int pos = - ((nbNeurons+1) / 2 * dy) + (nbNeurons % 2 == 0 ? dy/2: 0);
+        // Initialize the bounds and increments
+        int nbNeurons = this.nbNeurons;
+        boolean skipNeurons = nbNeurons > nbMaxNeuronsToDraw;
+        int nbNeuronsToDraw = skipNeurons ? (nbMaxNeuronsToDraw + 2) : nbNeurons;
+        int dy = this.height / nbNeuronsToDraw;
+        int pos =  - (dy * nbNeuronsToDraw) / 2 - (skipNeurons ? 0 : dy/2);
 
+        // Loop over the neurons to draw
         for (int i = 0; i < nbNeurons; i++){
+            // Create objects
             Sphere neuron = new Sphere();
             PhongMaterial mat = new PhongMaterial();
+            // Setup the objects
             mat.setDiffuseColor(Color.BLACK);
             neuron.setRadius(neuronRadius);
             neuron.setMaterial(mat);
             neuron.translateYProperty().set(pos);
+
+            // Store the neuron
             this.neurons.add(neuron);
-            pos += dy;
+
+            // Adjust increment
+            if (skipNeurons && i == ((nbMaxNeuronsToDraw / 2) - 1)){
+                pos += 4 * dy;
+                i = nbNeurons - (nbMaxNeuronsToDraw / 2);
+            } else {
+                pos += dy;
+            }
         }
     }
 
@@ -123,12 +145,13 @@ public class DenseLayer {
      * @param dx The difference of x coordinate between the layers
      */
     public void buildWeights(DenseLayer previousLayer, double dx) {
+        // Initialize the positions
         double startX = (int) -dx;
         double endX = 0;
-        double controlX1 = 0;
-        double controlY1 = 0;
-        double controlX2 = 0;
-        double controlY2 = 0;
+        double controlX1;
+        double controlY1;
+        double controlX2;
+        double controlY2;
 
         double[] orange = Utils.hexToDoubleColor(startColorRamp);
         double[] blue = Utils.hexToDoubleColor(endColorRamp);
@@ -136,19 +159,28 @@ public class DenseLayer {
         // Loop over the neurons in the previous layer
         for (int i = 0; i < previousLayer.getNbNeurons(); i++){
             double startY = previousLayer.getNeurons().get(i).translateYProperty().get();
+
             // Loop over the neurons in this layer
             for (int j = 0; j < this.getNbNeurons(); j++){
+
+                // Setup the coordinates
                 double endY = this.neurons.get(j).translateYProperty().get();
                 controlX1 = -dx/2;
                 controlY1 = startY;
                 controlX2 = -dx/2;
                 controlY2 = endY;
+
+                // Create the weight
                 CubicCurve weight = new CubicCurve(startX, startY, controlX1, controlY1, controlX2, controlY2, endX, endY);
+
+                // Setup the weights
                 weight.setStrokeWidth(1);
                 double[] col = PopsMath.rand(0,1) < .5d ? orange : blue;
                 weight.setStroke(new Color(col[0], col[1], col[2], PopsMath.rand(0,1)));
                 weight.setEffect(new Bloom());
                 weight.setFill(Color.TRANSPARENT);
+
+                // Store the weight
                 this.weights.add(weight);
             }
         }

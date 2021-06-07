@@ -22,12 +22,10 @@ package fr.pops.client;
 
 import fr.pops.controllers.controllermanager.ControllerManager;
 import fr.pops.controllers.viewcontrollers.BaseController;
+import fr.pops.controllers.viewcontrollers.MNISTController;
 import fr.pops.controllers.viewcontrollers.NetworkInfoController;
 import fr.pops.controllers.viewcontrollers.StockController;
-import fr.pops.sockets.resquest.GetCurrentStockInfoRequest;
-import fr.pops.sockets.resquest.GetNetworkInfoRequest;
-import fr.pops.sockets.resquest.PingRequest;
-import fr.pops.sockets.resquest.Request;
+import fr.pops.sockets.resquest.*;
 
 public abstract class RequestDispatcher {
 
@@ -41,7 +39,6 @@ public abstract class RequestDispatcher {
      * @param request The request to dispatch
      */
     public static void dispatch(Request request){
-
         // Dispatch the request in the controllers
         switch (request.getType()){
             case PING:
@@ -53,13 +50,18 @@ public abstract class RequestDispatcher {
             case GET_CURRENT_STOCK_INFO:
                 dispatchGetCurrentStockInfoRequest((GetCurrentStockInfoRequest) request);
                 break;
+            case GET_MNIST_IMAGE:
+                dispatchGetMNISTImageRequest((GetMNISTImageRequest) request);
+                break;
+            case GET_MNIST_CONFIGURATION:
+                dispatchGetMNISTConfigurationRequest((GetMNISTConfiguration) request);
+                break;
         }
     }
 
-
     /**
      * Dispatch ping Request
-     * @param request The ping request
+     * @param request The ping request to dispatch
      */
     private static void dispatchPingRequest(PingRequest request) {
         BaseController<?, ?> controller = ControllerManager.getInstance().getFirst(NetworkInfoController.class);
@@ -70,7 +72,7 @@ public abstract class RequestDispatcher {
 
     /**
      * Dispatch the request
-     * @param request The request
+     * @param request The request to dispatch
      */
     private static void dispatchGetNetworkInfoRequest(GetNetworkInfoRequest request) {
         BaseController<?, ?> controller =  ControllerManager.getInstance().getFirst(NetworkInfoController.class);
@@ -82,7 +84,7 @@ public abstract class RequestDispatcher {
 
     /**
      * Dispatch the request
-     * @param request The request
+     * @param request The request to dispatch
      */
     private static void dispatchGetCurrentStockInfoRequest(GetCurrentStockInfoRequest request) {
         BaseController<?, ?> controller =  ControllerManager.getInstance().getFirst(StockController.class);
@@ -91,6 +93,34 @@ public abstract class RequestDispatcher {
             double price = request.getCurrentStockPrice();
             String symbol = request.getSymbol();
             ((StockController) controller).addCurrentStockPrice(symbol, lastAccessTime, price);
+        }
+    }
+
+    /**
+     * Dispatch GetMNISTImageRequest
+     * @param request The request to dispatch
+     */
+    private static void dispatchGetMNISTImageRequest(GetMNISTImageRequest request) {
+        BaseController<?, ?> controller = ControllerManager.getInstance().getFirst(MNISTController.class);
+        if (controller != null){
+            ((MNISTController) controller).setLabel(request.getLabel());
+            ((MNISTController) controller).setImage(request.getImage());
+        }
+    }
+
+    /**
+     * Dispatch GetMNISTConfiguration
+     * @param request The request to dispatch
+     */
+    private static void dispatchGetMNISTConfigurationRequest(GetMNISTConfiguration request) {
+        BaseController<?, ?> controller = ControllerManager.getInstance().getFirst(MNISTController.class);
+        if (controller != null){
+            ((MNISTController) controller).setConfiguration(request.getNbLayers(),
+                    request.getLayers(),
+                    request.getLearningRate(),
+                    request.isRegularisationOn(),
+                    request.getL1(),
+                    request.getL2());
         }
     }
 }

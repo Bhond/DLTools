@@ -81,14 +81,18 @@ public class Classifier extends NeuralNetwork {
      */
     @Override
     public void build() {
-        int nbLayers = 5;
-        int dx = this.distanceBetweenLayers + 2 * DenseLayer.getNeuronRadius();
+        // If map is empty, return
+        int nbLayers = this.layersConf.size();
+        if (nbLayers == 0) return;
+
+        // Initialize the parameters
+        int dx = this.widthNeuralNetwork / nbLayers;
         int startPos = - ((nbLayers / 2) * dx) + (nbLayers % 2 == 0 ?  dx / 2 : 0);
         int pos = startPos;
 
         // Loop over all the layers
         for (int i = 0; i < nbLayers; i++){
-            DenseLayer layer = new DenseLayer();
+            DenseLayer layer = new DenseLayer(this.heightNeuralNetwork, this.layersConf.get(i));
             if (i > 0){
                 layer.buildNeurons();
                 layer.buildWeights(this.layers.get(i-1), dx);
@@ -111,7 +115,14 @@ public class Classifier extends NeuralNetwork {
             layer.neuronsToFront();
             pos += dx;
         }
+    }
 
-
+    /**
+     * Clear the neural network
+     */
+    @Override
+    public void clear() {
+        this.neuralNetworkGroup.getChildren().clear();
+        this.layers.clear();
     }
 }

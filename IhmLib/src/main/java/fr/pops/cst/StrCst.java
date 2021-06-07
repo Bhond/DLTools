@@ -83,6 +83,7 @@ public abstract class StrCst {
     public final static String PATH_BASE_PLOT_CSS = StrCst.PATH_CSS_DIRECTORY + "BasePlot.css";
     public final static String PATH_CANDLESTICK_PLOT_CSS = StrCst.PATH_CSS_DIRECTORY + "CandleStickPlot.css";
     public final static String PATH_LABEL_VALUE_PAIR_CSS = StrCst.PATH_CSS_DIRECTORY + "LabelValuePair.css";
+    public final static String PATH_NEURAL_NETWORK_CSS = StrCst.PATH_CSS_DIRECTORY + "NeuralNetwork.css";
     // Views
     public final static String PATH_MAIN_VIEW_CSS = StrCst.PATH_CSS_DIRECTORY + "MainView.css";
     public final static String PATH_SERVER_INFO_VIEW_CSS = StrCst.PATH_CSS_DIRECTORY + "NetworkInfoView.css";
@@ -114,6 +115,7 @@ public abstract class StrCst {
     public final static String STYLE_CLASS_STANDARD_BUTTON = "button";
     public final static String STYLE_CLASS_LABEL_VALUE_PAIR_BOX = "labelValuePairBox";
     public final static String STYLE_CLASS_HBOX = "hbox";
+    public final static String STYLE_CLASS_VBOX = "vbox";
     public final static String STYLE_CLASS_LABEL_PAIR = "labelPair";
     public final static String STYLE_CLASS_VALUE_PAIR = "valuePair";
 
@@ -131,7 +133,6 @@ public abstract class StrCst {
     public static final String STYLE_CLASS_TEXT_FIELD = "textField";
 
     // NeuralNetwork
-    public final static String STYLE_CLASS_ACCORDION = "accordionPane";
 
     /*****************************************
      *

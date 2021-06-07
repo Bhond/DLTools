@@ -19,6 +19,14 @@
  ******************************************************************************/
 package fr.pops.main;
 
+import fr.pops.datareader.DataReader;
+import fr.pops.datareader.MNISTDataset;
+import fr.pops.nn.layers.DenseLayer;
+import fr.pops.nn.networks.Classifier;
+import fr.pops.nn.networks.NeuralNetworkConfiguration;
+import fr.pops.popscst.cst.EnumCst;
+import org.json.JSONObject;
+
 public class PopsMain {
 
     public static void main(String[] args) throws Exception {
@@ -84,25 +92,25 @@ public class PopsMain {
          * Classifier
          *
          *****************************************/
-//        DataReader dr = new MNISTDataset(EnumCst.RunningMode.TRAINING);
-//
-//        NeuralNetworkConfiguration conf = new NeuralNetworkConfiguration.NeuralNetworkConfigurationBuilder()
-//                .withLearningRate(0.1)
-//                .withBatchSize(10)
-//                .withNbIterations(6000)
-//                .withRegularisation(false)
-//                .withDataReader(dr)
-//                .withInputLayer(784)
-//                .withLayer(new DenseLayer.DenseLayerBuilder().withNOut(100).withActivationFunction("relu").withWeightInit(EnumCst.WeightsInitMethod.XAVIER).build())
-//                .withLayer(new DenseLayer.DenseLayerBuilder().withNOut(100).withActivationFunction("relu").withWeightInit(EnumCst.WeightsInitMethod.XAVIER).build())
-//                .withLayer(new DenseLayer.DenseLayerBuilder().withNOut(10).withActivationFunction("softmax").withWeightInit(EnumCst.WeightsInitMethod.XAVIER).build())
-//                .build();
-//
-//        Classifier cl = new Classifier(conf);
-//        cl.init();
-//        cl.train();
+        DataReader dr = new MNISTDataset(EnumCst.RunningMode.TRAINING);
 
-//        NeuralNetworkToXMLParser.save("src/resources/config/MNIST_Classifier.xml", cl);
+        NeuralNetworkConfiguration conf = new NeuralNetworkConfiguration.NeuralNetworkConfigurationBuilder()
+                .withLearningRate(0.1)
+                .withBatchSize(10)
+                .withNbIterations(1)
+                .withRegularisation(false)
+                .withDataReader(dr)
+                .withInputLayer(784)
+                .withLayer(new DenseLayer.DenseLayerBuilder().withNOut(100).withActivationFunction("relu").withWeightInit(EnumCst.WeightsInitMethod.XAVIER).build())
+                .withLayer(new DenseLayer.DenseLayerBuilder().withNOut(100).withActivationFunction("relu").withWeightInit(EnumCst.WeightsInitMethod.XAVIER).build())
+                .withLayer(new DenseLayer.DenseLayerBuilder().withNOut(10).withActivationFunction("softmax").withWeightInit(EnumCst.WeightsInitMethod.XAVIER).build())
+                .build();
+
+        Classifier cl = new Classifier(conf);
+        cl.init();
+//        cl.train();
+        JSONObject o = cl.record();
+        cl.saveToFile(o, PopsMain.class.getResource("/config/MNIST_Classifier.json").toString().substring(6));
 
         /*****************************************
          *

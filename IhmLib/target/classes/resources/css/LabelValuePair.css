@@ -10,7 +10,7 @@
 .labelPair
 {
     -fx-text-fill: -fx-palette-ghost-white;
-    -fx-font-size: 20pt;
+    -fx-font-size: 15px;
     -fx-font-family: 'Stellar';
 }
 
@@ -18,6 +18,6 @@
 .valuePair
 {
     -fx-text-fill: -fx-palette-ghost-white;
-    -fx-font-size: 20pt;
+    -fx-font-size: 15px;
     -fx-font-family: 'Stellar';
 }

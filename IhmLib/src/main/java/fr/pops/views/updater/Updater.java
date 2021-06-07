@@ -23,8 +23,12 @@ package fr.pops.views.updater;
 
 import fr.pops.controllers.viewcontrollers.StockController;
 import fr.pops.cst.EnumCst;
+import fr.pops.customnodes.heximage.HexImage;
+import fr.pops.customnodes.labelvaluepair.LabelValuePair;
+import fr.pops.customnodes.neuralnetworks.networks.NeuralNetwork;
 import fr.pops.customnodes.plot.candlestickplot.CandleData;
 import fr.pops.customnodes.plot.candlestickplot.CandlestickPlot;
+import fr.pops.math.ndarray.BaseNDArray;
 import fr.pops.views.stock.QuoteInfo;
 import javafx.application.Platform;
 import javafx.scene.chart.XYChart;
@@ -32,6 +36,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
 import java.util.Collection;
+import java.util.HashMap;
 
 public abstract class Updater {
 
@@ -88,6 +93,34 @@ public abstract class Updater {
 
     /*****************************************
      *
+     * LabelValuePair
+     *
+     *****************************************/
+    /**
+     * Update a LabelValuePair
+     * @param pair The node to update
+     * @param value The value to display
+     */
+    public static void update(LabelValuePair pair, String value){
+        Platform.runLater(() -> pair.setValue(value));
+    }
+
+    /*****************************************
+     *
+     * HexImage
+     *
+     *****************************************/
+    /**
+     * Update a HexImage
+     * @param hexImage The node to update
+     * @param image The image to display
+     */
+    public static void update(HexImage hexImage, BaseNDArray image){
+        Platform.runLater(() -> hexImage.setImage(image));
+    }
+
+    /*****************************************
+     *
      * ListView
      *
      *****************************************/
@@ -127,6 +160,25 @@ public abstract class Updater {
                 Platform.runLater(() -> listView.getItems().removeAll(items));
                 break;
         }
+    }
+
+    /*****************************************
+     *
+     * Neural networks
+     *
+     *****************************************/
+    /**
+     * Update the neural network configuration
+     * @param neuralNetwork The neural network to update
+     * @param layers
+     * @param nbLayers The nb of layers
+     * @param learningRate The learning rate
+     * @param regularisationOn True is the regularisation is activated
+     * @param l1 The l1 learning rate
+     * @param l2 The l2 learning rate
+     */
+    public static void update(NeuralNetwork neuralNetwork, HashMap<Integer, Integer> layers, int nbLayers, double learningRate, boolean regularisationOn, double l1, double l2){
+        Platform.runLater(() -> neuralNetwork.updateConfiguration(nbLayers, layers, learningRate, regularisationOn, l1, l2));
     }
 
     /*****************************************

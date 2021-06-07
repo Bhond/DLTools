@@ -41,7 +41,7 @@ public abstract class EncoderDecoder {
     /**
      * Decode int32 value from string
      * @param rawParam Byte array representation of an integer
-     * @return The integer value contained in the input string
+     * @return The integer value contained in the input byte array
      */
     public static int decodeInt32(byte[] rawParam){
         return ByteBuffer.wrap(rawParam).getInt();
@@ -77,7 +77,6 @@ public abstract class EncoderDecoder {
      *****************************************/
     /**
      * Encode double value to byte array
-     * TODO: describe cast to long then to dbl
      * @param dbl The double value to encode in a byte array
      * @return A byte array representation of the input double
      */
@@ -125,7 +124,7 @@ public abstract class EncoderDecoder {
     /**
      * Encode String to byte array representation
      * @param str The String to encode in a byte array
-     * @return A byte array representation of the input String
+     * @return A byte array representation of the input byte array
      */
     public static byte[] encodeString(String str){
         return str.getBytes();
@@ -139,5 +138,4 @@ public abstract class EncoderDecoder {
     public static String decodeString(byte[] rawParam){
         return new String(rawParam);
     }
-
 }

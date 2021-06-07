@@ -1,0 +1,41 @@
+/*****************************************
+*
+* Stylesheet for the neural networks
+*
+*****************************************/
+@import "Colors.css"
+@import "Fonts.css"
+
+/* root */
+.root
+{
+    -fx-spacing: 10px;
+}
+
+/* Labels */
+.label
+{
+    -fx-text-fill: -fx-palette-ghost-white;
+    -fx-background-color: transparent;
+    -fx-font-size: 15px;
+    -fx-font-family: 'Stellar';
+    -fx-border-width: 0 0 2 0;
+    -fx-border-color: -fx-palette-ghost-white;
+}
+
+/* Label Value pair */
+.labelPair
+{
+    -fx-text-fill: -fx-palette-ghost-white;
+    -fx-font-size: 10px;
+    -fx-font-family: 'Stellar';
+    -fx-border-width: 0;
+}
+
+.valuePair
+{
+    -fx-text-fill: -fx-palette-ghost-white;
+    -fx-font-size: 10px;
+    -fx-font-family: 'Stellar';
+    -fx-border-width: 0;
+}

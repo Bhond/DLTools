@@ -25,6 +25,10 @@ import fr.pops.nn.weights.weightInit.WeightInitUtil;
 import fr.pops.popscst.cst.EnumCst;
 import fr.pops.math.ndarray.BaseNDArray;
 import fr.pops.math.ndarray.INDArray;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class StandardWeight extends Weight {
 
@@ -129,12 +133,21 @@ public class StandardWeight extends Weight {
      * Getters
      *
      *****************************************/
+    /**
+     * @return The weight values
+     */
     @Override
     public INDArray getValue(){ return this.value; }
 
+    /**
+     * @return The weight gradient
+     */
     @Override
     public INDArray getGradient(){ return this.gradient; }
 
+    /**
+     * @return The weight learning rates
+     */
     @Override
     public INDArray getLearningRates(){ return this.learningRatesPerElements; }
 
@@ -143,5 +156,39 @@ public class StandardWeight extends Weight {
      * Setters
      *
      *****************************************/
+    /**
+     * Set the value of the weights
+     * @param arr The INDArray containing the weight values
+     */
     public void setValue(INDArray arr){ this.value = arr;}
+
+    /*****************************************
+     *
+     * Load / save
+     *
+     *****************************************/
+    /**
+     * Cast the instance of the object into a JSONObject
+     */
+    @Override
+    public JSONObject record() {
+        // Initialization
+        Map<String, Object> brace = new HashMap<>();
+
+        // Fields
+        brace.put("type", this.getClass());
+        brace.put("value", this.value);
+
+        return new JSONObject(brace);
+    }
+
+    /**
+     * Load JSONObject
+     *
+     * @param jsonObject
+     */
+    @Override
+    public void load(JSONObject jsonObject) {
+
+    }
 }
