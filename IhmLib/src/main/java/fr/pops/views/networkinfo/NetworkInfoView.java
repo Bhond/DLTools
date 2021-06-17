@@ -34,6 +34,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -56,7 +57,8 @@ public class NetworkInfoView extends BaseView<NetworkInfoController> {
      * Attributes
      *
      *****************************************/
-    // Layouts
+     // Layouts
+     private VBox rootLayout;
     private HBox contentBox;
     private VBox leftBox;
     private VBox rightBox;
@@ -116,15 +118,28 @@ public class NetworkInfoView extends BaseView<NetworkInfoController> {
         // Set controller
         this.controller = new NetworkInfoController(this);
 
-        // Set root stylesheet
-        // Root pane
-        this.root.getStylesheets().add(Utils.getResource(StrCst.PATH_SERVER_INFO_VIEW_CSS));
-
         // Content
         this.configureContentPane();
 
         // Hierarchy
         this.buildHierarchy();
+    }
+
+    /**
+     * Configure the rootPane
+     */
+    @Override
+    protected void configureRoot() {
+        // Root
+        this.root = new AnchorPane();
+        this.root.getStylesheets().add(Utils.getResource(StrCst.PATH_SERVER_INFO_VIEW_CSS));
+
+        // Root layout
+        this.rootLayout = new VBox();
+        AnchorPane.setTopAnchor(this.rootLayout, DblCst.SIZE_ANCHOR_ZERO);
+        AnchorPane.setBottomAnchor(this.rootLayout, DblCst.SIZE_ANCHOR_ZERO);
+        AnchorPane.setLeftAnchor(this.rootLayout, DblCst.SIZE_ANCHOR_ZERO);
+        AnchorPane.setRightAnchor(this.rootLayout, DblCst.SIZE_ANCHOR_ZERO);
     }
 
     /**
@@ -175,7 +190,6 @@ public class NetworkInfoView extends BaseView<NetworkInfoController> {
      */
     @Override
     protected void buildHierarchy() {
-
         // Ping
         this.pingBox.getChildren().addAll(this.pingLbl, this.pingValue);
         this.leftBox.getChildren().add(this.pingBox);
@@ -192,6 +206,7 @@ public class NetworkInfoView extends BaseView<NetworkInfoController> {
 
         // Root
         this.rootLayout.getChildren().add(this.contentBox);
+        ((AnchorPane) this.root).getChildren().add(this.rootLayout);
     }
 
     /**

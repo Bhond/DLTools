@@ -21,7 +21,7 @@ package fr.pops.views.viewfactory;
 
 import fr.pops.cst.EnumCst;
 import fr.pops.views.base.BaseView;
-import fr.pops.views.mnist.MNISTView;
+import fr.pops.views.neuralnetwork.NeuralNetworkView;
 import fr.pops.views.networkinfo.NetworkInfoView;
 import fr.pops.views.stock.StockView;
 import javafx.stage.Stage;
@@ -52,7 +52,7 @@ public abstract class ViewFactory {
             case STOCK:
                 return new StockView(stage);
             case MNIST:
-                return new MNISTView(stage);
+                return new NeuralNetworkView(stage);
             default:
                 return null;
         }

@@ -1,0 +1,16 @@
+/*****************************************
+*
+* Stylesheet for Labels
+*
+*****************************************/
+@import "Colors.css"
+@import "Fonts.css"
+
+/* Label */
+.label
+{
+    -fx-text-fill: -fx-palette-ghost-white;
+    -fx-background-color: transparent;
+    -fx-font-size: 15px;
+    -fx-font-family: 'Stellar';
+}

@@ -21,6 +21,7 @@
 package fr.pops.views.stock;
 
 import fr.pops.controllers.viewcontrollers.StockController;
+import fr.pops.cst.DblCst;
 import fr.pops.cst.EnumCst;
 import fr.pops.cst.StrCst;
 import fr.pops.customnodes.plot.candlestickplot.CandleData;
@@ -30,6 +31,7 @@ import fr.pops.views.base.BaseView;
 import fr.pops.views.updater.Updater;
 import javafx.geometry.Side;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -54,6 +56,7 @@ public class StockView extends BaseView<StockController> {
      *
      *****************************************/
     // Layouts
+    private VBox rootLayout;
     private HBox topBox;
     private VBox topLeftBox;
 
@@ -116,6 +119,22 @@ public class StockView extends BaseView<StockController> {
     }
 
     /**
+     * Configure the rootPane
+     */
+    @Override
+    protected void configureRoot() {
+        // Root
+        this.root = new AnchorPane();
+
+        // Root layout
+        this.rootLayout = new VBox();
+        AnchorPane.setTopAnchor(this.rootLayout, DblCst.SIZE_ANCHOR_ZERO);
+        AnchorPane.setBottomAnchor(this.rootLayout, DblCst.SIZE_ANCHOR_ZERO);
+        AnchorPane.setLeftAnchor(this.rootLayout, DblCst.SIZE_ANCHOR_ZERO);
+        AnchorPane.setRightAnchor(this.rootLayout, DblCst.SIZE_ANCHOR_ZERO);
+    }
+
+    /**
      * Configure the content pane
      * Build the layout of the view
      * Draw all the components holding the info
@@ -154,6 +173,7 @@ public class StockView extends BaseView<StockController> {
 
         // Root
         this.rootLayout.getChildren().add(this.topBox);
+        ((AnchorPane) this.root).getChildren().add(this.rootLayout);
     }
 
     /**
@@ -254,10 +274,6 @@ public class StockView extends BaseView<StockController> {
         } else {
             // Create new tab
             Tab tab = new Tab(symbol);
-            HBox hBox = new HBox();
-            VBox vBox = new VBox();
-            HBox.setHgrow(vBox, Priority.ALWAYS);
-            VBox.setVgrow(hBox, Priority.ALWAYS);
 
             // Create plot displaying the stock data in real time
             QuoteInfo info = this.controller.getQuoteInfo(symbol);

@@ -37,6 +37,44 @@ public abstract class EnumCst {
 
     /*****************************************
      *
+     * Components
+     *
+     *****************************************/
+    public enum ComponentCategories { NONE, INPUTS, LAYERS }
+
+    public enum ComponentTypes {
+        DRAG(ComponentCategories.NONE, "Drag"),
+        INPUT_LOCAL(ComponentCategories.INPUTS, "Local"),
+        LAYER_INPUT(ComponentCategories.LAYERS, "Input"),
+        LAYER_DENSE(ComponentCategories.LAYERS, "Dense"),
+        LAYER_CONVOLUTION(ComponentCategories.LAYERS, "Convolution"),
+        LAYER_POOLING(ComponentCategories.LAYERS, "Pooling"),
+        LAYER_LSTM(ComponentCategories.LAYERS, "LSTM");
+
+        // Attribute
+        ComponentCategories category;
+        String str;
+
+        // Ctor
+        private ComponentTypes(ComponentCategories category, String str){
+            this.category = category;
+            this.str = str;
+        }
+
+        // Method
+        @Override
+        public String toString(){
+            return this.str;
+        }
+
+        // Getter
+        public ComponentCategories getCategory() {
+            return this.category;
+        }
+    }
+
+    /*****************************************
+     *
      * Operations
      *
      *****************************************/

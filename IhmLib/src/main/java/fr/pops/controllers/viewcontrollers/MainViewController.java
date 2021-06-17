@@ -29,7 +29,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 public class MainViewController extends BaseController<MainView, BaseModel<?>> {
@@ -117,7 +117,7 @@ public class MainViewController extends BaseController<MainView, BaseModel<?>> {
      * @param root The root to drag
      * @param stage The stage
      */
-    public void onWindowDragged(AnchorPane root, Stage stage){
+    public void onWindowDragged(Region root, Stage stage){
         root.setOnMousePressed(p -> root.setOnMouseDragged(dragEvent -> {
             if (p.getButton() == MouseButton.PRIMARY && p.getY() <= IntCst.DEFAULT_MENU_BAR_HEIGHT){
                 stage.setX(dragEvent.getScreenX() - p.getSceneX());
@@ -132,7 +132,7 @@ public class MainViewController extends BaseController<MainView, BaseModel<?>> {
      * @param root The root to drag
      * @param stage The stage
      */
-    public void onWindowResized(AnchorPane root, Stage stage){
+    public void onWindowResized(Region root, Stage stage){
         root.setOnMouseMoved(e -> {
 
             boolean isOnLRBorder = (e.getX() <= 2 || e.getX() >= root.getWidth() - 2);

@@ -1,0 +1,25 @@
+/*****************************************
+*
+* Stylesheet for the draggable node
+*
+*****************************************/
+@import "Colors.css"
+@import "Fonts.css"
+@import "BaseLabel.css"
+
+/* root */
+.rootPane
+{
+    -fx-background-color: transparent;
+    -fx-border-color: -fx-palette-ghost-white;
+    -fx-border-width: 2px;
+}
+
+/* root box */
+.rootBox
+{
+    -fx-padding: 5px;
+    -fx-spacing: 5px;
+    -fx-border-color: -fx-palette-ghost-white;
+    -fx-border-width: 0 0 2 0;
+}

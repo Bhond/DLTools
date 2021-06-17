@@ -21,18 +21,18 @@
 package fr.pops.views.main;
 
 import fr.pops.controllers.viewcontrollers.MainViewController;
+import fr.pops.cst.DblCst;
 import fr.pops.cst.EnumCst;
 import fr.pops.cst.IntCst;
 import fr.pops.cst.StrCst;
-import fr.pops.customnodes.neuralnetworks.networks.NeuralNetwork;
 import fr.pops.systeminfo.DisplayInfo;
 import fr.pops.utils.Utils;
 import fr.pops.views.base.BaseView;
 import fr.pops.views.viewfactory.ViewFactory;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -40,7 +40,6 @@ import javafx.stage.Stage;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 public class MainView extends BaseView<MainViewController> {
@@ -53,19 +52,14 @@ public class MainView extends BaseView<MainViewController> {
     // System info
     private final DisplayInfo displayInfo = DisplayInfo.getInstance();
 
-    // Controller
-    private MainViewController controller = MainViewController.getInstance();
-
-    // Sizes
-    private Insets contentLayoutInsets;
-    private double contentWidth;
-    private double contentHeight;
-
     /*****************************************
      *
      * JavaFX objects
      *
      *****************************************/
+     // Root layout
+     private VBox rootLayout;
+
     // Top bar
     private HBox topBar;
     private Button minimizeWindowButton;
@@ -84,7 +78,6 @@ public class MainView extends BaseView<MainViewController> {
     // Main layout, contains all of the objects
     private TabPane viewsTabPane;
     private Map<Tab, BaseView<?>> views;
-    private HashSet<NeuralNetwork> neuralNetworkScenes;
 
     /*****************************************
      *
@@ -117,9 +110,6 @@ public class MainView extends BaseView<MainViewController> {
         // General parameters
         this.configureGeneralParameters();
 
-        // Root
-        this.configureRoot();
-
         // Content pane
         this.configureContentPane();
     }
@@ -130,9 +120,6 @@ public class MainView extends BaseView<MainViewController> {
     private void configureGeneralParameters(){
         // Fields name
         this.fieldsName = "subviews";
-
-        // Neural networks
-        this.neuralNetworkScenes = new HashSet<>();
     }
 
     /**
@@ -164,7 +151,6 @@ public class MainView extends BaseView<MainViewController> {
      */
     @Override
     protected void buildHierarchy() {
-
         // Build hierarchy
         this.viewsMenu.getItems().addAll(this.serverViewMenuItem,
                 this.stockViewMenuItem,
@@ -180,18 +166,31 @@ public class MainView extends BaseView<MainViewController> {
         // Root
         this.rootLayout.getChildren().addAll(this.topBar,
                 this.viewsTabPane);
+        ((AnchorPane) this.root).getChildren().add(this.rootLayout);
     }
 
     /**
      * Build the root pane
      */
+    @Override
     protected void configureRoot(){
         // Root pane
+        this.root = new AnchorPane();
         this.root.setPrefHeight(IntCst.DEFAULT_MAIN_WINDOW_HEIGHT_TEST);
         this.root.setPrefWidth(IntCst.DEFAULT_MAIN_WINDOW_WIDTH_TEST);
+        this.root.getStyleClass().add(StrCst.STYLE_CLASS_ROOT);
         this.root.getStylesheets().add(Utils.getResource(StrCst.PATH_MAIN_VIEW_CSS));
 
+        // Layout
+        this.rootLayout = new VBox();
+        this.rootLayout.getStyleClass().add(StrCst.STYLE_CLASS_ROOT_LAYOUT);
+        AnchorPane.setTopAnchor(this.rootLayout, DblCst.SIZE_ANCHOR_ZERO);
+        AnchorPane.setBottomAnchor(this.rootLayout, DblCst.SIZE_ANCHOR_ZERO);
+        AnchorPane.setLeftAnchor(this.rootLayout, DblCst.SIZE_ANCHOR_ZERO);
+        AnchorPane.setRightAnchor(this.rootLayout, DblCst.SIZE_ANCHOR_ZERO);
+
         // Controller
+        this.controller = MainViewController.getInstance();
         this.controller.setMainView(this);
         this.controller.onWindowDragged(this.root, this.stage);
         this.controller.onWindowResized(this.root, this.stage);
@@ -304,25 +303,6 @@ public class MainView extends BaseView<MainViewController> {
             this.viewsTabPane.getSelectionModel().select(tab);
             this.views.put(tab, view);
         }
-    }
-
-    /*****************************************
-     *
-     * Getters
-     *
-     *****************************************/
-    /**
-     * @return The current height of the root
-     */
-    public double getHeight() {
-        return this.contentHeight;
-    }
-
-    /**
-     * @return The current width of the root
-     */
-    public double getWidth() {
-        return this.contentWidth;
     }
 
     /*****************************************

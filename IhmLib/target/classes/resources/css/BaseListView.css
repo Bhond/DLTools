@@ -10,8 +10,6 @@
 .listView
 {
     -fx-background-color: transparent;
-    -fx-font-size: 10pt;
-    -fx-font-family: 'Stellar';
 	-fx-border-image-source: url("../borders/standardCorners.png");
 	-fx-border-image-width: 40px;
 	-fx-border-image-slice: 50px;
@@ -30,4 +28,11 @@
 .listView .list-cell:odd
 {
     -fx-background-color: transparent;
+}
+
+.label
+{
+    -fx-text-fill: -fx-palette-ghost-white;
+    -fx-font-size: 10pt;
+    -fx-font-family: 'Stellar';
 }

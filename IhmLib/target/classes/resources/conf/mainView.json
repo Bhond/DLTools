@@ -1,20 +1,8 @@
 {
     "type": "MAIN",
     "class": "MainView",
-    "subviews": {
-        "MNISTView": {
-            "type": "MNIST",
-            "class": "MNISTView"
-        },
-        "NetworkInfoView": {
-            "type": "NETWORK_INFO",
-            "fields": {},
-            "class": "NetworkInfoView"
-        },
-        "StockView": {
-            "type": "STOCK",
-            "fields": {"quoteInfos": {}},
-            "class": "StockView"
-        }
-    }
+    "subviews": {"NeuralNetworkView": {
+        "type": "MNIST",
+        "class": "NeuralNetworkView"
+    }}
 }

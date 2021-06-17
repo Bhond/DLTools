@@ -20,16 +20,11 @@
 package fr.pops.views.base;
 
 import fr.pops.controllers.viewcontrollers.BaseController;
-import fr.pops.cst.DblCst;
 import fr.pops.cst.EnumCst;
 import fr.pops.cst.StrCst;
 import fr.pops.jsonparser.IRecordable;
 import fr.pops.utils.Utils;
-import javafx.geometry.Pos;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import org.json.JSONObject;
 
@@ -50,8 +45,7 @@ public abstract class BaseView<controllerT extends BaseController<?,?>> implemen
 
     // Basic components
     protected Stage stage;
-    protected AnchorPane root;
-    protected VBox rootLayout;
+    protected Region root;
 
     // Load / save
     protected String fieldsName = "fields";
@@ -79,6 +73,8 @@ public abstract class BaseView<controllerT extends BaseController<?,?>> implemen
         this.stage = stage;
         this.name = name;
         this.type = type;
+
+        // Configure the root layout
         this.configureRoot();
     }
 
@@ -90,27 +86,7 @@ public abstract class BaseView<controllerT extends BaseController<?,?>> implemen
     /**
      * Configure the rootPane
      */
-    private void configureRoot(){
-        // Root pane
-        this.root = new AnchorPane();
-        HBox.setHgrow(this.root, Priority.ALWAYS);
-        VBox.setVgrow(this.root, Priority.ALWAYS);
-        this.root.getStyleClass().add(StrCst.STYLE_CLASS_ROOT);
-
-        // Root layout
-        this.rootLayout = new VBox();
-        this.rootLayout.setAlignment(Pos.CENTER);
-        this.rootLayout.getStyleClass().add(StrCst.STYLE_CLASS_ROOT_LAYOUT);
-
-        // Resize the root layout
-        AnchorPane.setTopAnchor(this.rootLayout, DblCst.SIZE_ANCHOR_ZERO);
-        AnchorPane.setBottomAnchor(this.rootLayout, DblCst.SIZE_ANCHOR_ZERO);
-        AnchorPane.setLeftAnchor(this.rootLayout, DblCst.SIZE_ANCHOR_ZERO);
-        AnchorPane.setRightAnchor(this.rootLayout, DblCst.SIZE_ANCHOR_ZERO);
-
-        // Build hierarchy
-        this.root.getChildren().add(this.rootLayout);
-    }
+    protected abstract void configureRoot();
 
     /**
      * Initialize the view
@@ -136,7 +112,7 @@ public abstract class BaseView<controllerT extends BaseController<?,?>> implemen
      * Root pane
      * @return The root node of the view
      */
-    public AnchorPane getRoot(){
+    public Region getRoot(){
         return this.root;
     }
 

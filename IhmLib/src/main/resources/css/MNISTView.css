@@ -5,7 +5,8 @@
 *****************************************/
 @import "Colors.css"
 @import "Fonts.css"
-@import "BaseButton.css"
+@import "Link.css"
+@import "BaseListView.css"
 
 /* root */
 .root
@@ -13,30 +14,57 @@
     -fx-padding: 10px;
 }
 
-/* Accordion */
-.accordion
+/* Combo box */
+.combo-box
 {
-    -fx-background-color: transparent;
-}
-
-.accordionPane .title
-{
-    -fx-border-width: 2px;
-    -fx-border-color: -fx-palette-ghost-white;
-    -fx-background-color: transparent;
-    -fx-font-size: 20px;
+    -fx-text-fill: -fx-palette-ghost-white;
+    -fx-font-size: 15px;
     -fx-font-family: 'Stellar';
+    -fx-background-color: transparent;
+    -fx-border-width: 0 0 2 0;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-padding: 0.333333em 0.333333em 0.666667em 0.083333em;
 }
 
-.accordionPane .title .text
+.combo-box .list-cell
 {
-    -fx-fill: -fx-palette-ghost-white;
+    -fx-text-fill: -fx-palette-ghost-white;
+    -fx-background-color: -fx-palette-fogra39;
 }
 
-.accordionPane .content
+.combo-box .arrow-button .arrow
 {
     -fx-background-color: transparent;
-    -fx-border-width: 2px;
-    -fx-border-color: -fx-palette-ghost-white;
-    -fx-padding: 5 5 5 5;
+}
+
+.combo-box-popup .list-view
+{
+    -fx-background-color: -fx-palette-fogra39;
+}
+
+.combo-box-popup .list-view .list-cell:filled
+{
+    -fx-background-color: -fx-palette-fogra39;
+    -fx-text-fill: -fx-palette-ghost-white;
+}
+
+.combo-box-popup .list-view .list-cell:filled:hover
+{
+    -fx-background-color: -fx-palette-lighter-fogra39;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected
+{
+    -fx-background-color: -fx-palette-lighter-fogra39;
+}
+
+.tab-down-button
+{
+    -fx-padding: 0;
+}
+
+.tab-down-button .arrow
+{
+    -fx-padding: 0;
 }

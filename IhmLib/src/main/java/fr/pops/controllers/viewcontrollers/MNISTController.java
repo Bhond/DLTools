@@ -2,11 +2,11 @@ package fr.pops.controllers.viewcontrollers;
 
 import fr.pops.math.ndarray.BaseNDArray;
 import fr.pops.viewmodels.MNISTModel;
-import fr.pops.views.mnist.MNISTView;
+import fr.pops.views.neuralnetwork.NeuralNetworkView;
 
 import java.util.HashMap;
 
-public class MNISTController extends BaseController<MNISTView, MNISTModel> {
+public class MNISTController extends BaseController<NeuralNetworkView, MNISTModel> {
 
     /*****************************************
      *
@@ -25,7 +25,7 @@ public class MNISTController extends BaseController<MNISTView, MNISTModel> {
      * Ctor
      * @param view The view to control
      */
-    public MNISTController(MNISTView view){
+    public MNISTController(NeuralNetworkView view){
         // Parent
         super(view, new MNISTModel());
     }

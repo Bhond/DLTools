@@ -1,0 +1,15 @@
+/*****************************************
+*
+* Stylesheet for link handlers in the
+* components
+*
+*****************************************/
+@import "Colors.css"
+
+.link
+{
+    -fx-fill: transparent;
+    -fx-stroke-width: 2px;
+    -fx-stroke: -fx-palette-orange;
+    -fx-effect: dropshadow(gaussian, -fx-palette-ghost-white, 8, 0.3, 0, 0);
+}

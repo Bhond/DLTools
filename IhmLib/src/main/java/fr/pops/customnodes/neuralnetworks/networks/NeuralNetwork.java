@@ -24,13 +24,19 @@ import fr.pops.client.Client;
 import fr.pops.commoncst.EnumCst;
 import fr.pops.cst.StrCst;
 import fr.pops.customnodes.labelvaluepair.LabelValuePair;
+import fr.pops.customnodes.neuralnetworks.component.component.Component;
+import fr.pops.customnodes.neuralnetworks.component.component.ComponentFactory;
+import fr.pops.customnodes.neuralnetworks.component.link.Link;
+import fr.pops.customnodes.neuralnetworks.component.component.DragContainer;
 import fr.pops.sockets.resquest.GetMNISTConfiguration;
 import fr.pops.utils.Utils;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -39,7 +45,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class NeuralNetwork extends HBox {
+public abstract class NeuralNetwork extends AnchorPane {
 
     /*****************************************
      *
@@ -76,8 +82,6 @@ public abstract class NeuralNetwork extends HBox {
     private Button loadConfigurationButton;
     private Button runButton;
 
-    // Score box
-
     /*****************************************
      *
      * Ctor
@@ -112,7 +116,6 @@ public abstract class NeuralNetwork extends HBox {
         this.heightNeuralNetwork = this.heightProperty().intValue();
         this.widthNeuralNetwork = this.widthProperty().intValue();
         VBox.setVgrow(this, Priority.ALWAYS);
-        this.setAlignment(Pos.CENTER);
 
         // Neural network group
         this.neuralNetworkBox = new HBox();
@@ -199,7 +202,7 @@ public abstract class NeuralNetwork extends HBox {
         this.addLayersConfigurationToHierarchy();
 
         // Root
-        this.getChildren().addAll(this.neuralNetworkBox, this.configurationBox);
+        //this.getChildren().addAll(this.neuralNetworkBox, this.configurationBox);
     }
 
     /**
@@ -238,6 +241,63 @@ public abstract class NeuralNetwork extends HBox {
      * Define the mouse controls
      */
     private void buildMouseControls(){
+
+        this.setOnDragDone(dragEvent -> {
+
+            DragContainer container = (DragContainer) dragEvent.getDragboard().getContent(DragContainer.AddLink);
+            if (container != null) {
+                if (container.getValue("scene_coords") != null) {
+
+                    Component node = ComponentFactory.get(fr.pops.cst.EnumCst.ComponentTypes.INPUT_LOCAL);
+
+                    //node.setType(DragIconType.valueOf(container.getValue("type")));
+                    this.getChildren().add(node);
+
+                    Point2D cursorPoint = container.getValue("scene_coords");
+
+                    node.relocateToPoint(
+                            new Point2D(cursorPoint.getX() - 32, cursorPoint.getY() - 32)
+                    );
+                }
+            }
+
+            //AddLink drag operation
+            container = (DragContainer) dragEvent.getDragboard().getContent(DragContainer.AddLink);
+            if (container != null) {
+                String sourceId = container.getValue("source");
+                String targetId = container.getValue("target");
+
+                if (sourceId != null && targetId != null) {
+
+                    //System.out.println(container.getData());
+                    Link link = new Link();
+
+                    //add our link at the top of the rendering order so it's rendered first
+                    this.getChildren().add(0, link);
+
+                    Component source = null;
+                    Component target = null;
+
+                    for (Node n : this.getChildren()) {
+
+                        if (n.getId() == null)
+                            continue;
+
+                        if (n.getId().equals(sourceId))
+                            source = (Component) n;
+
+                        if (n.getId().equals(targetId))
+                            target = (Component) n;
+
+                    }
+
+                    if (source != null && target != null)
+                        link.bindEnds(source, target);
+                }
+
+                dragEvent.consume();
+            }
+        });
     }
 
     /*****************************************
@@ -250,7 +310,7 @@ public abstract class NeuralNetwork extends HBox {
      *
      * Setter
      *
-     *****************************************/
+     ****************************************/
 
     /*****************************************
      *
