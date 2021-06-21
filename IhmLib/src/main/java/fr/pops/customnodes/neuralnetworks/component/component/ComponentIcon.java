@@ -1,3 +1,23 @@
+/*******************************************************************************
+ *
+ *                         PPPP     OOOO     PPPP    SSSS
+ *                        PP  PP   OO  OO   PP  PP  SS
+ *                        PP  PP  OO    OO  PP  PP  SS
+ *                        PP  PP  OO    OO  PP  PP   SSSS
+ *                        PPPP    OO    OO  PPPP        SS
+ *                        PP       OO  OO   PP          SS
+ *                        PP        OOOO    PP       SSSS
+ *
+ * Name: ComponentIcon.java
+ *
+ * Description: Class defining the components' icons in the library
+ *              It is built from the enum defined in EnumCst
+ *
+ * Author: Charles MERINO
+ *
+ * Date: 21/06/2021
+ *
+ ******************************************************************************/
 package fr.pops.customnodes.neuralnetworks.component.component;
 
 import fr.pops.cst.EnumCst;
