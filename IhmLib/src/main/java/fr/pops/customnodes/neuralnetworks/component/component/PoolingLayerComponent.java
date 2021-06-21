@@ -20,7 +20,7 @@
 package fr.pops.customnodes.neuralnetworks.component.component;
 
 import fr.pops.cst.EnumCst;
-import fr.pops.customnodes.plot.BasePlot;
+import fr.pops.customnodes.plot.LinePlot;
 
 public class PoolingLayerComponent extends Component {
 
@@ -30,7 +30,7 @@ public class PoolingLayerComponent extends Component {
      *
      *****************************************/
     private String path;
-    private BasePlot activationPlot;
+    private LinePlot activationPlot;
 
     /*****************************************
      *

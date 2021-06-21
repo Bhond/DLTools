@@ -8,9 +8,9 @@
  *                        PP       OO  OO   PP          SS
  *                        PP        OOOO    PP       SSSS
  *
- * Name: BasePlot.java
+ * Name: BarPlot.java
  *
- * Description: Class defining the custom line chart plot node for pops
+ * Description: Class defining the custom bar chart plot node for pops
  *
  * Author: Charles MERINO
  *
@@ -22,12 +22,12 @@ package fr.pops.customnodes.plot;
 import fr.pops.cst.DblCst;
 import fr.pops.cst.StrCst;
 import fr.pops.utils.Utils;
-import javafx.scene.chart.LineChart;
+import javafx.scene.chart.BarChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.layout.AnchorPane;
 
-public class BasePlot extends AnchorPane {
+public class BarPlot extends AnchorPane {
 
     /*****************************************
      *
@@ -37,7 +37,7 @@ public class BasePlot extends AnchorPane {
     // Chart
     private NumberAxis xAxis;
     private NumberAxis yAxis;
-    private LineChart<Number, Number> chart;
+    private BarChart<Number, Number> chart;
 
     // Data
     private XYChart.Series<Number, Number> series;
@@ -50,7 +50,7 @@ public class BasePlot extends AnchorPane {
     /**
      * Ctor
      */
-    public BasePlot() {
+    public BarPlot() {
         // Initialisation
         this.onInit();
     }
@@ -87,11 +87,15 @@ public class BasePlot extends AnchorPane {
         this.getChildren().add(this.chart);
     }
 
+
+    /**
+     * Configure the chart
+     */
     private void configureChart(){
         // Axis
         this.xAxis = new NumberAxis();
         this.yAxis = new NumberAxis();
-        this.chart = new LineChart<>(this.xAxis, this.yAxis);
+        this.chart = new BarChart<>(this.xAxis, this.yAxis);
         this.chart.legendVisibleProperty().setValue(false);
 
         // Series

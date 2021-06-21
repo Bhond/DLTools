@@ -94,8 +94,8 @@ public class Link extends AnchorPane {
 
         // Style
         this.getStylesheets().add(Utils.getResource(StrCst.PATH_LINK_CSS));
-        this.getStyleClass().add(Utils.getResource(StrCst.STYLE_CLASS_ROOT));
-        this.nodeLink.getStyleClass().add(Utils.getResource(StrCst.STYLE_CLASS_LINK));
+        this.getStyleClass().add(StrCst.STYLE_CLASS_ROOT);
+        this.nodeLink.getStyleClass().add(StrCst.STYLE_CLASS_LINK);
         this.setFocusTraversable(true);
         this.nodeLink.setFocusTraversable(true);
     }

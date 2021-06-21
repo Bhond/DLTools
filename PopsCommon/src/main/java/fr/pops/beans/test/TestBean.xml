@@ -1,41 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<root>
-    <Parent>Bean</Parent>
-    <Properties>
-        <Property>
-            <Name>name</Name>
-            <Type>String</Type>
-            <Default>Test</Default>
-        </Property>
-        <Property>
-            <Name>speed</Name>
-            <Type>double</Type>
-            <Default>0.5</Default>
-        </Property>
-        <Property>
-            <Name>positionX</Name>
-            <Type>double</Type>
-            <Default>0</Default>
-        </Property>
-        <Property>
-            <Name>positionY</Name>
-            <Type>double</Type>
-            <Default>0</Default>
-        </Property>
-        <Property>
-            <Name>directionX</Name>
-            <Type>double</Type>
-            <Default>-0.5</Default>
-        </Property>
-        <Property>
-            <Name>directionY</Name>
-            <Type>double</Type>
-            <Default>0.5</Default>
-        </Property>
-        <Property>
-            <Name>isRunning</Name>
-            <Type>boolean</Type>
-            <Default>true</Default>
-        </Property>
-    </Properties>
-</root>
+<Group name="root">
+    <Entry name="Parent">Bean</Entry>
+    <Group name="Properties">
+        <Entry name="Property">
+            <Entry name="Name">name</Entry>
+            <Entry name="Type">String</Entry>
+            <Entry name="Default">Test</Entry>
+            <Entry name="isComputed">false</Entry>
+            <Entry name="isInternal">false</Entry>
+        </Entry>
+        <Entry name="Property">
+            <Entry name="Name">speed</Entry>
+            <Entry name="Type">double</Entry>
+            <Entry name="Default">0.5</Entry>
+            <Entry name="isComputed">false</Entry>
+            <Entry name="isInternal">false</Entry>
+        </Entry>
+        <Entry name="Property">
+            <Entry name="Name">isRunning</Entry>
+            <Entry name="Type">boolean</Entry>
+            <Entry name="Default">true</Entry>
+            <Entry name="isComputed">false</Entry>
+            <Entry name="isInternal">false</Entry>
+        </Entry>
+    </Group>
+</Group>

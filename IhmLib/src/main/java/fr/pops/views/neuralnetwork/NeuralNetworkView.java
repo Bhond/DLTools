@@ -32,6 +32,8 @@ import fr.pops.customnodes.neuralnetworks.component.link.Link;
 import fr.pops.math.ndarray.BaseNDArray;
 import fr.pops.utils.Utils;
 import fr.pops.views.base.BaseView;
+import javafx.collections.ListChangeListener;
+import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -41,6 +43,7 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -49,6 +52,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class NeuralNetworkView extends BaseView<NeuralNetworkController> {
+
+    /**
+     *
+     * TODO: Wrap the controls in the controller
+     *
+     */
 
     /*****************************************
      *
@@ -68,7 +77,8 @@ public class NeuralNetworkView extends BaseView<NeuralNetworkController> {
 
     // Right
     private VBox rightBox;
-    private ListView<Label> componentContainer;
+    private ListView<Component> componentContainerListView;
+    private FilteredList<Node> componentContainer;
     private BeanProperties componentProperties;
 
     /*****************************************
@@ -195,22 +205,56 @@ public class NeuralNetworkView extends BaseView<NeuralNetworkController> {
         this.rightBox.setPrefWidth(300);
 
         // Component container
-        this.componentContainer = new ListView<>();
-        this.componentContainer.getStyleClass().add(StrCst.STYLE_CLASS_LISTVIEW);
-        this.componentContainer.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        this.componentContainer.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
-            if (!observableValue.getValue()){
-                this.componentContainer.getSelectionModel().clearSelection();
+        this.componentContainer = new FilteredList<>(this.centerPane.getChildren(), (child) -> child instanceof Component);
+        this.componentContainer.addListener((ListChangeListener<? super Node>) change -> {
+            while (change.next()){
+                //If items are removed
+                for (Node n : change.getRemoved()) {
+                    this.componentContainerListView.getItems().remove(n);
+                }
+                //If items are added
+                for (Node n : change.getAddedSubList()) {
+                    this.componentContainerListView.getItems().add((Component) n);
+                }
             }
         });
-        this.rightBox.heightProperty().addListener(observable -> {
-            this.componentContainer.setPrefHeight(this.rightBox.getPrefHeight() / 2);
+        // Component container list view
+        this.componentContainerListView = new ListView<>();
+        this.componentContainerListView.getStyleClass().add(StrCst.STYLE_CLASS_LISTVIEW);
+        this.componentContainerListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        this.componentContainerListView.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (!observableValue.getValue()){
+                this.componentContainerListView.getSelectionModel().clearSelection();
+            }
         });
-        this.rightBox.widthProperty().addListener(observable -> this.componentContainer.setPrefWidth(this.rightBox.getPrefWidth()));
-        VBox.setVgrow(this.componentContainer, Priority.ALWAYS);
+        this.componentContainerListView.setCellFactory(new Callback<>() {
+            @Override
+            public ListCell<Component> call(ListView<Component> nodeListView) {
+                return new ListCell<>() {
+                    @Override
+                    protected void updateItem(Component node, boolean isEmpty) {
+                        super.updateItem(node, isEmpty);
+                        if (node != null) {
+                            setText(node.getType().toString());
+                        } else {
+                            setText("");
+                        }
+                    }
+                };
+            }
+        });
 
         // Settings
-        this.componentProperties = new BeanProperties();
+        this.componentProperties = new BeanProperties("");
+        this.componentProperties.setVisible(false);
+
+        // Setup layout
+        this.rightBox.heightProperty().addListener(observable -> {
+            this.componentContainerListView.setPrefHeight(this.rightBox.getPrefHeight() / 2);
+            this.componentProperties.setPrefHeight(this.rightBox.getPrefHeight() / 2);
+        });
+        this.rightBox.widthProperty().addListener(observable -> this.componentContainerListView.setPrefWidth(this.rightBox.getPrefWidth()));
+        VBox.setVgrow(this.componentContainerListView, Priority.ALWAYS);
     }
 
     /**
@@ -234,7 +278,7 @@ public class NeuralNetworkView extends BaseView<NeuralNetworkController> {
                         dragOverIcon.relocateToPoint(new Point2D(mouseEvent.getSceneX(), mouseEvent.getSceneY()));
                         ClipboardContent content = new ClipboardContent();
                         DragContainer container = new DragContainer();
-                        container.addData ("type", this.dragOverIcon.getType().toString());
+                        container.addData (StrCst.DRAG_CONTAINER_TYPE, this.dragOverIcon.getType().toString());
                         content.put(DragContainer.AddNode, container);
                         this.dragOverIcon.startDragAndDrop(TransferMode.ANY).setContent(content);
                         this.dragOverIcon.setVisible(true);
@@ -250,10 +294,8 @@ public class NeuralNetworkView extends BaseView<NeuralNetworkController> {
      */
     @Override
     protected void configureContentPane() {
-
         // Center
         this.centerPane = new AnchorPane();
-
     }
 
     /**
@@ -272,7 +314,7 @@ public class NeuralNetworkView extends BaseView<NeuralNetworkController> {
         this.componentLibrary.getTabs().addAll(this.inputsTab, this.layersTab);
 
         // Right
-        this.rightBox.getChildren().addAll(this.componentContainer, this.componentProperties);
+        this.rightBox.getChildren().addAll(this.componentContainerListView, this.componentProperties);
 
         // Root
         ((BorderPane) this.root).setCenter(this.centerPane);
@@ -304,21 +346,23 @@ public class NeuralNetworkView extends BaseView<NeuralNetworkController> {
             this.root.removeEventHandler(DragEvent.DRAG_OVER, this::onDragOverRoot);
             this.dragOverIcon.setVisible(false);
 
-            dragEvent.consume();
-
             DragContainer container = (DragContainer) dragEvent.getDragboard().getContent(DragContainer.AddNode);
             if (container != null) {
                 if (container.getValue(StrCst.DRAG_CONTAINER_SCENE_COORDS) != null) {
-
                     Component component = ComponentFactory.get(this.dragOverIcon.getType());
-
                     if (component != null) {
-
+                        component.focusedProperty().addListener((observableValue, aFocused, isFocused) -> {
+                            if (isFocused){
+                                this.displayBeanProperties(component.getBeanProperties());
+                                if (!this.componentProperties.isVisible()) this.componentProperties.setVisible(true);
+                            } else {
+                                this.componentProperties.setVisible(false);
+                            }
+                        });
                         this.centerPane.getChildren().add(component);
-                        this.componentContainer.getItems().add(component.getContraction());
                         Point2D cursorPoint = container.getValue(StrCst.DRAG_CONTAINER_SCENE_COORDS);
-                        component.relocateToPoint(new Point2D(cursorPoint.getX() - 32, cursorPoint.getY() - 32)
-                        );
+                        component.relocateToPoint(new Point2D(cursorPoint.getX() - 32, cursorPoint.getY() - 32));
+                        component.requestFocus();
                     }
                 }
             }
@@ -365,7 +409,6 @@ public class NeuralNetworkView extends BaseView<NeuralNetworkController> {
             dragEvent.consume();
         }
         });
-
     }
 
     /**
@@ -417,6 +460,13 @@ public class NeuralNetworkView extends BaseView<NeuralNetworkController> {
 
         // Consume event
         dragEvent.consume();
+    }
+
+    /**
+     * Reset the bean properties
+     */
+    private void displayBeanProperties(BeanProperties beanProperties){
+        this.componentProperties.reset(beanProperties);
     }
 
     /*****************************************

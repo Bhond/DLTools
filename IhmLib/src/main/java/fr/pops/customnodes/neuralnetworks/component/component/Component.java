@@ -22,8 +22,11 @@ package fr.pops.customnodes.neuralnetworks.component.component;
 import fr.pops.cst.DblCst;
 import fr.pops.cst.EnumCst;
 import fr.pops.cst.StrCst;
+import fr.pops.customnodes.beanproperties.*;
 import fr.pops.customnodes.neuralnetworks.component.link.Link;
 import fr.pops.customnodes.neuralnetworks.component.link.LinkHandle;
+import fr.pops.math.PopsMath;
+import fr.pops.math.ndarray.Shape;
 import fr.pops.utils.Utils;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
@@ -76,6 +79,9 @@ public abstract class Component extends AnchorPane {
     // Link
     private Link link;
     private AnchorPane paneParent;
+
+    // Properties
+    private BeanProperties beanProperties;
 
     // Resume
     private Label contraction;
@@ -135,6 +141,8 @@ public abstract class Component extends AnchorPane {
      * Build the contraction of the component
      */
     private void buildContraction() {
+        this.contraction = new Label(this.type.toString());
+        this.contraction.setId(this.getId());
     }
 
     /**
@@ -154,6 +162,18 @@ public abstract class Component extends AnchorPane {
         this.getStylesheets().add(Utils.getResource(StrCst.PATH_CSS_DIRECTORY + "Component.css"));
         this.getStyleClass().add("rootPane");
         this.setPrefWidth(300);
+
+        // TMP
+        this.beanProperties = new BeanProperties(this.type.toString());
+        int toto = (int) PopsMath.rand(0, 4);
+        PropertyNode<?>[] nodes = new PropertyNode<?>[]{new BooleanPropertyNode("boolean", true, false),
+                new DoublePropertyNode("double", 8163.13507d, true),
+                new StringPropertyNode("string", "toto", true),
+                new ShapePropertyNode("shape", new Shape.ShapeBuilder().withShape(3, 4, 2).build(), false)};
+        for (int i = 0; i < toto; i++){
+            this.beanProperties.addNodes(nodes[i]);
+        }
+
     }
 
     /**
@@ -265,8 +285,14 @@ public abstract class Component extends AnchorPane {
      * Build the controls
      */
     private void buildControls(){
+        // Focus
+        this.setOnMouseClicked(mouseEvent -> {
+            this.requestFocus();
+        });
+
         // Title
         this.titleBox.setOnDragDetected((event) -> {
+            this.requestFocus();
             this.getParent().setOnDragOver(this::onContextDragOver);
             this.getParent().setOnDragDropped(this::onContextDragDropped);
             dragOffset = new Point2D(event.getX(), event.getY());
@@ -287,7 +313,7 @@ public abstract class Component extends AnchorPane {
 
         // Close button
         this.closeComponentButton.setOnMouseClicked(mouseEvent -> {
-            onCloseComponent();
+            this.onCloseComponent();
         });
 
         // Link handles
@@ -302,7 +328,7 @@ public abstract class Component extends AnchorPane {
      */
     private void onCloseComponent() {
         // Remove contraction
-        // this.removeContraction();
+        //this.getParent().removeContraction();
 
         // Remove link and node
         this.removeLinkAndNode();
@@ -558,9 +584,6 @@ public abstract class Component extends AnchorPane {
      *         to be displayed in a listview
      */
     public Label getContraction() {
-        if (this.contraction == null){
-            this.contraction = new Label(this.type.toString());
-        }
         return this.contraction;
     }
 
@@ -576,5 +599,12 @@ public abstract class Component extends AnchorPane {
      */
     public LinkHandle getRightLinkHandle() {
         return this.rightLinkHandle;
+    }
+
+    /**
+     * @return The bean properties
+     */
+    public BeanProperties getBeanProperties() {
+        return this.beanProperties;
     }
 }

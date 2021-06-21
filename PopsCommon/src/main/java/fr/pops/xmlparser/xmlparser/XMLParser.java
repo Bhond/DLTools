@@ -116,7 +116,7 @@ public class XMLParser {
      *  - Name
      *  - Type
      *  - Default value
-     * @param xmlsr
+     * @param xmlsr The xml stream reader
      * @throws XMLStreamException
      */
     private String readProperty(XMLStreamReader xmlsr) throws XMLStreamException{

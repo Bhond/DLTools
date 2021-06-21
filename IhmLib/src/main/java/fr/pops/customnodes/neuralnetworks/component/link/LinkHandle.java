@@ -1,7 +1,3 @@
-package fr.pops.customnodes.neuralnetworks.component.link;
-
-import fr.pops.cst.StrCst;
-import fr.pops.utils.Utils;
 /*******************************************************************************
  *
  *                         PPPP     OOOO     PPPP    SSSS
@@ -21,6 +17,10 @@ import fr.pops.utils.Utils;
  * Date: 21/06/2021
  *
  ******************************************************************************/
+package fr.pops.customnodes.neuralnetworks.component.link;
+
+import fr.pops.cst.StrCst;
+import fr.pops.utils.Utils;
 import javafx.scene.layout.AnchorPane;
 
 import java.util.UUID;
