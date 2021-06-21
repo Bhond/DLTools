@@ -1,0 +1,22 @@
+/*****************************************
+*
+* Stylesheet for the Bean properties
+*
+*****************************************/
+@import "Colors.css"
+@import "Fonts.css"
+
+/* Root */
+.root
+{
+    -fx-background-color: -fx-palette-lighter-fogra39;
+}
+
+/* Label */
+.label
+{
+    -fx-text-fill: -fx-palette-ghost-white;
+    -fx-background-color: -fx-palette-lighter-fogra39;
+    -fx-font-size: 15px;
+    -fx-font-family: 'Stellar';
+}

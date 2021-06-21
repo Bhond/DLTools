@@ -4,11 +4,14 @@ import fr.pops.cst.DblCst;
 import fr.pops.cst.EnumCst;
 import fr.pops.cst.StrCst;
 import fr.pops.customnodes.neuralnetworks.component.link.Link;
-import fr.pops.customnodes.neuralnetworks.component.link.LinkHandler;
+import fr.pops.customnodes.neuralnetworks.component.link.LinkHandle;
 import fr.pops.utils.Utils;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.OverrunStyle;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
@@ -19,17 +22,11 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
 public abstract class Component extends AnchorPane {
-
-    /**
-     *
-     * TODO: Comment control methods
-     *
-     */
-
 
     /*****************************************
      *
@@ -44,17 +41,25 @@ public abstract class Component extends AnchorPane {
     private VBox rootBox;
 
     // Title
+    private HBox titleBox;
     private Label title;
+    private Button closeComponentButton;
 
     // Drag parameters
     private Point2D dragOffset = new Point2D (0.0, 0.0);
 
     // Header
     private HBox header;
-    private LinkHandler leftLinkHandle;
+    private LinkHandle leftLinkHandle;
     private HBox centralBox;
-    private LinkHandler rightLinkHandle;
-    private Link link = new Link();
+    private LinkHandle rightLinkHandle;
+
+    // Link
+    private Link link;
+    private AnchorPane paneParent;
+
+    // Resume
+    private Label contraction;
 
     /*****************************************
      *
@@ -85,6 +90,38 @@ public abstract class Component extends AnchorPane {
         // General
         this.setId(UUID.randomUUID().toString());
 
+        // Root
+        this.buildRoot();
+
+        // Contraction
+        this.buildContraction();
+
+        // Link
+        this.buildLink();
+
+        // Title
+        this.buildTitle();
+
+        // Header
+        this.buildHeader();
+
+        // Build controls
+        this.buildControls();
+
+        // Build hierarchy
+        this.buildHierarchy();
+    }
+
+    /**
+     * Build the contraction of the component
+     */
+    private void buildContraction() {
+    }
+
+    /**
+     * Build the root
+     */
+    private void buildRoot() {
         // Root box
         this.rootBox = new VBox();
         AnchorPane.setTopAnchor(this.rootBox, DblCst.SIZE_ANCHOR_ZERO);
@@ -97,23 +134,40 @@ public abstract class Component extends AnchorPane {
         // Style root
         this.getStylesheets().add(Utils.getResource(StrCst.PATH_CSS_DIRECTORY + "Component.css"));
         this.getStyleClass().add("rootPane");
-        this.setPrefWidth(600);
+        this.setPrefWidth(300);
+    }
 
-        // Title
+    /**
+     * Build the reference link
+     */
+    private void buildLink() {
+        this.link = new Link();
+        this.link.setVisible(false);
+        this.parentProperty().addListener(observable -> {
+            this.paneParent = (AnchorPane) this.getParent();
+        });
+    }
+
+    /**
+     * Build the title
+     */
+    private void buildTitle() {
+        // HBox
+        this.titleBox = new HBox();
+        this.titleBox.hoverProperty().addListener((observableValue, aIsHovered, t1) -> {
+            this.closeComponentButton.setVisible(!aIsHovered);
+        });
+
+        // Label
         this.title = new Label(this.type.toString());
         this.title.setAlignment(Pos.CENTER);
-        this.rootBox.widthProperty().addListener((observable -> {
-            this.title.setPrefWidth(this.rootBox.getWidth());
-        }));
+        this.titleBox.widthProperty().addListener(observable -> {
+            this.title.setPrefWidth(this.titleBox.getWidth() - this.closeComponentButton.getWidth());
+        });
 
-        // Header
-        this.buildHeader();
-
-        // Build controls
-        this.buildControls();
-
-        // Build hierarchy
-        this.buildHierarchy();
+        // Close button
+        this.closeComponentButton = new Button("x");
+        this.closeComponentButton.textOverrunProperty().set(OverrunStyle.CLIP);
     }
 
     /**
@@ -129,21 +183,24 @@ public abstract class Component extends AnchorPane {
         HBox.setHgrow(this.centralBox, Priority.ALWAYS);
 
         // Input button
-        this.leftLinkHandle = new LinkHandler();
+        this.leftLinkHandle = new LinkHandle();
 
         // Output button
-        this.rightLinkHandle = new LinkHandler();
+        this.rightLinkHandle = new LinkHandle();
     }
 
     /**
      * Build hierarchy
      */
     private void buildHierarchy(){
+        // Ttile
+        this.titleBox.getChildren().addAll(this.title, this.closeComponentButton);
+
         // Header
         this.header.getChildren().addAll(this.leftLinkHandle, this.centralBox, this.rightLinkHandle);
 
         // Root box
-        this.rootBox.getChildren().addAll(this.title, this.header);
+        this.rootBox.getChildren().addAll(this.titleBox, this.header);
 
         // Root
         this.getChildren().add(this.rootBox);
@@ -160,14 +217,6 @@ public abstract class Component extends AnchorPane {
      */
     public void registerLink(String id) {
         this.linkIds.add(id);
-    }
-
-    /**
-     * Unregister a link
-     * @param id The id of the link to unregister
-     */
-    public void unregisterLink(String id) {
-        this.linkIds.remove(id);
     }
 
     /*****************************************
@@ -197,9 +246,8 @@ public abstract class Component extends AnchorPane {
      * Build the controls
      */
     private void buildControls(){
-        // Root
-        //DraggableNode.makeDraggable(this, this.title);
-        this.title.setOnDragDetected((event) -> {
+        // Title
+        this.titleBox.setOnDragDetected((event) -> {
             this.getParent().setOnDragOver(this::onContextDragOver);
             this.getParent().setOnDragDropped(this::onContextDragDropped);
             dragOffset = new Point2D(event.getX(), event.getY());
@@ -210,7 +258,7 @@ public abstract class Component extends AnchorPane {
             ClipboardContent content = new ClipboardContent();
             DragContainer container = new DragContainer();
 
-            container.addData("type", "TYPE_TOTO");
+            container.addData(StrCst.DRAG_CONTAINER_TYPE, this.getType().toString());
             content.put(DragContainer.AddNode, container);
 
             startDragAndDrop (TransferMode.ANY).setContent(content);
@@ -218,16 +266,55 @@ public abstract class Component extends AnchorPane {
             event.consume();
         });
 
+        // Close button
+        this.closeComponentButton.setOnMouseClicked(mouseEvent -> {
+            onCloseComponent();
+        });
+
         // Link handles
-        this.leftLinkHandle.setOnDragDetected(this::onLinkHandleDragDetected);
-        this.rightLinkHandle.setOnDragDetected(this::onLinkHandleDragDetected);
+        this.leftLinkHandle.setOnDragDetected(this::onLeftLinkHandleDragDetected);
+        this.rightLinkHandle.setOnDragDetected(this::onRightLinkHandleDragDetected);
         this.leftLinkHandle.setOnDragDropped(this::onLinkHandleDragDropped);
         this.rightLinkHandle.setOnDragDropped(this::onLinkHandleDragDropped);
     }
 
     /**
-     *
-     * @param event
+     * Deal with stuff when closing the component
+     */
+    private void onCloseComponent() {
+        // Remove contraction
+        // this.removeContraction();
+
+        // Remove link and node
+        this.removeLinkAndNode();
+    }
+
+    private void removeLinkAndNode() {
+        // Need to notify all the the node that are linked to this one that the link has been removed
+        List<String> idsToRemove = new LinkedList<>();
+        List<Node> nodesToRemove = new LinkedList<>();
+        for (String linkId : this.linkIds){
+            for (Node n : this.paneParent.getChildren()){
+                // If the node doesn't have any id, skip
+                if (n.getId() == null) continue;
+
+                if (n.getId().equals(linkId)){
+                    Link link = (Link) n;
+                    link.getStartHandle().setState(LinkHandle.States.FREE);
+                    link.getEndHandle().setState(LinkHandle.States.FREE);
+                    nodesToRemove.add(n);
+                }
+            }
+            idsToRemove.add(linkId);
+        }
+        this.linkIds.removeAll(idsToRemove);
+        this.paneParent.getChildren().removeAll(nodesToRemove);
+        this.paneParent.getChildren().remove(this);
+    }
+
+    /**
+     * Handle drag over the component's parent
+     * @param event The drag over event detected
      */
     private void onContextDragOver(DragEvent event){
         event.acceptTransferModes(TransferMode.ANY);
@@ -236,8 +323,8 @@ public abstract class Component extends AnchorPane {
     }
 
     /**
-     *
-     * @param event
+     * Handle drag dropped over the component's parent
+     * @param event The drag event dropped detected
      */
     private void onContextDragDropped(DragEvent event){
         this.getParent().setOnDragOver(null);
@@ -246,94 +333,191 @@ public abstract class Component extends AnchorPane {
         event.consume();
     }
 
+
     /**
-     *
-     * @param event
+     * Handle drag detection on both link handles
+     * @param event The mouse event detected
      */
     private void onLinkHandleDragDetected(MouseEvent event){
+        // Reset drag handling
         this.getParent().setOnDragOver(null);
         this.getParent().setOnDragDropped(null);
         this.getParent().setOnDragOver(this::onContextLinkDragOver);
         this.getParent().setOnDragDropped(this::onContextLinkDragDropped);
 
-        //Set up user-draggable link
-        ((AnchorPane)this.getParent()).getChildren().add(0,link);
+        // Set up draggable link
+        this.paneParent.getChildren().add(0, this.link);
+        this.link.setVisible(false);
 
-        link.setVisible(false);
-        LinkHandler linkHandle = (LinkHandler) event.getSource();
+        // Locate link root
+        LinkHandle linkHandle = (LinkHandle) event.getSource();
         Point2D p = new Point2D(
                 this.getLayoutX() + linkHandle.getLayoutX() + (linkHandle.getWidth() / 2.0),
                 this.getLayoutY() + this.header.getLayoutY() + (linkHandle.getHeight() / 2.0)
         );
+        this.link.setStart(p);
 
-        link.setStart(p);
-
-        //Drag content code
+        // Setup drag content
         ClipboardContent content = new ClipboardContent();
         DragContainer container = new DragContainer();
-        container.addData("source", linkHandle.getId());
+        Component linkHandleComponentParent = (Component) linkHandle.getParent().getParent().getParent(); // header -> rootBox -> this
+        container.addData(StrCst.DRAG_CONTAINER_SOURCE, linkHandle.getId());
         content.put(DragContainer.AddLink, container);
+        linkHandleComponentParent.startDragAndDrop(TransferMode.ANY).setContent(content);
 
-        linkHandle.startDragAndDrop (TransferMode.ANY).setContent(content);
+        // Consume event
+        event.consume();
+    }
+
+
+    /**
+     * Handle drag detection on the left link handle
+     * @param event The mouse event detected
+     */
+    private void onLeftLinkHandleDragDetected(MouseEvent event){
+
+        // Check the handle is already linked
+        if (this.leftLinkHandle.getState() == LinkHandle.States.LINKED){
+            this.rebuildLink(event, this.leftLinkHandle);
+        } else {
+            this.onLinkHandleDragDetected(event);
+        }
+    }
+
+    private void rebuildLink(MouseEvent event, LinkHandle leftLinkHandle) {
+        // Retrieve other end of the link
+        List<String> idsToRemove = new LinkedList<>();
+        List<Link> linksToRemoveFromParent = new LinkedList<>();
+        LinkHandle startHandle = null;
+        for (String id : this.linkIds){
+            for (Node n : this.paneParent.getChildren()){
+                // If the node doesn't have any id, skip
+                if (n.getId() == null) continue;
+
+                if (n.getId().equals(id)){
+                    Link link = (Link) n;
+                    startHandle = link.getStartHandle();
+                    linksToRemoveFromParent.add(link);
+                }
+            }
+        }
+
+        // Remove link
+        leftLinkHandle.setState(LinkHandle.States.FREE);
+        startHandle.setState(LinkHandle.States.FREE);
+        this.linkIds.removeAll(idsToRemove);
+        this.paneParent.getChildren().removeAll(linksToRemoveFromParent);
+
+        // Rebuild link
+        this.getParent().setOnDragOver(null);
+        this.getParent().setOnDragDropped(null);
+        this.getParent().setOnDragOver(this::onContextLinkDragOver);
+        this.getParent().setOnDragDropped(this::onContextLinkDragDropped);
+
+        // Set up draggable link
+        this.paneParent.getChildren().add(0, this.link);
+        this.link.setVisible(false);
+        Component startHandleComponentParent = (Component) startHandle.getParent().getParent().getParent(); // header -> rootBox -> this
+        Point2D startP = new Point2D(
+                startHandleComponentParent.getLayoutX() + startHandle.getLayoutX() + (startHandle.getWidth() / 2.0),
+                startHandleComponentParent.getLayoutY() + startHandleComponentParent.header.getLayoutY() + (startHandle.getHeight() / 2.0)
+        );
+        this.link.setStart(startP);
+
+        // Setup drag content
+        ClipboardContent content = new ClipboardContent();
+        DragContainer container = new DragContainer();
+        container.addData(StrCst.DRAG_CONTAINER_SOURCE, startHandle.getId());
+        content.put(DragContainer.AddLink, container);
+        startHandleComponentParent.startDragAndDrop(TransferMode.ANY).setContent(content);
+
+        // Consume event
         event.consume();
     }
 
     /**
-     *
-     * @param event
+     * Handle drag detection on the right link handle
+     * @param event The mouse event detected
+     */
+    private void onRightLinkHandleDragDetected(MouseEvent event){
+        this.onLinkHandleDragDetected(event);
+    }
+
+    /**
+     * Handle drag dropped over Link handle
+     * @param event The drag event detected
      */
     private void onLinkHandleDragDropped(DragEvent event){
+        // Reset drag handling
         this.getParent().setOnDragOver(null);
         this.getParent().setOnDragDropped(null);
-        //get the drag data.  If it's null, abort.
-        //This isn't the drag event we're looking for.
+
+        // Retrieve the dragged data
         DragContainer container =
                 (DragContainer) event.getDragboard().getContent(DragContainer.AddLink);
 
-        if (container == null)
-            return;
+        // Abort event if there is no dragged data
+        if (container == null) return;
 
-        AnchorPane linkHandle = (AnchorPane) event.getSource();
+        // Initialize the dragged data
+        LinkHandle linkHandle = (LinkHandle) event.getSource();
         ClipboardContent content = new ClipboardContent();
-        container.addData("target", linkHandle.getId());
+        container.addData(StrCst.DRAG_CONTAINER_TARGET, linkHandle.getId());
         content.put(DragContainer.AddLink, container);
 
+        // Locate the end point
         Point2D p = new Point2D(
                 this.getLayoutX() + linkHandle.getLayoutX() + (linkHandle.getWidth() / 2.0),
                 this.getLayoutY() + this.header.getLayoutY() + (linkHandle.getHeight() / 2.0)
         );
         link.setEnd(p);
 
+        // Store content in dragboard
         event.getDragboard().setContent(content);
         event.setDropCompleted(true);
+
+        // Hide the draggable link
+        this.link.setVisible(false);
+
+        // Remove it from the parent's pane
+        this.paneParent.getChildren().remove(0);
+
         event.consume();
     }
 
     /**
-     *
-     * @param event
+     * Handle drag over the component's parent
+     * @param event The drag event detected
      */
     private void onContextLinkDragOver(DragEvent event){
+        // Start transfer
         event.acceptTransferModes(TransferMode.ANY);
 
-        //Relocate user-draggable link
-        if (!link.isVisible())
-            link.setVisible(true);
+        // Relocate draggable link
+        if (!this.link.isVisible()) {
+            this.link.setVisible(true);
+        }
+        this.link.setEnd(new Point2D(event.getX(), event.getY()));
 
-        link.setEnd(new Point2D(event.getX(), event.getY()));
-
+        // Consume event
         event.consume();
     }
 
     /**
-     *
-     * @param event
+     * Handle drag dropped over the component's parent
+     * @param event The drag event detected
      */
     private void onContextLinkDragDropped(DragEvent event){
+        // Reset drag handling
         this.getParent().setOnDragOver(null);
         this.getParent().setOnDragDropped(null);
-        link.setVisible(false);
-        ((AnchorPane)this.getParent()).getChildren().remove(0);
+
+        // Hide the draggable link
+        this.link.setVisible(false);
+
+        // Remove it from the parent's pane
+        this.paneParent.getChildren().remove(0);
+
         event.setDropCompleted(true);
         event.consume();
     }
@@ -351,16 +535,27 @@ public abstract class Component extends AnchorPane {
     }
 
     /**
+     * @return The contraction of the component
+     *         to be displayed in a listview
+     */
+    public Label getContraction() {
+        if (this.contraction == null){
+            this.contraction = new Label(this.type.toString());
+        }
+        return this.contraction;
+    }
+
+    /**
      * @return The left handle where a link can be attached
      */
-    public LinkHandler getLeftLinkHandle() {
+    public LinkHandle getLeftLinkHandle() {
         return this.leftLinkHandle;
     }
 
     /**
      * @return The left handle where a link can be attached
      */
-    public LinkHandler getRightLinkHandle() {
+    public LinkHandle getRightLinkHandle() {
         return this.rightLinkHandle;
     }
 }

@@ -22,7 +22,7 @@ package fr.pops.client;
 
 import fr.pops.controllers.controllermanager.ControllerManager;
 import fr.pops.controllers.viewcontrollers.BaseController;
-import fr.pops.controllers.viewcontrollers.MNISTController;
+import fr.pops.controllers.viewcontrollers.NeuralNetworkController;
 import fr.pops.controllers.viewcontrollers.NetworkInfoController;
 import fr.pops.controllers.viewcontrollers.StockController;
 import fr.pops.sockets.resquest.*;
@@ -101,10 +101,10 @@ public abstract class RequestDispatcher {
      * @param request The request to dispatch
      */
     private static void dispatchGetMNISTImageRequest(GetMNISTImageRequest request) {
-        BaseController<?, ?> controller = ControllerManager.getInstance().getFirst(MNISTController.class);
+        BaseController<?, ?> controller = ControllerManager.getInstance().getFirst(NeuralNetworkController.class);
         if (controller != null){
-            ((MNISTController) controller).setLabel(request.getLabel());
-            ((MNISTController) controller).setImage(request.getImage());
+            ((NeuralNetworkController) controller).setLabel(request.getLabel());
+            ((NeuralNetworkController) controller).setImage(request.getImage());
         }
     }
 
@@ -113,9 +113,9 @@ public abstract class RequestDispatcher {
      * @param request The request to dispatch
      */
     private static void dispatchGetMNISTConfigurationRequest(GetMNISTConfiguration request) {
-        BaseController<?, ?> controller = ControllerManager.getInstance().getFirst(MNISTController.class);
+        BaseController<?, ?> controller = ControllerManager.getInstance().getFirst(NeuralNetworkController.class);
         if (controller != null){
-            ((MNISTController) controller).setConfiguration(request.getNbLayers(),
+            ((NeuralNetworkController) controller).setConfiguration(request.getNbLayers(),
                     request.getLayers(),
                     request.getLearningRate(),
                     request.isRegularisationOn(),

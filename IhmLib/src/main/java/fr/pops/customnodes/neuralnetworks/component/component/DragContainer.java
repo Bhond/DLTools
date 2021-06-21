@@ -1,5 +1,6 @@
 package fr.pops.customnodes.neuralnetworks.component.component;
 
+import fr.pops.cst.StrCst;
 import javafx.scene.input.DataFormat;
 import javafx.util.Pair;
 
@@ -19,9 +20,9 @@ public class DragContainer implements Serializable {
 
     // Formats
     public static final DataFormat AddNode =
-            new DataFormat("fr.pops.customnodes.neuralnetworks.component.component.Component.add");
+            new DataFormat(StrCst.DATA_FORMAT_ADD_NODE);
     public static final DataFormat AddLink =
-            new DataFormat("fr.pops.customnodes.neuralnetworks.component.utils.Link.add");
+            new DataFormat(StrCst.DATA_FORMAT_ADD_LINK);
 
     // Data
     private final List<Pair<String, Object>> dataPairs = new ArrayList<>();
@@ -45,9 +46,9 @@ public class DragContainer implements Serializable {
      *
      *****************************************/
     /**
-     *
-     * @param key
-     * @param value
+     * Add data to the container
+     * @param key The key of the data
+     * @param value The value of the data
      */
     public void addData (String key, Object value) {
         this.dataPairs.add(new Pair<>(key, value));
@@ -59,10 +60,10 @@ public class DragContainer implements Serializable {
      *
      *****************************************/
     /**
-     *
-     * @param key
-     * @param <T>
-     * @return
+     * Retrieve the value at the given key in the dictionary
+     * @param key The key of the data to retrieve
+     * @param <T> The type of data to recover
+     * @return The data at the given given key
      */
     public <T> T getValue (String key) {
         for (Pair<String, Object> data: this.dataPairs) {
@@ -73,8 +74,7 @@ public class DragContainer implements Serializable {
     }
 
     /**
-     *
-     * @return
+     * @return The list of stored data apirs
      */
     public List <Pair<String, Object> > getData () { return this.dataPairs; }
 }

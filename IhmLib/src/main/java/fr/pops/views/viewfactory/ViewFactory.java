@@ -51,7 +51,7 @@ public abstract class ViewFactory {
                 return new NetworkInfoView(stage);
             case STOCK:
                 return new StockView(stage);
-            case MNIST:
+            case NEURAL_NETWORK:
                 return new NeuralNetworkView(stage);
             default:
                 return null;

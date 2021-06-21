@@ -23,3 +23,21 @@
     -fx-border-color: -fx-palette-ghost-white;
     -fx-border-width: 0 0 2 0;
 }
+
+/* Close Button */
+.button
+{
+    -fx-background-color: transparent;
+    -fx-font-size: 10pt;
+    -fx-font-family: 'Elianto';
+    -fx-text-fill: -fx-palette-ghost-white;
+}
+
+.button:hover
+{
+    -fx-background-color: transparent;
+    -fx-font-size: 10pt;
+    -fx-font-family: 'Elianto';
+    -fx-text-fill: -fx-palette-ghost-white;
+    -fx-effect: dropshadow(gaussian, -fx-palette-orange, 8, 0.3, 0, 0);
+}

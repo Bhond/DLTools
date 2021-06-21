@@ -26,7 +26,7 @@ public abstract class EnumCst {
      * View
      *
      *****************************************/
-    public enum Views { MAIN,  NETWORK_INFO, STOCK, MNIST }
+    public enum Views { MAIN,  NETWORK_INFO, STOCK, NEURAL_NETWORK }
 
     /*****************************************
      *
@@ -45,7 +45,6 @@ public abstract class EnumCst {
     public enum ComponentTypes {
         DRAG(ComponentCategories.NONE, "Drag"),
         INPUT_LOCAL(ComponentCategories.INPUTS, "Local"),
-        LAYER_INPUT(ComponentCategories.LAYERS, "Input"),
         LAYER_DENSE(ComponentCategories.LAYERS, "Dense"),
         LAYER_CONVOLUTION(ComponentCategories.LAYERS, "Convolution"),
         LAYER_POOLING(ComponentCategories.LAYERS, "Pooling"),

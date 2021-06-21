@@ -73,7 +73,7 @@ public class MainView extends BaseView<MainViewController> {
     // Views menu
     private MenuItem serverViewMenuItem;
     private MenuItem stockViewMenuItem;
-    private MenuItem mnistViewMenuItem;
+    private MenuItem neuralNetworkViewMenuItem;
 
     // Main layout, contains all of the objects
     private TabPane viewsTabPane;
@@ -154,7 +154,7 @@ public class MainView extends BaseView<MainViewController> {
         // Build hierarchy
         this.viewsMenu.getItems().addAll(this.serverViewMenuItem,
                 this.stockViewMenuItem,
-                this.mnistViewMenuItem);
+                this.neuralNetworkViewMenuItem);
         this.menuBar.getMenus().addAll(this.viewsMenu);
         this.menuBarLayout.getChildren().add(this.menuBar);
 
@@ -252,9 +252,9 @@ public class MainView extends BaseView<MainViewController> {
         this.stockViewMenuItem = new MenuItem(StrCst.NAME_STOCK_VIEW);
         this.stockViewMenuItem.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR_MENU_ITEM);
         this.stockViewMenuItem.setOnAction(a -> this.controller.onStockViewMenuItemClicked(a));
-        this.mnistViewMenuItem = new MenuItem(StrCst.NAME_MNIST_VIEW);
-        this.mnistViewMenuItem.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR_MENU_ITEM);
-        this.mnistViewMenuItem.setOnAction(a -> this.controller.onMNISTViewMenuItemClicked(a));
+        this.neuralNetworkViewMenuItem = new MenuItem(StrCst.NAME_NEURAL_NETWORK_VIEW);
+        this.neuralNetworkViewMenuItem.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR_MENU_ITEM);
+        this.neuralNetworkViewMenuItem.setOnAction(a -> this.controller.onNeuralNetworkViewMenuItemClicked(a));
 
     }
 

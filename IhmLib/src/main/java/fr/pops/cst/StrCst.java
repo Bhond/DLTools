@@ -40,12 +40,11 @@ public abstract class StrCst {
 
     // Menu bar
     public final static String MENUBAR_LABEL_VIEWS = "Views";
-    public final static String MENUBAR_NEURAL_NETWORK_VIEWS = "Neural Networks";
 
     // View names
     public final static String NAME_SERVER_VIEW = "Network info";
     public final static String NAME_STOCK_VIEW = "Stock";
-    public final static String NAME_MNIST_VIEW = "MNIST";
+    public final static String NAME_NEURAL_NETWORK_VIEW = "Neural Network";
 
     // String format
     public final static String FORMAT_SIMPLE_DATE = "HH:mm";
@@ -57,15 +56,20 @@ public abstract class StrCst {
     public final static String FORMAT_VALUE_FREQUENCY = "%3.0f Hz";
 
     // Stock info
-    public static final String INVALID_QUOTE = "invalid";
-    public static final String ADD_QUOTE_BUTTON_LABEL = "Add";
-    public static final String REMOVE_QUOTE_BUTTON_LABEL = "Remove";
-    public static final String ADD_QUOTE_TEXT_FIELD_DEFAULT = "New symbol";
+    public final static String INVALID_QUOTE = "invalid";
+    public final static String ADD_QUOTE_BUTTON_LABEL = "Add";
+    public final static String REMOVE_QUOTE_BUTTON_LABEL = "Remove";
+    public final static String ADD_QUOTE_TEXT_FIELD_DEFAULT = "New symbol";
 
-    // MNIST
-    public static final String LABEL_DISPLAY = "Display";
-    public static final String LABEL_NEURAL_NETWORK = "Neural Network";
-    public static final String LABEL_FRONT = "Front";
+    // Neural network
+    public final static String LIBRARY_INPUTS = "Inputs";
+    public final static String LIBRARY_LAYERS = "Layers";
+
+    // Drag container
+    public final static String DRAG_CONTAINER_SCENE_COORDS = "scene_coords";
+    public final static String DRAG_CONTAINER_TYPE = "type";
+    public final static String DRAG_CONTAINER_SOURCE = "source";
+    public final static String DRAG_CONTAINER_TARGET = "target";
 
     /*****************************************
      *
@@ -88,7 +92,11 @@ public abstract class StrCst {
     public final static String PATH_MAIN_VIEW_CSS = StrCst.PATH_CSS_DIRECTORY + "MainView.css";
     public final static String PATH_SERVER_INFO_VIEW_CSS = StrCst.PATH_CSS_DIRECTORY + "NetworkInfoView.css";
     public final static String PATH_STOCK_VIEW_CSS = StrCst.PATH_CSS_DIRECTORY + "StockView.css";
-    public final static String PATH_MNIST_VIEW_CSS = StrCst.PATH_CSS_DIRECTORY + "MNISTView.css";
+    public final static String PATH_NEURAL_NETWORK_VIEW_CSS = StrCst.PATH_CSS_DIRECTORY + "NeuralNetwork.css";
+    public final static String PATH_LINK_HANDLER_CSS = StrCst.PATH_CSS_DIRECTORY +  "LinkHandler.css";
+    public final static String PATH_LINK_CSS = StrCst.PATH_CSS_DIRECTORY + "Link.css";
+    public final static String PATH_ICON_CSS = StrCst.PATH_CSS_DIRECTORY + "Icon.css";
+
     // Earth texture
     public final static String PATH_EARTH_TEXTURE = StrCst.PATH_IMAGES_DIRECTORY + "earth.png";
 
@@ -130,9 +138,18 @@ public abstract class StrCst {
     public final static String STYLE_CLASS_QUOTE_DATA_SYMBOL = "quote-data-symbol";
     public final static String STYLE_CLASS_QUOTE_DATA_ARROW= "quote-data-arrow";
     public final static String STYLE_CLASS_QUOTE_DATA_PRICE = "quote-data-price";
-    public static final String STYLE_CLASS_TEXT_FIELD = "textField";
+    public final static String STYLE_CLASS_TEXT_FIELD = "textField";
 
     // NeuralNetwork
+    public final static String STYLE_CLASS_HANDLER_FREE = "handler-free";
+    public final static String STYLE_CLASS_HANDLER_LINKED = "handler-linked";
+    public final static String STYLE_CLASS_LINK = "link";
+    public final static String STYLE_CLASS_SHAPE_SERVER = "shape-server";
+    public final static String STYLE_CLASS_SHAPE_BEZIER = "shape-bezier";
+
+    // Data format
+    public static final String DATA_FORMAT_ADD_NODE = "fr.pops.customnodes.neuralnetworks.component.component.Component.add";
+    public static final String DATA_FORMAT_ADD_LINK = "fr.pops.customnodes.neuralnetworks.component.link.add";
 
     /*****************************************
      *
@@ -140,11 +157,11 @@ public abstract class StrCst {
      *
      *****************************************/
     // General
-    public static final String JSON_KEY_CLASS = "class";
-    public static final String JSON_KEY_TYPE = "type";
+    public final static String JSON_KEY_CLASS = "class";
+    public final static String JSON_KEY_TYPE = "type";
 
     // Stock
-    public static final String JSON_KEY_QUOTE_INFOS = "quoteInfos";
-    public static final String JSON_KEY_PRICE = "price";
-    public static final String JSON_KEY_LAST_ACCESSED_TIME = "lastAccessedTime";
+    public final static String JSON_KEY_QUOTE_INFOS = "quoteInfos";
+    public final static String JSON_KEY_PRICE = "price";
+    public final static String JSON_KEY_LAST_ACCESSED_TIME = "lastAccessedTime";
 }

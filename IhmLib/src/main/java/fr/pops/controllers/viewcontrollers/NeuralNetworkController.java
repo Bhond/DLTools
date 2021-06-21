@@ -1,12 +1,12 @@
 package fr.pops.controllers.viewcontrollers;
 
 import fr.pops.math.ndarray.BaseNDArray;
-import fr.pops.viewmodels.MNISTModel;
+import fr.pops.viewmodels.NeuralNetworkModel;
 import fr.pops.views.neuralnetwork.NeuralNetworkView;
 
 import java.util.HashMap;
 
-public class MNISTController extends BaseController<NeuralNetworkView, MNISTModel> {
+public class NeuralNetworkController extends BaseController<NeuralNetworkView, NeuralNetworkModel> {
 
     /*****************************************
      *
@@ -17,7 +17,7 @@ public class MNISTController extends BaseController<NeuralNetworkView, MNISTMode
      * Standard ctor
      * Nothing to be done
      */
-    private MNISTController(){
+    private NeuralNetworkController(){
         // Nothing to be done
     }
 
@@ -25,9 +25,9 @@ public class MNISTController extends BaseController<NeuralNetworkView, MNISTMode
      * Ctor
      * @param view The view to control
      */
-    public MNISTController(NeuralNetworkView view){
+    public NeuralNetworkController(NeuralNetworkView view){
         // Parent
-        super(view, new MNISTModel());
+        super(view, new NeuralNetworkModel());
     }
 
     /*****************************************

@@ -1,41 +1,26 @@
 /*****************************************
 *
-* Stylesheet for the neural networks
+* Stylesheet for the NeuralNetwork view
 *
 *****************************************/
 @import "Colors.css"
 @import "Fonts.css"
+@import "Link.css"
+@import "BaseListView.css"
 
 /* root */
 .root
 {
-    -fx-spacing: 10px;
+    -fx-padding: 10px;
 }
 
-/* Labels */
-.label
+/* Tab */
+.tab-down-button
 {
-    -fx-text-fill: -fx-palette-ghost-white;
-    -fx-background-color: transparent;
-    -fx-font-size: 15px;
-    -fx-font-family: 'Stellar';
-    -fx-border-width: 0 0 2 0;
-    -fx-border-color: -fx-palette-ghost-white;
+    -fx-padding: 0;
 }
 
-/* Label Value pair */
-.labelPair
+.tab-down-button .arrow
 {
-    -fx-text-fill: -fx-palette-ghost-white;
-    -fx-font-size: 10px;
-    -fx-font-family: 'Stellar';
-    -fx-border-width: 0;
-}
-
-.valuePair
-{
-    -fx-text-fill: -fx-palette-ghost-white;
-    -fx-font-size: 10px;
-    -fx-font-family: 'Stellar';
-    -fx-border-width: 0;
+    -fx-padding: 0;
 }

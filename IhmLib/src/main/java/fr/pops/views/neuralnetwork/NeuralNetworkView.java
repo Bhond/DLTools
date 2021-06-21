@@ -20,7 +20,7 @@
  ******************************************************************************/
 package fr.pops.views.neuralnetwork;
 
-import fr.pops.controllers.viewcontrollers.MNISTController;
+import fr.pops.controllers.viewcontrollers.NeuralNetworkController;
 import fr.pops.cst.EnumCst;
 import fr.pops.cst.StrCst;
 import fr.pops.customnodes.beanproperties.BeanProperties;
@@ -48,7 +48,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class NeuralNetworkView extends BaseView<MNISTController> {
+public class NeuralNetworkView extends BaseView<NeuralNetworkController> {
 
     /*****************************************
      *
@@ -90,7 +90,7 @@ public class NeuralNetworkView extends BaseView<MNISTController> {
      */
     public NeuralNetworkView(Stage stage){
         // Parent
-        super(stage, StrCst.NAME_MNIST_VIEW, EnumCst.Views.MNIST);
+        super(stage, StrCst.NAME_NEURAL_NETWORK_VIEW, EnumCst.Views.NEURAL_NETWORK);
 
         // Initialisation
         this.onInit();
@@ -107,7 +107,7 @@ public class NeuralNetworkView extends BaseView<MNISTController> {
     @Override
     protected void onInit() {
         // Controller
-        this.controller = new MNISTController(this);
+        this.controller = new NeuralNetworkController(this);
 
         // Content pane
         this.configureContentPane();
@@ -132,7 +132,7 @@ public class NeuralNetworkView extends BaseView<MNISTController> {
     protected void configureRoot() {
         // Root
         this.root = new BorderPane();
-        this.root.getStylesheets().add(Utils.getResource(StrCst.PATH_MNIST_VIEW_CSS));
+        this.root.getStylesheets().add(Utils.getResource(StrCst.PATH_NEURAL_NETWORK_VIEW_CSS));
 
         // Drag icon
         this.dragOverIcon = new ComponentIcon();
@@ -160,7 +160,7 @@ public class NeuralNetworkView extends BaseView<MNISTController> {
         });
 
         // Inputs
-        this.inputsTab = new Tab("Inputs");
+        this.inputsTab = new Tab(StrCst.LIBRARY_INPUTS);
         this.inputsTab.setClosable(false);
         this.inputsPane = new FlowPane();
         this.inputsPane.widthProperty().addListener((observable, oldValue, newValue) ->
@@ -173,7 +173,7 @@ public class NeuralNetworkView extends BaseView<MNISTController> {
         this.inputsPane.setVgap(50);
 
         // Layers
-        this.layersTab = new Tab("Layers");
+        this.layersTab = new Tab(StrCst.LIBRARY_LAYERS);
         this.layersTab.setClosable(false);
         this.layersPane = new FlowPane();
         this.layersPane.widthProperty().addListener((observable, oldValue, newValue) ->
@@ -214,7 +214,7 @@ public class NeuralNetworkView extends BaseView<MNISTController> {
     }
 
     /**
-     * Create icons
+     * Create icons and add evdrag event handler
      * @param category The category of icons to create
      * @return The list of created icons
      */
@@ -222,24 +222,23 @@ public class NeuralNetworkView extends BaseView<MNISTController> {
         return Arrays.stream(EnumCst.ComponentTypes.values()).filter((c) -> c.getCategory() == category)
                 .map(ComponentIcon::new)
                 .peek((icn) -> icn.setOnDragDetected(mouseEvent -> {
-                    root.setOnDragOver(NeuralNetworkView.this::onDragOverRoot);
-                    centerPane.setOnDragOver(NeuralNetworkView.this::onDragOverCenter);
-                    centerPane.setOnDragDropped(NeuralNetworkView.this::onIconDragDropped);
+                    this.root.setOnDragOver(NeuralNetworkView.this::onDragOverRoot);
+                    this.centerPane.setOnDragOver(NeuralNetworkView.this::onDragOverCenter);
+                    this.centerPane.setOnDragDropped(NeuralNetworkView.this::onIconDragDropped);
 
                     // get a reference to the clicked DragIcon object
-                    String icnStr = icn.getText();
-                    dragOverIcon.setType(icn.getType());
+                    this.dragOverIcon.setType(icn.getType());
 
                     if (dragOverIcon != null) {
-                        //begin drag ops
+                        // Begin drag ops
                         dragOverIcon.relocateToPoint(new Point2D(mouseEvent.getSceneX(), mouseEvent.getSceneY()));
                         ClipboardContent content = new ClipboardContent();
                         DragContainer container = new DragContainer();
-                        container.addData ("type", dragOverIcon.getType().toString());
+                        container.addData ("type", this.dragOverIcon.getType().toString());
                         content.put(DragContainer.AddNode, container);
-                        dragOverIcon.startDragAndDrop(TransferMode.ANY).setContent(content);
-                        dragOverIcon.setVisible(true);
-                        dragOverIcon.setMouseTransparent(true);
+                        this.dragOverIcon.startDragAndDrop(TransferMode.ANY).setContent(content);
+                        this.dragOverIcon.setVisible(true);
+                        this.dragOverIcon.setMouseTransparent(true);
                     }
                     mouseEvent.consume();
                 }))
@@ -309,40 +308,37 @@ public class NeuralNetworkView extends BaseView<MNISTController> {
 
             DragContainer container = (DragContainer) dragEvent.getDragboard().getContent(DragContainer.AddNode);
             if (container != null) {
-                if (container.getValue("scene_coords") != null) {
+                if (container.getValue(StrCst.DRAG_CONTAINER_SCENE_COORDS) != null) {
 
-                    Component node = ComponentFactory.get(fr.pops.cst.EnumCst.ComponentTypes.INPUT_LOCAL);
+                    Component component = ComponentFactory.get(this.dragOverIcon.getType());
 
-                    if (node != null) {
+                    if (component != null) {
 
-                        this.centerPane.getChildren().add(node);
-                        Label componentLabel = new Label(node.getType().toString());
-                        this.componentContainer.getItems().add(componentLabel);
-                        Point2D cursorPoint = container.getValue("scene_coords");
-                        node.relocateToPoint(
-                                new Point2D(cursorPoint.getX() - 32, cursorPoint.getY() - 32)
+                        this.centerPane.getChildren().add(component);
+                        this.componentContainer.getItems().add(component.getContraction());
+                        Point2D cursorPoint = container.getValue(StrCst.DRAG_CONTAINER_SCENE_COORDS);
+                        component.relocateToPoint(new Point2D(cursorPoint.getX() - 32, cursorPoint.getY() - 32)
                         );
                     }
                 }
             }
 
-            //AddLink drag operation
+            // AddLink drag operation
             container = (DragContainer) dragEvent.getDragboard().getContent(DragContainer.AddLink);
             if (container != null) {
-                String sourceId = container.getValue("source");
-                String targetId = container.getValue("target");
+                String sourceId = container.getValue(StrCst.DRAG_CONTAINER_SOURCE);
+                String targetId = container.getValue(StrCst.DRAG_CONTAINER_TARGET);
 
                 if (sourceId != null && targetId != null) {
 
-                    //System.out.println(container.getData());
                     Link link = new Link();
 
                     //add our link at the top of the rendering order so it's rendered first
                     this.centerPane.getChildren().add(0, link);
 
+                    // Retrieve source and target
                     Component source = null;
                     Component target = null;
-
                     for (Node n : this.centerPane.getChildren()) {
                         if (n instanceof Component){
                             Component component = ((Component) n);
@@ -360,56 +356,66 @@ public class NeuralNetworkView extends BaseView<MNISTController> {
                             }
                         }
                     }
-
+                    // Bind ends for the link to follow its handles
                     if (source != null && target != null){
                         link.bindEnds(source, target);
                     }
-                }
-
-                dragEvent.consume();
             }
+            // Consume event
+            dragEvent.consume();
+        }
         });
 
     }
 
     /**
-     * @param dragEvent
+     * Handle icon dropped onto the center pane
+     * @param dragEvent The drag event dropped
      */
     private void onIconDragDropped(DragEvent dragEvent) {
-        DragContainer container =
-                (DragContainer) dragEvent.getDragboard().getContent(DragContainer.AddNode);
+        // Retrieve drag container
+        DragContainer container = (DragContainer) dragEvent.getDragboard().getContent(DragContainer.AddNode);
 
-        container.addData("scene_coords",
-                new Point2D(dragEvent.getSceneX(), dragEvent.getSceneY()));
+        // Add new coordinates in the container
+        container.addData(StrCst.DRAG_CONTAINER_SCENE_COORDS, new Point2D(dragEvent.getSceneX(), dragEvent.getSceneY()));
 
+        // Add node to the container
         ClipboardContent content = new ClipboardContent();
         content.put(DragContainer.AddNode, container);
 
+        // Consume event
         dragEvent.getDragboard().setContent(content);
         dragEvent.setDropCompleted(true);
     }
 
     /**
+     * Handle icon dragged over onto the center pane
      * @param dragEvent
      */
     private void onDragOverCenter(DragEvent dragEvent) {
+        // Allow any transfer mode
         dragEvent.acceptTransferModes(TransferMode.ANY);
-        dragOverIcon.relocateToPoint(
-                new Point2D(dragEvent.getSceneX(), dragEvent.getSceneY()));
+
+        // Relocate drag icon
+        this.dragOverIcon.relocateToPoint(new Point2D(dragEvent.getSceneX(), dragEvent.getSceneY()));
+
+        // Consume event
         dragEvent.consume();
     }
 
     /**
-     * Drag over components
-     *
+     * Drag over root
      * @param dragEvent The associated drag event
      */
     private void onDragOverRoot(javafx.scene.input.DragEvent dragEvent) {
+        // Relocate drag icon when exiting center pane
         Point2D p = centerPane.sceneToLocal(dragEvent.getSceneX(), dragEvent.getSceneY());
-        if (!centerPane.boundsInLocalProperty().get().contains(p)) {
-            dragOverIcon.relocateToPoint(new Point2D(dragEvent.getSceneX(), dragEvent.getSceneY()));
+        if (!this.centerPane.boundsInLocalProperty().get().contains(p)) {
+            this.dragOverIcon.relocateToPoint(new Point2D(dragEvent.getSceneX(), dragEvent.getSceneY()));
             return;
         }
+
+        // Consume event
         dragEvent.consume();
     }
 

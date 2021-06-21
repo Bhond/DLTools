@@ -15,20 +15,17 @@ public abstract class ComponentFactory {
             case INPUT_LOCAL:
                 return new LocalInputComponent();
 
-            case LAYER_INPUT:
-                return null;
-
             case LAYER_DENSE:
-                return null;
+                return new DenseLayerComponent();
 
             case LAYER_CONVOLUTION:
-                return null;
+                return new ConvolutionLayerComponent();
 
             case LAYER_POOLING:
-                return null;
+                return new PoolingLayerComponent();
 
             case LAYER_LSTM:
-                return null;
+                return new LSTMLayerComponent();
 
             default:
                 return null;

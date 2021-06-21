@@ -11,7 +11,7 @@
 {
     -fx-background-color: transparent;
     -fx-border-width: 0 0 1 0;
-    -fx-border-color: -fx-palette-robin-egg-blue;
+    -fx-border-color: orange;
 }
 
 .tabPane .tab-label
@@ -43,7 +43,7 @@
     -fx-background-insets: 0.0;
     -fx-background-radius: 0.0;
     -fx-border-width: 0 0 5 0;
-    -fx-border-color: -fx-palette-robin-egg-blue;
+    -fx-border-color: -fx-palette-orange;
 }
 
 .tab .tab-close-button

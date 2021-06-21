@@ -1,8 +1,8 @@
 package fr.pops.viewmodels;
 
-import fr.pops.controllers.viewcontrollers.MNISTController;
+import fr.pops.controllers.viewcontrollers.NeuralNetworkController;
 
-public class MNISTModel extends BaseModel<MNISTController> {
+public class NeuralNetworkModel extends BaseModel<NeuralNetworkController> {
 
     /*****************************************
      *
@@ -19,7 +19,7 @@ public class MNISTModel extends BaseModel<MNISTController> {
      * Standard ctor
      * Nothing to be done
      */
-    public MNISTModel(){
+    public NeuralNetworkModel(){
         // Nothing to be done
     }
 

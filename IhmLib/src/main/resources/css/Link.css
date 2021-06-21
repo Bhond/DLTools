@@ -6,6 +6,11 @@
 *****************************************/
 @import "Colors.css"
 
+.root
+{
+    -fx-background-color: transparent;
+}
+
 .link
 {
     -fx-fill: transparent;

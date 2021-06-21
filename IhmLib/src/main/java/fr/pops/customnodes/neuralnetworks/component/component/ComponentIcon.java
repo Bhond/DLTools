@@ -57,15 +57,15 @@ public class ComponentIcon extends VBox {
 
         // Icon
         this.icon = new Pane();
-        this.icon.setMinSize(50,50);
-        this.icon.setMaxSize(50,50);
+        this.icon.setMinSize(30,30);
+        this.icon.setMaxSize(30,30);
 
         // Label
         this.label = new Label();
         this.label.setText(this.type.toString());
 
         // Style
-        this.getStylesheets().add(Utils.getResource(StrCst.PATH_CSS_DIRECTORY + "Icon.css"));
+        this.getStylesheets().add(Utils.getResource(StrCst.PATH_ICON_CSS));
         this.selectStyle();
 
         // Hierarchy
@@ -94,10 +94,10 @@ public class ComponentIcon extends VBox {
         this.icon.getStyleClass().clear();
         switch (this.type.getCategory()){
             case INPUTS:
-                this.icon.getStyleClass().add("shape-server");
+                this.icon.getStyleClass().add(StrCst.STYLE_CLASS_SHAPE_SERVER);
                 break;
             case LAYERS:
-                this.icon.getStyleClass().add("shape-bezier");
+                this.icon.getStyleClass().add(StrCst.STYLE_CLASS_SHAPE_BEZIER);
                 break;
         }
         this.icon.getStyleClass().add("icn");
