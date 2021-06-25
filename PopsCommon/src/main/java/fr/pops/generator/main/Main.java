@@ -10,7 +10,7 @@
  *
  * Name: Main.java
  *
- * Description: Main class used to generate beans automatically given xml file
+ * Description: Main class used to generateBean beans automatically given xml file
  *
  * Author: Charles MERINO
  *
@@ -33,8 +33,8 @@ public class Main {
         // Parse the XML the files
         generator.parseXMLFiles();
 
-        // Generate the files
-        generator.generate();
+        // Generate the bean files
+        generator.generateBean();
     }
 
 }

@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class XMLParser {
@@ -81,8 +82,7 @@ public class XMLParser {
         try {
             file = new File(filepath);
             xmlsr = factory.createXMLStreamReader(new FileReader(file));
-            List<String> propertiesAttributes = new ArrayList<>();
-
+            List<HashMap<String, String>> properties = new ArrayList<>();
             // Loop over all lines
             while (xmlsr.hasNext()){
                 // Retrieve the type of tag read
@@ -90,24 +90,27 @@ public class XMLParser {
 
                 // For now: only start element is useful.
                 if (xmlsrType == XMLStreamReader.START_ELEMENT){
-
-                    // Switch local names
                     switch (xmlsr.getLocalName()){
+                        case "Entry":
+                            // TODO: Implement this this
+                            //HashMap<String, String> entry = new HashMap<>().put(xmlsr.getAttributeValue(0), XMLParserUtil.readEntry(xmlsr));
+                            break;
 
-                        case GeneratorCst.PROPERTY:
-                            propertiesAttributes.add(readProperty(xmlsr));
+                        case "Group":
+                            if (xmlsr.getAttributeValue(0).equals(GeneratorCst.PROPERTY)){
+                                properties.add(this.readProperty(xmlsr));
+                            }
                             break;
                     }
                 }
             }
 
             // Add new bean config
-            this.fileConfigs.add(new BeanFileConfig(filepath, propertiesAttributes));
+            this.fileConfigs.add(new BeanFileConfig(filepath, properties));
 
         } catch (XMLStreamException | FileNotFoundException exception) {
             exception.printStackTrace();
         }
-
     }
 
     /**
@@ -116,27 +119,41 @@ public class XMLParser {
      *  - Name
      *  - Type
      *  - Default value
+     * Facultative values:
+     *  - isComputed
+     *  - isInternal
      * @param xmlsr The xml stream reader
      * @throws XMLStreamException
      */
-    private String readProperty(XMLStreamReader xmlsr) throws XMLStreamException{
-        /**
-         *
-         * TODO: Find a way to read optional values
-         *
-         */
-
-        // Mandatory values
-        // Read name
-        String property = XMLParserUtil.readBaseLine(xmlsr, GeneratorCst.PROPERTY_NAME) + GeneratorCst.PROPERTY_TOKENIZER_DELIMITER;
-        // Read type
-        property += XMLParserUtil.readBaseLine(xmlsr, GeneratorCst.PROPERTY_TYPE) + GeneratorCst.PROPERTY_TOKENIZER_DELIMITER;
-        // Read default value
-        property += XMLParserUtil.readBaseLine(xmlsr, GeneratorCst.PROPERTY_DEFAULT) + GeneratorCst.PROPERTY_TOKENIZER_DELIMITER;
-
+    private HashMap<String, String> readProperty(XMLStreamReader xmlsr) throws XMLStreamException {
+        HashMap<String, String> property = new HashMap<>();
+        int xmlsrType;
+        while(xmlsr.hasNext()){
+            xmlsrType = xmlsr.next();
+            if (xmlsrType == XMLStreamReader.END_ELEMENT && xmlsr.getLocalName().equals(GeneratorCst.GROUP)){
+                break;
+            } else if (xmlsrType == XMLStreamReader.START_ELEMENT && xmlsr.getLocalName().equals(GeneratorCst.ENTRY)) {
+                property.put(xmlsr.getAttributeValue(0), XMLParserUtil.readEntry(xmlsr));
+            }
+        }
         // Return the generated string
-        return property;
+        return checkFacultativeFields(property);
+    }
 
+    /**
+     * Check the facultative fields entered
+     * If they are present, do nothing.
+     * Else add them with their default value
+     * @param property The hashmap of the property to complete if necessary
+     */
+    private HashMap<String, String> checkFacultativeFields(HashMap<String, String> property){
+        // Is computed
+        if (!property.containsKey(GeneratorCst.PROPERTY_IS_COMPUTED)) property.put(GeneratorCst.PROPERTY_IS_COMPUTED, "false");
+
+        // Is internal
+        if (!property.containsKey(GeneratorCst.PROPERTY_IS_INTERNAL)) property.put(GeneratorCst.PROPERTY_IS_INTERNAL, "false");
+
+        return property;
     }
 
     /*****************************************
@@ -145,7 +162,7 @@ public class XMLParser {
      *
      *****************************************/
     /**
-     * @return Get the generate configs
+     * @return Get the generateBean configs
      */
     public BeanFileConfig getFileConfigs(int i) {
         return this.fileConfigs.get(i);

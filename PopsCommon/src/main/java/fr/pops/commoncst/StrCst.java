@@ -55,9 +55,12 @@ public abstract class StrCst {
     public static final String DATA_TYPE = "DataType";
     // "Native" types
     public final static String DOUBLE = "Double";
+    public final static String DOUBLE_LWR = "double";
     public final static String INTEGER = "Integer";
     public final static String STRING = "String";
+    public final static String STRING_LWR = "string";
     public final static String BOOLEAN = "boolean";
+    public final static String PARAMETER = "parameter";
     // Custom types
     public final static String BASE_NDARRAY = "BaseNDArray";
 

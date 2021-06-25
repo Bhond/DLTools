@@ -13,8 +13,8 @@ public class DoublePropertyNode extends PropertyNode<Double>{
     /**
      * Standard ctor
      */
-    public DoublePropertyNode(String name, double defaultValue, boolean isComputed){
-        super(name, defaultValue, isComputed);
+    public DoublePropertyNode(String name, double value, boolean isComputed){
+        super(name, value, isComputed);
     }
 
     /*****************************************
@@ -28,7 +28,7 @@ public class DoublePropertyNode extends PropertyNode<Double>{
     @Override
     protected void onInit() {
         super.onInit();
-        this.valueNode = new TextField(this.defaultValue.toString());
+        this.valueNode = new TextField(this.value.toString());
     }
 
     /*****************************************

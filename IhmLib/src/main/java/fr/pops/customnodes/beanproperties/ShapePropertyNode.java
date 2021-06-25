@@ -23,8 +23,8 @@ public class ShapePropertyNode extends PropertyNode<Shape>{
     /**
      * Standard ctor
      */
-    public ShapePropertyNode(String name, Shape defaultValue, boolean isComputed){
-        super(name, defaultValue, isComputed);
+    public ShapePropertyNode(String name, Shape value, boolean isComputed){
+        super(name, value, isComputed);
     }
 
     /*****************************************
@@ -39,9 +39,9 @@ public class ShapePropertyNode extends PropertyNode<Shape>{
     protected void onInit() {
         super.onInit();
         this.valueNode = new HBox();
-        this.xAxisField = new TextField(String.valueOf(this.defaultValue.getXAxisLength()));
-        this.yAxisField = new TextField(String.valueOf(this.defaultValue.getYAxisLength()));
-        this.zAxisField = new TextField(String.valueOf(this.defaultValue.getZAxisLength()));
+        this.xAxisField = new TextField(String.valueOf(this.value.getXAxisLength()));
+        this.yAxisField = new TextField(String.valueOf(this.value.getYAxisLength()));
+        this.zAxisField = new TextField(String.valueOf(this.value.getZAxisLength()));
 
         ((HBox)this.valueNode).widthProperty().addListener((observableValue, oldValue, newValue) -> {
             this.xAxisField.setPrefWidth(newValue.doubleValue() / 3);

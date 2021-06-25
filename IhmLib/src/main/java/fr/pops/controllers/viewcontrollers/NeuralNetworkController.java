@@ -32,6 +32,13 @@ public class NeuralNetworkController extends BaseController<NeuralNetworkView, N
 
     /*****************************************
      *
+     * Controls
+     *
+     *****************************************/
+
+
+    /*****************************************
+     *
      * Setters
      *
      *****************************************/

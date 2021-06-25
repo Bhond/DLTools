@@ -30,7 +30,7 @@
     -fx-background-color: transparent;
 }
 
-.label
+.listView .list-cell:filled
 {
     -fx-text-fill: -fx-palette-ghost-white;
     -fx-font-size: 10pt;

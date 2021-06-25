@@ -20,12 +20,15 @@
  ******************************************************************************/
 package fr.pops.beans.bean;
 
-import fr.pops.beanobservable.BeanObservable;
-import fr.pops.models.BeanModel;
+import fr.pops.beans.beanobservable.BeanObservable;
+import fr.pops.beans.beanmodels.BeanModel;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 
+@SuppressWarnings("unchecked")
 public final class BeanManager extends BeanObservable implements Serializable {
 
     /*****************************************
@@ -34,7 +37,7 @@ public final class BeanManager extends BeanObservable implements Serializable {
      *
      *****************************************/
     private static final BeanManager instance = new BeanManager();
-    private static int currentBeanId = 0;
+    private static int currentBeanId = -1;
 
     /*****************************************
      *
@@ -43,6 +46,7 @@ public final class BeanManager extends BeanObservable implements Serializable {
      *****************************************/
     // Beans
     private HashSet<Bean> beans = new HashSet<>();
+    private List<BeanContainer<Bean>> containers = new LinkedList<>();
 
     // Models
     private HashSet<BeanModel<? extends Bean>> models = new HashSet<>();
@@ -80,12 +84,19 @@ public final class BeanManager extends BeanObservable implements Serializable {
      *****************************************/
     /**
      * Add a bean to the list holding all the beans
-     * Fires a property change on the the Hashset to
-     * listen to a creation of a bean --> rewrite this part....
+     * Fires a property change on the containers which
+     * listen to the creation of a bean
      * @param bean The bean to add
      */
-    public void addBean(Bean bean){
+    public <T extends Bean> void addBean(T bean){
         this.beans.add(bean);
+
+        // Add the bean to all of the containers used for this type of bean
+        for (BeanContainer<Bean> container : this.containers){
+            if (bean.getClass() == container.getBeanClass()){
+                container.addBean(bean);
+            }
+        }
     }
 
     /**
@@ -94,6 +105,37 @@ public final class BeanManager extends BeanObservable implements Serializable {
      */
     public <T extends Bean> void addModel(BeanModel<T> model){
         this.models.add(model);
+    }
+
+    /**
+     * Add container which triggers events when modified
+     * @param container The container to add
+     * @param <T> The type of bean managed
+     */
+    public <T extends Bean> void addContainer(BeanContainer<T> container){
+        this.containers.add((BeanContainer<Bean>) container);
+    }
+
+    /*****************************************
+     *
+     * Remove
+     *
+     *****************************************/
+    /**
+     * Remove a bean to the list holding all the beans
+     * Fires a property change on the containers which
+     * listen to the  deletion of a bean
+     * @param bean The bean to remove
+     */
+    public <T extends Bean> void removeBean(T bean){
+        this.beans.remove(bean);
+
+        // Remove the bean to all of the containers used for this type of bean
+        for (BeanContainer<Bean> container : this.containers){
+            if (bean.getClass() == container.getBeanClass()){
+                container.removeBean(bean);
+            }
+        }
     }
 
     /*****************************************

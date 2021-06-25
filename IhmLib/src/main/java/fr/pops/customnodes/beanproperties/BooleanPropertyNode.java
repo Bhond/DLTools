@@ -12,8 +12,8 @@ public class BooleanPropertyNode extends PropertyNode<Boolean> {
     /**
      * Standard ctor
      */
-    public BooleanPropertyNode(String name, boolean defaultValue, boolean isComputed){
-        super(name, defaultValue, isComputed);
+    public BooleanPropertyNode(String name, boolean value, boolean isComputed){
+        super(name, value, isComputed);
     }
 
     /*****************************************
@@ -28,7 +28,7 @@ public class BooleanPropertyNode extends PropertyNode<Boolean> {
     protected void onInit() {
         super.onInit();
         this.valueNode = new CheckBox();
-        ((CheckBox)this.valueNode).setSelected(this.defaultValue);
+        ((CheckBox)this.valueNode).setSelected(this.value);
         ((CheckBox)this.valueNode).setAllowIndeterminate(false);
     }
 

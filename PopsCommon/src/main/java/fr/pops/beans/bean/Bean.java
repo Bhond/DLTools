@@ -20,10 +20,14 @@
  ******************************************************************************/
 package fr.pops.beans.bean;
 
+import fr.pops.beans.properties.*;
+import fr.pops.commoncst.EnumCst;
 import fr.pops.commoncst.GeneratorCst;
-import fr.pops.models.BeanModel;
+import fr.pops.beans.beanmodels.BeanModel;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Bean {
 
@@ -33,6 +37,8 @@ public abstract class Bean {
      *
      *****************************************/
     protected int id;
+    protected String beanTypeId;
+    protected List<Property<?>> properties = new ArrayList<>();
 
     /*****************************************
      *
@@ -43,7 +49,10 @@ public abstract class Bean {
      * Standard ctor
      * Initialize the id and add this bean to the bean manager
      */
-    protected Bean(){
+    protected Bean(String beanTypeId){
+        // Sets the bean type id
+        this.beanTypeId = beanTypeId;
+
         // Set id
         this.id = BeanManager.getInstance().getId();
 
@@ -106,6 +115,58 @@ public abstract class Bean {
         return model;
     }
 
+    /**
+     * Create a double property
+     * @param name The name of the property
+     * @param defaultValue The value of the property
+     * @param isComputed Define is the property is computed by the model
+     * @param isInternal Define is the property is modifiable by the user
+     */
+    protected  DoubleProperty createProperty(String name, double defaultValue, boolean isComputed, boolean isInternal){
+        DoubleProperty property = new DoubleProperty(name, EnumCst.PropertyTypes.DOUBLE, defaultValue, isComputed, isInternal);
+        this.properties.add(property);
+        return property;
+    }
+
+    /**
+     * Create a int property
+     * @param name The name of the property
+     * @param defaultValue The value of the property
+     * @param isComputed Define is the property is computed by the model
+     * @param isInternal Define is the property is modifiable by the user
+     */
+    protected  IntegerProperty createProperty(String name, int defaultValue, boolean isComputed, boolean isInternal){
+        IntegerProperty property = new IntegerProperty(name, EnumCst.PropertyTypes.INT, defaultValue, isComputed, isInternal);
+        this.properties.add(property);
+        return property;
+    }
+
+    /**
+     * Create a string property
+     * @param name The name of the property
+     * @param defaultValue The value of the property
+     * @param isComputed Define is the property is computed by the model
+     * @param isInternal Define is the property is modifiable by the user
+     */
+    protected  StringProperty createProperty(String name, String defaultValue, boolean isComputed, boolean isInternal){
+        StringProperty property = new StringProperty(name, EnumCst.PropertyTypes.STRING, defaultValue, isComputed, isInternal);
+        this.properties.add(property);
+        return property;
+    }
+
+    /**
+     * Create a boolean property
+     * @param name The name of the property
+     * @param defaultValue The value of the property
+     * @param isComputed Define is the property is computed by the model
+     * @param isInternal Define is the property is modifiable by the user
+     */
+    protected BooleanProperty createProperty(String name, boolean defaultValue, boolean isComputed, boolean isInternal){
+        BooleanProperty property = new BooleanProperty(name, EnumCst.PropertyTypes.BOOLEAN, defaultValue, isComputed, isInternal);
+        this.properties.add(property);
+        return property;
+    }
+
     /*****************************************
      *
      * Getter
@@ -118,4 +179,17 @@ public abstract class Bean {
         return this.id;
     }
 
+    /**
+     * @return The bean type id
+     */
+    public String getBeanTypeId() {
+        return this.beanTypeId;
+    }
+
+    /**
+     * @return The properties of this bean
+     */
+    public List<Property<?>> getProperties() {
+        return this.properties;
+    }
 }

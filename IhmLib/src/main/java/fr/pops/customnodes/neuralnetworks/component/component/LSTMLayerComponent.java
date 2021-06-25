@@ -19,6 +19,7 @@
  ******************************************************************************/
 package fr.pops.customnodes.neuralnetworks.component.component;
 
+import fr.pops.beans.test.TestBean;
 import fr.pops.cst.EnumCst;
 import fr.pops.customnodes.plot.LinePlot;
 
@@ -41,6 +42,6 @@ public class LSTMLayerComponent extends Component {
      * Standard ctor
      */
     public LSTMLayerComponent(){
-        super(EnumCst.ComponentTypes.LAYER_LSTM);
+        super(EnumCst.ComponentTypes.LAYER_LSTM, new TestBean());
     }
 }

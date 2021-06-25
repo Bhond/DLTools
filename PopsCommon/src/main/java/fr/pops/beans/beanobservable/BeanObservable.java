@@ -17,12 +17,16 @@
  * Date: 04/03/2021
  *
  ******************************************************************************/
-package fr.pops.beanobservable;
+package fr.pops.beans.beanobservable;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public abstract class BeanObservable {
+
+    /**
+     * TODO: Find a way to turn this into an interface
+     */
 
     /*****************************************
      *

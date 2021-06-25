@@ -10,7 +10,7 @@
  *
  * Name: SequenceGenerator.java
  *
- * Description: Class defining the sequence generator to generate a sequence of data
+ * Description: Class defining the sequence generator to generateBean a sequence of data
  *
  * Author: Charles MERINO
  *

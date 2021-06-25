@@ -22,6 +22,7 @@ package fr.pops.sockets.resquest;
 
 import fr.pops.sockets.cst.EnumCst;
 import fr.pops.sockets.encodedecoder.EncoderDecoderHelper;
+import fr.pops.sockets.resquest.beanrequests.CreateBeanRequest;
 
 public class RequestFactory {
 
@@ -86,6 +87,8 @@ public class RequestFactory {
                 return new GetMNISTImageRequest(rawParams, length);
             case GET_MNIST_CONFIGURATION:
                 return new GetMNISTConfiguration(rawParams, length);
+            case CREATE_BEAN:
+                return new CreateBeanRequest(rawParams, length);
             default:
                 return null;
         }

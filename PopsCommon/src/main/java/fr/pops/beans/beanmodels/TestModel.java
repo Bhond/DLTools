@@ -18,7 +18,7 @@
  * Date: 28/02/2021
  *
  ******************************************************************************/
-package fr.pops.models;
+package fr.pops.beans.beanmodels;
 
 import fr.pops.beans.test.TestBean;
 
@@ -48,12 +48,7 @@ public class TestModel extends BeanModel<TestBean> {
     @Override
     public void update(double dt){
 
-        // Update position
-        bean.setPositionX(bean.getSpeed() * bean.getDirectionX() * dt);
-        bean.setPositionY(bean.getSpeed() * bean.getDirectionY() * dt);
-
-//        System.out.println("Test position X: " + bean.getPositionX());
-//        System.out.println("Test position Y: " + bean.getPositionY());
+        bean.setSpeed(bean.getSpeed() + .01d * dt);
 
     }
 

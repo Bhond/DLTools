@@ -4,7 +4,18 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
 public abstract class PropertyNode<T> extends HBox {
+
+    /*****************************************
+     *
+     * Static attributes
+     *
+     *****************************************/
+    protected static final String VALUE_LISTENER_TAG = "valueListenerTag";
 
     /*****************************************
      *
@@ -14,8 +25,9 @@ public abstract class PropertyNode<T> extends HBox {
     protected String name;
     private Label nameLbl;
     protected Node valueNode;
-    protected T defaultValue;
+    protected T value;
     protected boolean isComputed;
+    protected final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     /*****************************************
      *
@@ -26,10 +38,10 @@ public abstract class PropertyNode<T> extends HBox {
      * Standard ctor
      * Nothing to be done
      */
-    protected PropertyNode(String name, T defaultValue, boolean isComputed){
+    protected PropertyNode(String name, T value, boolean isComputed){
         // Fields
         this.name = name;
-        this.defaultValue = defaultValue;
+        this.value = value;
         this.isComputed = isComputed;
 
         // Initialisation
@@ -42,6 +54,9 @@ public abstract class PropertyNode<T> extends HBox {
         this.buildControls();
     }
 
+    /**
+     * Build the controls
+     */
     private void buildControls() {
         // Check modification
         this.valueNode.disableProperty().setValue(isComputed);
@@ -64,6 +79,9 @@ public abstract class PropertyNode<T> extends HBox {
     protected void onInit(){
         // Name label
         this.nameLbl = new Label(this.name);
+
+        // Listener
+        this.addPropertyChangeListener(this::onValueChanged);
     }
 
     /**
@@ -72,6 +90,36 @@ public abstract class PropertyNode<T> extends HBox {
     private void buildHierarchy(){
         // Add all nodes
         this.getChildren().addAll(this.nameLbl, this.valueNode);
+    }
+
+    /*****************************************
+     *
+     * Listeners
+     *
+     *****************************************/
+    /**
+     * Add a property change listener
+     * @param listener The listener
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener){
+        this.support.addPropertyChangeListener(listener);
+    }
+
+    /**
+     * Add a property change listener
+     * @param listener The listener
+     */
+    public void removePropertyChangeListener(PropertyChangeListener listener){
+        this.support.removePropertyChangeListener(listener);
+    }
+
+    /**
+     * Method called when the value has changed
+     */
+    private void onValueChanged(PropertyChangeEvent propertyChangeEvent) {
+        if (propertyChangeEvent.getPropertyName().equals(VALUE_LISTENER_TAG)){
+            System.out.println( propertyChangeEvent.getPropertyName() + " has changed from " + propertyChangeEvent.getOldValue() + " to " + propertyChangeEvent.getNewValue());
+        }
     }
 
     /*****************************************

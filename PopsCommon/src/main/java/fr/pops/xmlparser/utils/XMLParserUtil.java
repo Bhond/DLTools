@@ -190,6 +190,16 @@ public abstract class XMLParserUtil {
     }
 
     /**
+     * Read an entry which is in the format:
+     * <Entry name="EntryName"> EntryText </Entry>
+     * @param xmlsr The XML Stream Reader to read from
+     * @return The entry in a bean xml file
+     */
+    public static String readEntry(XMLStreamReader xmlsr) throws XMLStreamException {
+        return XMLParserUtil.readBaseLine(xmlsr, "Entry");
+    }
+
+    /**
      * Read a NDArray
      * @param xmlsr The XML Stream Reader read to read from
      * @return The read array

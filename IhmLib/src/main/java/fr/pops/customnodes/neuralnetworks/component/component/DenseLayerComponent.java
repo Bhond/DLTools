@@ -19,10 +19,11 @@
  ******************************************************************************/
 package fr.pops.customnodes.neuralnetworks.component.component;
 
+import fr.pops.beans.test.TestBean;
 import fr.pops.cst.EnumCst;
 import fr.pops.customnodes.plot.LinePlot;
 
-public class DenseLayerComponent extends Component {
+public class DenseLayerComponent extends Component<TestBean> {
 
     /*****************************************
      *
@@ -41,6 +42,9 @@ public class DenseLayerComponent extends Component {
      * Standard ctor
      */
     public DenseLayerComponent(){
-        super(EnumCst.ComponentTypes.LAYER_DENSE);
+        super(EnumCst.ComponentTypes.LAYER_DENSE, new TestBean());
+
+
+
     }
 }

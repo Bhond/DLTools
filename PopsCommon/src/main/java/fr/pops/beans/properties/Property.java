@@ -19,17 +19,16 @@
  * Date: 18/02/2021
  *
  ******************************************************************************/
-package fr.pops.beans.bean;
+package fr.pops.beans.properties;
 
-import fr.pops.beanobservable.BeanObservable;
+import fr.pops.beans.beanobservable.BeanObservable;
 import fr.pops.commoncst.EnumCst;
 import fr.pops.commoncst.GeneratorCst;
-import fr.pops.commoncst.GeneratorDefaultValues;
 
 import java.beans.PropertyChangeEvent;
 import java.io.Serializable;
 
-public class Property extends BeanObservable implements Serializable {
+public abstract class Property<T> extends BeanObservable implements Serializable {
 
     /*****************************************
      *
@@ -40,7 +39,9 @@ public class Property extends BeanObservable implements Serializable {
     private int id;
     private String name;
     private EnumCst.PropertyTypes type;
-    private Object value;
+    private T value;
+    private boolean isComputed;
+    private boolean isInternal;
 
     /*****************************************
      *
@@ -53,10 +54,12 @@ public class Property extends BeanObservable implements Serializable {
      * @param name The name of the property
      * @param type The type of the property
      * @param value The value of the property
+     * @param isComputed Define is the property is computed by the model
+     * @param isInternal Define is the property is modifiable by the user
      */
-    private Property(String name, EnumCst.PropertyTypes type, Object value){
+    protected Property(String name, EnumCst.PropertyTypes type, T value, boolean isComputed, boolean isInternal){
         // Initialisation
-        onInit(name, type, value);
+        onInit(name, type, value, isComputed, isInternal);
     }
 
     /*****************************************
@@ -66,12 +69,19 @@ public class Property extends BeanObservable implements Serializable {
      *****************************************/
     /**
      * Initialisation
+     * @param name The name of the property
+     * @param type The type of the property
+     * @param value The value of the property
+     * @param isComputed Define is the property is computed by the model
+     * @param isInternal Define is the property is modifiable by the user
      */
-    private void onInit(String name, EnumCst.PropertyTypes type, Object value){
+    private void onInit(String name, EnumCst.PropertyTypes type, T value, boolean isComputed, boolean isInternal){
         // Attributes
         this.name= name;
         this.type = type;
         this.value = value;
+        this.isComputed = isComputed;
+        this.isInternal = isInternal;
 
         // Listeners
         this.support.addPropertyChangeListener(this::onListenersChanged);
@@ -103,15 +113,36 @@ public class Property extends BeanObservable implements Serializable {
     /**
      * @return The name
      */
-    public Object getName() {
+    public String getName() {
         return this.name;
+    }
+
+    /**
+     * @return The type of the property
+     */
+    public EnumCst.PropertyTypes getType() {
+        return this.type;
     }
 
     /**
      * @return The value
      */
-    public Object getValue() {
+    public T getValue() {
         return this.value;
+    }
+
+    /**
+     * @return True if the property is computed and not modifiable by the user
+     */
+    public boolean isComputed() {
+        return this.isComputed;
+    }
+
+    /**
+     * @return True if the property is only used by the models
+     */
+    public boolean isInternal() {
+        return isInternal;
     }
 
     /*****************************************
@@ -124,7 +155,7 @@ public class Property extends BeanObservable implements Serializable {
      * Fires a property changed listener
      * @param newValue The new value
      */
-    public void setValue(Object newValue) {
+    public void setValue(T newValue) {
         Object oldValue = this.value;
         this.value = newValue;
         this.support.firePropertyChange(GeneratorCst.PROPERTY_VALUE, oldValue, newValue);
@@ -135,16 +166,18 @@ public class Property extends BeanObservable implements Serializable {
      * Builder
      *
      *****************************************/
-    public static class PropertyBuilder {
+    public static class PropertyBuilder<T> {
 
         /*****************************************
          *
          * Attributes
          *
          *****************************************/
-        private String name = GeneratorDefaultValues.NAME_DEFAULT;
-        private EnumCst.PropertyTypes type = GeneratorDefaultValues.TYPE_DEFAULT;
-        private Object value = GeneratorDefaultValues.VALUE_DEFAULT;
+        private String name = "";
+        private EnumCst.PropertyTypes type = EnumCst.PropertyTypes.OBJECT;
+        private T value = null;
+        private boolean isComputed = false;
+        private boolean isInternal = false;
 
         /*****************************************
          *
@@ -169,17 +202,17 @@ public class Property extends BeanObservable implements Serializable {
          * @param name The name of the property
          * @return The builder itself
          */
-        public PropertyBuilder withName(String name){
+        public PropertyBuilder<T> withName(String name){
             this.name = name;
             return this;
         }
 
         /**
-         *
+         * Type of the property
          * @param type The type of the property
          * @return The builder itself
          */
-        public PropertyBuilder withType(String type){
+        public PropertyBuilder<T> withType(String type){
             this.type = EnumCst.PropertyTypes.valueOf(type.toUpperCase());
             return this;
         }
@@ -189,8 +222,29 @@ public class Property extends BeanObservable implements Serializable {
          * @param defaultValue The default value of the property
          * @return The builder itself
          */
-        public PropertyBuilder withDefaultValue(Object defaultValue){
+        public PropertyBuilder<T> withDefaultValue(T defaultValue){
             this.value = defaultValue;
+            return this;
+        }
+
+        /**
+         *
+         * Set the parameter isComputed of the property
+         * @param isComputed True if this property is only available for the model
+         * @return The builder itself
+         */
+        public PropertyBuilder<T> isComputed(boolean isComputed){
+            this.isComputed = isComputed;
+            return this;
+        }
+
+        /**
+         * Set the parameter isInternal of the property
+         * @param isInternal True if this property is only available for the model
+         * @return The builder itself
+         */
+        public PropertyBuilder<T> isInternal(boolean isInternal){
+            this.isInternal = isInternal;
             return this;
         }
 
@@ -199,8 +253,9 @@ public class Property extends BeanObservable implements Serializable {
          * @return A property object built with the parameters
          *         defined by the with methods
          */
-        public Property build() {
-            return new Property(this.name, this.type, this.value);
+        public Property<T> build() {
+            //return new Property(this.name, this.type, this.value, this.isComputed, this.isInternal);
+            return null;
         }
 
     }

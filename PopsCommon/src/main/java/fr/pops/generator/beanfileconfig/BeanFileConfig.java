@@ -22,6 +22,7 @@ package fr.pops.generator.beanfileconfig;
 
 import fr.pops.commoncst.GeneratorCst;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class BeanFileConfig {
@@ -34,18 +35,18 @@ public class BeanFileConfig {
     private String filePath;
     private String filename;
     private String packageName;
-    private List<String> propertiesAttributes;
+    private List<HashMap<String, String>> properties;
 
     /*****************************************
      *
      * Ctor
      *
      *****************************************/
-    public BeanFileConfig(String filePath, List<String> propertiesAttributes){
+    public BeanFileConfig(String filePath, List<HashMap<String, String>> properties){
         this.buildBeanFileName(filePath);
         this.buildBeanFilePath(filePath);
         this.buildBeanPackageName();
-        this.propertiesAttributes = propertiesAttributes;
+        this.properties = properties;
     }
 
     /*****************************************
@@ -108,15 +109,15 @@ public class BeanFileConfig {
      * @return The property attributes in a string format with ";"
      *         as a separator
      */
-    public String getPropertiesAttributes(int i) {
-        return this.propertiesAttributes.get(i);
+    public HashMap<String, String> getProperties(int i) {
+        return this.properties.get(i);
     }
 
     /**
      * @return The number of properties to write
      */
     public int getNbProperties(){
-        return this.propertiesAttributes.size();
+        return this.properties.size();
     }
 
 }

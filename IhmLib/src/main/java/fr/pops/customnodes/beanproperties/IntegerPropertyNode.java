@@ -28,7 +28,7 @@ public class IntegerPropertyNode extends PropertyNode<Integer>{
     @Override
     protected void onInit() {
         super.onInit();
-        this.valueNode = new TextField(this.defaultValue.toString());
+        this.valueNode = new TextField(this.value.toString());
     }
 
     /*****************************************

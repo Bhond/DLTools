@@ -17,12 +17,12 @@
  * Date: 24/02/2021
  *
  ******************************************************************************/
-package fr.pops.beanloop;
+package fr.pops.beans.beanloop;
 
 import fr.pops.beans.bean.Bean;
 import fr.pops.beans.bean.BeanManager;
 import fr.pops.commoncst.IntCst;
-import fr.pops.models.BeanModel;
+import fr.pops.beans.beanmodels.BeanModel;
 
 public class BeanLoop extends Thread implements Runnable {
 
@@ -130,6 +130,7 @@ public class BeanLoop extends Thread implements Runnable {
 
         }
 
+        // Dispose models on stop
         for (BeanModel<? extends Bean> beanModel : beanManager.getModels()){
             beanModel.dispose();
         }

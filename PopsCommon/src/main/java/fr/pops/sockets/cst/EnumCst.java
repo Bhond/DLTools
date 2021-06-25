@@ -82,7 +82,8 @@ public abstract class EnumCst {
         GET_NETWORK_INFO,
         GET_CURRENT_STOCK_INFO,
         GET_MNIST_IMAGE,
-        GET_MNIST_CONFIGURATION }
+        GET_MNIST_CONFIGURATION,
+        CREATE_BEAN}
 
     /*****************************************
      *

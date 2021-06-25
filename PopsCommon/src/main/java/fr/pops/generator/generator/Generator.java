@@ -32,11 +32,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
 public class Generator {
+
+    /**
+     *
+     * TODO: Add property accessor
+     *       Add default value accessors
+     */
 
     /*****************************************
      *
@@ -102,20 +109,40 @@ public class Generator {
     /**
      * Generate the files
      */
-    public void generate(){
+    public void generateBean(){
         // Loop over all the files
         for (int i = 0; i < files.size(); i++){
-            this.writeFile(this.xmlParser.getFileConfigs(i));
+            this.writeBeanFile(this.xmlParser.getFileConfigs(i));
         }
     }
 
     /**
-     * Parse the XML files
+     * Find the IhmLib source path
+     * @param projectSourcePaths All the source paths of Pops project given by the configuration file
+     *                           or configuration of the IDE
+     * @return The IHMLib source path
      */
-    private void writeFile(BeanFileConfig config){
+    private String getIhmSrcPath(String projectSourcePaths) {
+        StringTokenizer tokenizer = new StringTokenizer(projectSourcePaths, GeneratorCst.PROPERTY_TOKENIZER_DELIMITER);
+        String ihmSrcPath = "";
+        while (tokenizer.hasMoreElements()){
+            String token = tokenizer.nextToken();
+            if (token.contains(GeneratorCst.BEAN_IHM_PATH_PREFIX)) {
+                ihmSrcPath = token;
+                break;
+            }
+        }
+        return ihmSrcPath;
+    }
 
-        // Create a new file
+    /**
+     * Parse the XML files
+     * @param config The bean file config used to build the java class
+     */
+    private void writeBeanFile(BeanFileConfig config){
+
         try {
+            // Create a new file
             File file = new File(config.getFilePath());
             boolean fileExists = file.exists();
             boolean fileDeleted = true;
@@ -150,7 +177,7 @@ public class Generator {
                 fw.write(GeneratorCst.BEAN_SKIP_LINE);
 
                 // Write Attributes part
-                this.writeAttributesPart(fw, config);
+                this.writeBeanAttributesPart(fw, config);
 
                 // Write ctor part
                 this.writeCtorPart(fw, config);
@@ -182,36 +209,40 @@ public class Generator {
      * @param config The config holding the properties
      * @throws IOException Throws this exception when fw could not write in the file
      */
-    private void writeAttributesPart(FileWriter fw, BeanFileConfig config) throws IOException{
+    private void writeBeanAttributesPart(FileWriter fw, BeanFileConfig config) throws IOException{
         // Header
         fw.write(GeneratorCst.BEAN_PROPERTIES_HEADER);
         fw.write(GeneratorCst.BEAN_SKIP_LINE);
 
+        // Bean type id
+        String beanTypeId = config.getFilename().substring(0, config.getFilename().indexOf(GeneratorCst.BEAN_BEAN));
+        this.writeStaticAttribute(fw, "beanTypeId", "string", beanTypeId);
+        fw.write(GeneratorCst.BEAN_SKIP_LINE);
+
         // Loop over all properties
         for (int i = 0;  i < config.getNbProperties(); i++){
-            String propertyStr = config.getPropertiesAttributes(i);
-            String[] fields = this.retrievePropertyFields(propertyStr);
+            // Retrieve property
+            HashMap<String, String> property = config.getProperties(i);
 
-            // Mandatory fields
             // Name
-            String name = fields[0];
+            String name = property.get(GeneratorCst.PROPERTY_NAME);
             // Type
-            String type = fields[1];
+            String type = property.get(GeneratorCst.PROPERTY_TYPE);
             // Default value
-            String defaultValueStr = fields[2];
+            String defaultValueStr = property.get(GeneratorCst.PROPERTY_DEFAULT);
 
             // Write attributes
             // Property class
             fw.write(GeneratorCst.BEAN_DECLARATION_INDENTATION
                     + GeneratorCst.BEAN_PRIVATE
                     + ' '
-                    + GeneratorCst.PROPERTY
+                    + GeneratorCst.PROPERTY + this.decorateParam(StrCst.PARAMETER, type)
                     + ' '
                     + name
                     + GeneratorCst.BEAN_END_LINE);
             fw.write(GeneratorCst.BEAN_SKIP_LINE);
             // Default value
-            this.writeTypedAttribute(fw, name, type, defaultValueStr);
+            this.writeTypedAttribute(fw, name, GeneratorCst.PROPERTY_DEFAULT, type, defaultValueStr);
             fw.write(GeneratorCst.BEAN_SKIP_LINE);
         }
     }
@@ -225,7 +256,6 @@ public class Generator {
      * @throws IOException The exception is thrown if the file write could not write a line
      */
     private void writeTypedAttribute(FileWriter fw, String name, String type, String defaultValueStr) throws IOException{
-
         // Initialize line
         String line = GeneratorCst.BEAN_DECLARATION_INDENTATION
                 + GeneratorCst.BEAN_PRIVATE
@@ -246,11 +276,66 @@ public class Generator {
 
         // Continue
         line += ' '
-              + name + GeneratorCst.PROPERTY_DEFAULT
-              + " = ";
+                + name
+                + " = ";
 
         // Build default value
-        line += decorateParam(type, defaultValueStr);
+        line += this.decorateParam(type, defaultValueStr);
+
+        fw.write(line
+                + GeneratorCst.BEAN_END_LINE);
+        fw.write(GeneratorCst.BEAN_SKIP_LINE);
+    }
+
+    /**
+     * Write a typed attribute
+     * @param fw The file writer
+     * @param name The name of the attribute
+     * @param suffix The suffix to add to the name
+     * @param type The type of the attribute
+     * @param defaultValueStr The default value of the attribute in a string format
+     * @throws IOException The exception is thrown if the file write could not write a line
+     */
+    private void writeTypedAttribute(FileWriter fw, String name, String suffix, String type, String defaultValueStr) throws IOException{
+        this.writeTypedAttribute(fw, name + suffix, type, defaultValueStr);
+    }
+
+    /**
+     * Write a typed attribute
+     * @param fw The file writer
+     * @param name The name of the attribute
+     * @param type The type of the attribute
+     * @param defaultValueStr The default value of the attribute in a string format
+     * @throws IOException The exception is thrown if the file write could not write a line
+     */
+    private void writeStaticAttribute(FileWriter fw, String name, String type, String defaultValueStr) throws IOException{
+        // Initialize line
+        String line = GeneratorCst.BEAN_DECLARATION_INDENTATION
+                + GeneratorCst.BEAN_PUBLIC
+                + ' '
+                + "final static"
+                + ' ';
+
+        // Build type
+        switch (type.toLowerCase()){
+            case "string":
+                line += StrCst.STRING;
+                break;
+            case "double":
+                line += StrCst.DOUBLE;
+                break;
+            case "boolean":
+                line += StrCst.BOOLEAN;
+                break;
+        }
+
+        // Continue
+        line += ' '
+                + name
+                + " = ";
+
+        // Build default value
+        line += this.decorateParam(type, defaultValueStr);
 
         fw.write(line
                 + GeneratorCst.BEAN_END_LINE);
@@ -282,46 +367,49 @@ public class Generator {
 
         // Call parent ctor
         fw.write(GeneratorCst.BEAN_CORPUS_INDENTATION
-                + GeneratorCst.BEAN_SUPER_CTOR);
+                + GeneratorCst.BEAN_SUPER_CTOR
+                + GeneratorCst.BEAN_METHOD_OPENING_BRACKET
+                + "beanTypeId"
+                + GeneratorCst.BEAN_METHOD_CLOSING_BRACKET
+                + GeneratorCst.BEAN_END_LINE);
         fw.write(GeneratorCst.BEAN_SKIP_LINE);
 
         // Loop over all properties
         for (int i = 0;  i < config.getNbProperties(); i++){
-            String propertyStr = config.getPropertiesAttributes(i);
-            String[] fields = this.retrievePropertyFields(propertyStr);
+            // Retrieve property
+            HashMap<String, String> property = config.getProperties(i);
 
-            // Mandatory fields
             // Name
-            String name = fields[0];
+            String name = property.get(GeneratorCst.PROPERTY_NAME);
             // Type
-            String type = fields[1];
+            String type = property.get(GeneratorCst.PROPERTY_TYPE);
             // Default value
-            String defaultValueStr = fields[2];
+            String defaultValueStr = property.get(GeneratorCst.PROPERTY_DEFAULT);
+            // Is computed
+            String isComputedStr = property.get(GeneratorCst.PROPERTY_IS_COMPUTED);
+            // Is internal
+            String isInternalStr = property.get(GeneratorCst.PROPERTY_IS_INTERNAL);
 
-            // Property class
             String propertyBuilderLine = GeneratorCst.BEAN_CORPUS_INDENTATION
                     + GeneratorCst.BEAN_THIS_DOT
                     + name
                     + " = "
-                    + GeneratorCst.PROPERTY_BUILDER_DECLARATION
-                    + GeneratorCst.PROPERTY_BUILDER_WITH_NAME
-                    + GeneratorCst.BEAN_METHOD_OPENING_BRACKET + decorateParam(StrCst.STRING, name) + GeneratorCst.BEAN_METHOD_CLOSING_BRACKET
-                    + GeneratorCst.PROPERTY_BUILDER_WITH_TYPE
-                    + GeneratorCst.BEAN_METHOD_OPENING_BRACKET + decorateParam(StrCst.STRING, type) + GeneratorCst.BEAN_METHOD_CLOSING_BRACKET
-                    + GeneratorCst.PROPERTY_BUILDER_WITH_DEFAULT_VALUE
-                    + GeneratorCst.BEAN_METHOD_OPENING_BRACKET + decorateParam(type, defaultValueStr) + GeneratorCst.BEAN_METHOD_CLOSING_BRACKET
-                    + GeneratorCst.PROPERTY_BUILDER_BUILD
+                    + GeneratorCst.PROPERTY_CREATE_PROPERTY_DECLARATION
+                    + GeneratorCst.BEAN_METHOD_OPENING_BRACKET
+                    + this.decorateParam(StrCst.STRING, name) + GeneratorCst.BEAN_COMMA
+                    + name + GeneratorCst.PROPERTY_DEFAULT + GeneratorCst.BEAN_COMMA
+                    + this.decorateParam(StrCst.BOOLEAN, isComputedStr) + GeneratorCst.BEAN_COMMA
+                    + this.decorateParam(StrCst.BOOLEAN, isInternalStr)
+                    + GeneratorCst.BEAN_METHOD_CLOSING_BRACKET
                     + GeneratorCst.BEAN_END_LINE
                     + GeneratorCst.BEAN_SKIP_LINE;
             fw.write(propertyBuilderLine);
-
         }
 
         // End ctor
         fw.write(GeneratorCst.BEAN_DECLARATION_INDENTATION + GeneratorCst.BEAN_CLOSING_BRACKET);
         fw.write(GeneratorCst.BEAN_SKIP_LINE);
         fw.write(GeneratorCst.BEAN_SKIP_LINE);
-
     }
 
     /**
@@ -337,16 +425,15 @@ public class Generator {
 
         // Loop over all properties
         for (int i = 0;  i < config.getNbProperties(); i++){
-            String propertyStr = config.getPropertiesAttributes(i);
-            String[] fields = this.retrievePropertyFields(propertyStr);
+            // Retrieve property
+            HashMap<String, String> property = config.getProperties(i);
 
-            // Mandatory fields
             // Name
-            String name = fields[0];
+            String name = property.get(GeneratorCst.PROPERTY_NAME);
             // Type
-            String type = fields[1];
+            String type = property.get(GeneratorCst.PROPERTY_TYPE);
             // Default value
-            String defaultValueStr = fields[2];
+            String defaultValueStr = property.get(GeneratorCst.PROPERTY_DEFAULT);
 
             // Method declaration
             String declaration = GeneratorCst.BEAN_DECLARATION_INDENTATION
@@ -363,9 +450,6 @@ public class Generator {
             String getterLine = GeneratorCst.BEAN_CORPUS_INDENTATION
                     + GeneratorCst.BEAN_RETURN
                     + ' '
-                    + GeneratorCst.BEAN_METHOD_OPENING_BRACKET
-                    + type
-                    + GeneratorCst.BEAN_METHOD_CLOSING_BRACKET
                     + GeneratorCst.BEAN_THIS_DOT
                     + name
                     + GeneratorCst.BEAN_GET_VALUE;
@@ -392,16 +476,14 @@ public class Generator {
 
         // Loop over all properties
         for (int i = 0;  i < config.getNbProperties(); i++){
-            String propertyStr = config.getPropertiesAttributes(i);
-            String[] fields = this.retrievePropertyFields(propertyStr);
+            // Retrieve property
+            HashMap<String, String> property = config.getProperties(i);
 
             // Mandatory fields
             // Name
-            String name = fields[0];
+            String name = property.get("Name");
             // Type
-            String type = fields[1];
-            // Default value
-            String defaultValueStr = fields[2];
+            String type = property.get("Type");
 
             // Method declaration
             String declaration = GeneratorCst.BEAN_DECLARATION_INDENTATION
@@ -444,31 +526,23 @@ public class Generator {
      *
      *****************************************/
     /**
-     * Retrieve the property fields in a string array
-     * @param propertyStr The property fields parsed by the xml parser and found in the config
-     * @return The array containing all the property's fields in a string format
+     * Add stuff around param values to fit
+     * java language
+     * @param type The type of the parameter
+     * @param param The parameter to decorate
+     * @return The decorated parameter
      */
-    private String[] retrievePropertyFields(String propertyStr) {
-        // Separate the fields
-        StringTokenizer tokenizer = new StringTokenizer(propertyStr, GeneratorCst.PROPERTY_TOKENIZER_DELIMITER);
-        int index = 0;
-        String[] res = new String[tokenizer.countTokens()];
-        while (tokenizer.hasMoreElements()) {
-            res[index] = (String) tokenizer.nextElement();
-            index++;
-        }
-        return res;
-    }
-
-    public String decorateParam(String type, String param){
-
+    private String decorateParam(String type, String param){
         String res = "";
         switch (type.toLowerCase()) {
-            case "string":
+            case StrCst.STRING_LWR:
                 res += "\"" + param + "\"";
                 break;
-            case "double":
+            case StrCst.DOUBLE_LWR:
                 res += param + "d";
+                break;
+            case StrCst.PARAMETER:
+                res += "<" + param.substring(0,1).toUpperCase() + param.substring(1) + ">";
                 break;
             default:
                 res += param;
@@ -483,6 +557,9 @@ public class Generator {
      * Getter
      *
      *****************************************/
+    /**
+     * @return The instance of the generator
+     */
     public static Generator getInstance() {
         return instance;
     }

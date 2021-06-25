@@ -19,6 +19,7 @@
  ******************************************************************************/
 package fr.pops.customnodes.neuralnetworks.component.component;
 
+import fr.pops.beans.test.TestBean;
 import fr.pops.cst.EnumCst;
 import fr.pops.customnodes.plot.LinePlot;
 
@@ -41,6 +42,6 @@ public class ConvolutionLayerComponent extends Component {
      * Standard ctor
      */
     public ConvolutionLayerComponent(){
-        super(EnumCst.ComponentTypes.LAYER_CONVOLUTION);
+        super(EnumCst.ComponentTypes.LAYER_CONVOLUTION, new TestBean());
     }
 }

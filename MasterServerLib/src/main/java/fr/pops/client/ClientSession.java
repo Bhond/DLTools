@@ -117,6 +117,7 @@ public class ClientSession {
             // While requests are still in the buffer
             while (hasRemaining) {
                 Request request = this.requestFactory.getRequest(this.buffer.array());
+                System.out.println("Request received: " + request.getType());
                 if (request != null) {
                     requests.add(request);
                     // Update position to read next request if there is any

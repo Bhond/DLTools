@@ -2,26 +2,22 @@
 <Group name="root">
     <Entry name="Parent">Bean</Entry>
     <Group name="Properties">
-        <Entry name="Property">
+        <Group name="Property">
             <Entry name="Name">name</Entry>
             <Entry name="Type">String</Entry>
             <Entry name="Default">Test</Entry>
-            <Entry name="isComputed">false</Entry>
-            <Entry name="isInternal">false</Entry>
-        </Entry>
-        <Entry name="Property">
+        </Group>
+        <Group name="Property">
             <Entry name="Name">speed</Entry>
             <Entry name="Type">double</Entry>
             <Entry name="Default">0.5</Entry>
-            <Entry name="isComputed">false</Entry>
-            <Entry name="isInternal">false</Entry>
-        </Entry>
-        <Entry name="Property">
+            <Entry name="isInternal">true</Entry>
+        </Group>
+        <Group name="Property">
             <Entry name="Name">isRunning</Entry>
             <Entry name="Type">boolean</Entry>
             <Entry name="Default">true</Entry>
-            <Entry name="isComputed">false</Entry>
-            <Entry name="isInternal">false</Entry>
-        </Entry>
+            <Entry name="isComputed">true</Entry>
+        </Group>
     </Group>
 </Group>

@@ -18,7 +18,7 @@
  * Date: 24/02/2021
  *
  ******************************************************************************/
-package fr.pops.models;
+package fr.pops.beans.beanmodels;
 
 import fr.pops.beans.bean.Bean;
 

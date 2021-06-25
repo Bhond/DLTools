@@ -5,5 +5,4 @@ module IhmLib {
     requires org.json;
 
     exports fr.pops.ihmmain;
-
 }

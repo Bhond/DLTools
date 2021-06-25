@@ -19,14 +19,13 @@
  ******************************************************************************/
 package fr.pops.customnodes.neuralnetworks.component.component;
 
+import fr.pops.beans.bean.Bean;
 import fr.pops.cst.DblCst;
 import fr.pops.cst.EnumCst;
 import fr.pops.cst.StrCst;
-import fr.pops.customnodes.beanproperties.*;
+import fr.pops.customnodes.beanproperties.BeanProperties;
 import fr.pops.customnodes.neuralnetworks.component.link.Link;
 import fr.pops.customnodes.neuralnetworks.component.link.LinkHandle;
-import fr.pops.math.PopsMath;
-import fr.pops.math.ndarray.Shape;
 import fr.pops.utils.Utils;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
@@ -48,7 +47,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class Component extends AnchorPane {
+public abstract class Component<T extends Bean> extends AnchorPane {
 
     /*****************************************
      *
@@ -81,10 +80,10 @@ public abstract class Component extends AnchorPane {
     private AnchorPane paneParent;
 
     // Properties
-    private BeanProperties beanProperties;
+    protected BeanProperties beanProperties;
 
-    // Resume
-    private Label contraction;
+    // Bean
+    private T bean;
 
     /*****************************************
      *
@@ -95,9 +94,10 @@ public abstract class Component extends AnchorPane {
      * Standard ctor
      * Nothing to be done
      */
-    protected Component(EnumCst.ComponentTypes type){
+    protected Component(EnumCst.ComponentTypes type, T bean){
         // Fields
         this.type = type;
+        this.bean = bean;
 
         // Initialisation
         this.onInit();
@@ -118,9 +118,6 @@ public abstract class Component extends AnchorPane {
         // Root
         this.buildRoot();
 
-        // Contraction
-        this.buildContraction();
-
         // Link
         this.buildLink();
 
@@ -135,20 +132,16 @@ public abstract class Component extends AnchorPane {
 
         // Build hierarchy
         this.buildHierarchy();
-    }
 
-    /**
-     * Build the contraction of the component
-     */
-    private void buildContraction() {
-        this.contraction = new Label(this.type.toString());
-        this.contraction.setId(this.getId());
+        // Build bean properties
+        this.buildProperties();
     }
 
     /**
      * Build the root
      */
     private void buildRoot() {
+
         // Root box
         this.rootBox = new VBox();
         AnchorPane.setTopAnchor(this.rootBox, DblCst.SIZE_ANCHOR_ZERO);
@@ -165,15 +158,6 @@ public abstract class Component extends AnchorPane {
 
         // TMP
         this.beanProperties = new BeanProperties(this.type.toString());
-        int toto = (int) PopsMath.rand(0, 4);
-        PropertyNode<?>[] nodes = new PropertyNode<?>[]{new BooleanPropertyNode("boolean", true, false),
-                new DoublePropertyNode("double", 8163.13507d, true),
-                new StringPropertyNode("string", "toto", true),
-                new ShapePropertyNode("shape", new Shape.ShapeBuilder().withShape(3, 4, 2).build(), false)};
-        for (int i = 0; i < toto; i++){
-            this.beanProperties.addNodes(nodes[i]);
-        }
-
     }
 
     /**
@@ -243,6 +227,13 @@ public abstract class Component extends AnchorPane {
 
         // Root
         this.getChildren().add(this.rootBox);
+    }
+
+    /**
+     * Create the bean properties
+     */
+    private void buildProperties(){
+        this.beanProperties.build(this.bean);
     }
 
     /*****************************************
@@ -334,6 +325,9 @@ public abstract class Component extends AnchorPane {
         this.removeLinkAndNode();
     }
 
+    /**
+     * Remove link and node when hitting the close button
+     */
     private void removeLinkAndNode() {
         // Need to notify all the the node that are linked to this one that the link has been removed
         List<String> idsToRemove = new LinkedList<>();
@@ -577,14 +571,6 @@ public abstract class Component extends AnchorPane {
      */
     public EnumCst.ComponentTypes getType() {
         return this.type;
-    }
-
-    /**
-     * @return The contraction of the component
-     *         to be displayed in a listview
-     */
-    public Label getContraction() {
-        return this.contraction;
     }
 
     /**

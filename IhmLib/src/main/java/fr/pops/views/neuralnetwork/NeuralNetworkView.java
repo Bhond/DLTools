@@ -24,26 +24,22 @@ import fr.pops.controllers.viewcontrollers.NeuralNetworkController;
 import fr.pops.cst.EnumCst;
 import fr.pops.cst.StrCst;
 import fr.pops.customnodes.beanproperties.BeanProperties;
-import fr.pops.customnodes.neuralnetworks.component.component.Component;
-import fr.pops.customnodes.neuralnetworks.component.component.ComponentFactory;
-import fr.pops.customnodes.neuralnetworks.component.component.ComponentIcon;
-import fr.pops.customnodes.neuralnetworks.component.component.DragContainer;
+import fr.pops.customnodes.neuralnetworks.component.component.*;
 import fr.pops.customnodes.neuralnetworks.component.link.Link;
 import fr.pops.math.ndarray.BaseNDArray;
 import fr.pops.utils.Utils;
 import fr.pops.views.base.BaseView;
-import javafx.collections.ListChangeListener;
-import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Control;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -77,8 +73,9 @@ public class NeuralNetworkView extends BaseView<NeuralNetworkController> {
 
     // Right
     private VBox rightBox;
-    private ListView<Component> componentContainerListView;
-    private FilteredList<Node> componentContainer;
+    private ComponentContainer componentContainer;
+//    private ListView<Component> componentContainerListView;
+    //private FilteredList<Node> componentContainer;
     private BeanProperties componentProperties;
 
     /*****************************************
@@ -205,44 +202,7 @@ public class NeuralNetworkView extends BaseView<NeuralNetworkController> {
         this.rightBox.setPrefWidth(300);
 
         // Component container
-        this.componentContainer = new FilteredList<>(this.centerPane.getChildren(), (child) -> child instanceof Component);
-        this.componentContainer.addListener((ListChangeListener<? super Node>) change -> {
-            while (change.next()){
-                //If items are removed
-                for (Node n : change.getRemoved()) {
-                    this.componentContainerListView.getItems().remove(n);
-                }
-                //If items are added
-                for (Node n : change.getAddedSubList()) {
-                    this.componentContainerListView.getItems().add((Component) n);
-                }
-            }
-        });
-        // Component container list view
-        this.componentContainerListView = new ListView<>();
-        this.componentContainerListView.getStyleClass().add(StrCst.STYLE_CLASS_LISTVIEW);
-        this.componentContainerListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        this.componentContainerListView.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
-            if (!observableValue.getValue()){
-                this.componentContainerListView.getSelectionModel().clearSelection();
-            }
-        });
-        this.componentContainerListView.setCellFactory(new Callback<>() {
-            @Override
-            public ListCell<Component> call(ListView<Component> nodeListView) {
-                return new ListCell<>() {
-                    @Override
-                    protected void updateItem(Component node, boolean isEmpty) {
-                        super.updateItem(node, isEmpty);
-                        if (node != null) {
-                            setText(node.getType().toString());
-                        } else {
-                            setText("");
-                        }
-                    }
-                };
-            }
-        });
+        this.componentContainer = new ComponentContainer(this.centerPane);
 
         // Settings
         this.componentProperties = new BeanProperties("");
@@ -250,11 +210,11 @@ public class NeuralNetworkView extends BaseView<NeuralNetworkController> {
 
         // Setup layout
         this.rightBox.heightProperty().addListener(observable -> {
-            this.componentContainerListView.setPrefHeight(this.rightBox.getPrefHeight() / 2);
+            this.componentContainer.setPrefHeight(this.rightBox.getPrefHeight() / 2);
             this.componentProperties.setPrefHeight(this.rightBox.getPrefHeight() / 2);
         });
-        this.rightBox.widthProperty().addListener(observable -> this.componentContainerListView.setPrefWidth(this.rightBox.getPrefWidth()));
-        VBox.setVgrow(this.componentContainerListView, Priority.ALWAYS);
+        this.rightBox.widthProperty().addListener(observable -> this.componentContainer.setPrefWidth(this.rightBox.getPrefWidth()));
+        VBox.setVgrow(this.componentContainer, Priority.ALWAYS);
     }
 
     /**
@@ -314,7 +274,7 @@ public class NeuralNetworkView extends BaseView<NeuralNetworkController> {
         this.componentLibrary.getTabs().addAll(this.inputsTab, this.layersTab);
 
         // Right
-        this.rightBox.getChildren().addAll(this.componentContainerListView, this.componentProperties);
+        this.rightBox.getChildren().addAll(this.componentContainer, this.componentProperties);
 
         // Root
         ((BorderPane) this.root).setCenter(this.centerPane);
@@ -350,19 +310,12 @@ public class NeuralNetworkView extends BaseView<NeuralNetworkController> {
             if (container != null) {
                 if (container.getValue(StrCst.DRAG_CONTAINER_SCENE_COORDS) != null) {
                     Component component = ComponentFactory.get(this.dragOverIcon.getType());
+
+                    //Client.getInstance().send(new CreateBeanRequest(component.getId(), TestBean.beanTypeId));
+
                     if (component != null) {
-                        component.focusedProperty().addListener((observableValue, aFocused, isFocused) -> {
-                            if (isFocused){
-                                this.displayBeanProperties(component.getBeanProperties());
-                                if (!this.componentProperties.isVisible()) this.componentProperties.setVisible(true);
-                            } else {
-                                this.componentProperties.setVisible(false);
-                            }
-                        });
-                        this.centerPane.getChildren().add(component);
                         Point2D cursorPoint = container.getValue(StrCst.DRAG_CONTAINER_SCENE_COORDS);
-                        component.relocateToPoint(new Point2D(cursorPoint.getX() - 32, cursorPoint.getY() - 32));
-                        component.requestFocus();
+                        this.componentContainer.manageComponent(component, cursorPoint);
                     }
                 }
             }
