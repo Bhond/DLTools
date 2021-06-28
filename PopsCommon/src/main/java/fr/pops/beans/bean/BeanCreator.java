@@ -25,8 +25,18 @@ import java.lang.reflect.InvocationTargetException;
 
 public class BeanCreator {
 
+    /*****************************************
+     *
+     * Attributes
+     *
+     *****************************************/
     private static final BeanCreator instance = new BeanCreator();
 
+    /*****************************************
+     *
+     * Ctor
+     *
+     *****************************************/
     /**
      * Standard ctor
      * Nothing to be done
@@ -35,6 +45,11 @@ public class BeanCreator {
         // Nothing to be done
     }
 
+    /*****************************************
+     *
+     * Methods
+     *
+     *****************************************/
     /**
      * Create a bean by reflection
      * @param beanTypeId The bean type id written automatically by the generator in the bean's
@@ -56,14 +71,19 @@ public class BeanCreator {
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         } catch (ClassCastException e){
-            System.out.println("Error raised when trying to cast the bean: " + fullName + ". Check that the model's class implementation respects " +
-                    "the rules specified in the description of the method Bean::FindModelAndInstantiateItIfExists.");
+            System.out.println("Error raised when trying to cast the bean: " + fullName + ". Check that the bean's class implementation respects " +
+                    "the rules specified in the description of the method Bean::createBeanByReflection.");
         } catch (ClassNotFoundException ignored) {
            System.out.println("Bean type: " + fullName + " has not been found. Check generated files.");
         }
         return bean;
     }
 
+    /*****************************************
+     *
+     * Getter
+     *
+     *****************************************/
     /**
      * @return The instance of the bean creator class
      */

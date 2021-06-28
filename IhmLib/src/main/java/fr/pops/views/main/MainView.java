@@ -68,7 +68,12 @@ public class MainView extends BaseView<MainViewController> {
     // Menu bar
     private HBox menuBarLayout;
     private MenuBar menuBar;
+    private Menu fileMenu;
     private Menu viewsMenu;
+
+    // File menu
+    private MenuItem loadMenuItem;
+    private MenuItem saveMenuItem;
 
     // Views menu
     private MenuItem serverViewMenuItem;
@@ -118,8 +123,8 @@ public class MainView extends BaseView<MainViewController> {
      * Configure general parameters
      */
     private void configureGeneralParameters(){
-        // Fields name
-        this.fieldsName = "subviews";
+        // Fields name to record the view
+        this.fieldsName = StrCst.JSON_KEY_SUBVIEWS;
     }
 
     /**
@@ -152,10 +157,11 @@ public class MainView extends BaseView<MainViewController> {
     @Override
     protected void buildHierarchy() {
         // Build hierarchy
+        this.fileMenu.getItems().addAll(this.loadMenuItem, this.saveMenuItem);
         this.viewsMenu.getItems().addAll(this.serverViewMenuItem,
                 this.stockViewMenuItem,
                 this.neuralNetworkViewMenuItem);
-        this.menuBar.getMenus().addAll(this.viewsMenu);
+        this.menuBar.getMenus().addAll(this.fileMenu, this.viewsMenu);
         this.menuBarLayout.getChildren().add(this.menuBar);
 
         // Add buttons to the menu bar
@@ -241,11 +247,20 @@ public class MainView extends BaseView<MainViewController> {
         this.menuBar.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR);
 
         // Menus
+        this.fileMenu = new Menu(StrCst.MENUBAR_LABEL_FILE);
+        this.fileMenu.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR_MENU);
         this.viewsMenu = new Menu(StrCst.MENUBAR_LABEL_VIEWS);
         this.viewsMenu.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR_MENU);
 
         // Menu items
-        // Tool menu
+        // File menu
+        this.loadMenuItem = new MenuItem(StrCst.NAME_LOAD);
+        this.loadMenuItem.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR_MENU_ITEM);
+        this.saveMenuItem = new MenuItem(StrCst.NAME_SAVE);
+        this.saveMenuItem.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR_MENU_ITEM);
+
+
+        // Views menu
         this.serverViewMenuItem = new MenuItem(StrCst.NAME_SERVER_VIEW);
         this.serverViewMenuItem.getStyleClass().add(StrCst.STYLE_CLASS_MENUBAR_MENU_ITEM);
         this.serverViewMenuItem.setOnAction(a -> this.controller.onServerViewMenuItemClicked(a));

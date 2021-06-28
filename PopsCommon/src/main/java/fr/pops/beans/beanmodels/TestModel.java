@@ -48,7 +48,7 @@ public class TestModel extends BeanModel<TestBean> {
     @Override
     public void update(double dt){
 
-        bean.setSpeed(bean.getSpeed() + .01d * dt);
+        bean.setSpeed(bean.getSpeed() + .1d);
 
     }
 

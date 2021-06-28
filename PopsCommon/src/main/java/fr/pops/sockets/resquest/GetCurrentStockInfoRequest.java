@@ -61,14 +61,6 @@ public class GetCurrentStockInfoRequest extends Request{
     /**
      * Ctor used to create a request when receiving one
      * @param rawParams The raw parameters to decode
-     */
-    public GetCurrentStockInfoRequest(byte[] rawParams) {
-        super(EnumCst.RequestTypes.GET_CURRENT_STOCK_INFO, rawParams);
-    }
-
-    /**
-     * Ctor used to create a request when receiving one
-     * @param rawParams The raw parameters to decode
      * @param length The request's length
      */
     public GetCurrentStockInfoRequest(byte[] rawParams, int length) {

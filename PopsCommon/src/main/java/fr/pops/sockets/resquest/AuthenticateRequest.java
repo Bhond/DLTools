@@ -60,14 +60,6 @@ public class AuthenticateRequest extends Request{
      * Ctor used to create a request when receiving one
      * @param rawParams The raw parameters to decode
      */
-    public AuthenticateRequest(byte[] rawParams) {
-        super(EnumCst.RequestTypes.AUTHENTICATE, rawParams);
-    }
-
-    /**
-     * Ctor used to create a request when receiving one
-     * @param rawParams The raw parameters to decode
-     */
     public AuthenticateRequest(byte[] rawParams, int length) {
         super(EnumCst.RequestTypes.AUTHENTICATE, rawParams, length);
     }

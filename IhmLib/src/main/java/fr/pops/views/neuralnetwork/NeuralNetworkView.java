@@ -20,15 +20,16 @@
  ******************************************************************************/
 package fr.pops.views.neuralnetwork;
 
+import fr.pops.beans.bean.BeanManager;
 import fr.pops.controllers.viewcontrollers.NeuralNetworkController;
 import fr.pops.cst.EnumCst;
 import fr.pops.cst.StrCst;
 import fr.pops.customnodes.beanproperties.BeanProperties;
 import fr.pops.customnodes.neuralnetworks.component.component.*;
 import fr.pops.customnodes.neuralnetworks.component.link.Link;
-import fr.pops.math.ndarray.BaseNDArray;
 import fr.pops.utils.Utils;
 import fr.pops.views.base.BaseView;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -42,7 +43,6 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -130,6 +130,8 @@ public class NeuralNetworkView extends BaseView<NeuralNetworkController> {
 
         // Build controls
         this.buildControls();
+
+        BeanManager.getInstance().setOnPropertyUpdated((p) -> System.out.println(p.getName() + " updated"));
     }
 
     /**
@@ -143,7 +145,6 @@ public class NeuralNetworkView extends BaseView<NeuralNetworkController> {
 
         // Drag icon
         this.dragOverIcon = new ComponentIcon();
-        this.dragOverIcon.setVisible(false);
     }
 
     /**
@@ -206,15 +207,18 @@ public class NeuralNetworkView extends BaseView<NeuralNetworkController> {
 
         // Settings
         this.componentProperties = new BeanProperties("");
-        this.componentProperties.setVisible(false);
 
         // Setup layout
         this.rightBox.heightProperty().addListener(observable -> {
             this.componentContainer.setPrefHeight(this.rightBox.getPrefHeight() / 2);
             this.componentProperties.setPrefHeight(this.rightBox.getPrefHeight() / 2);
         });
-        this.rightBox.widthProperty().addListener(observable -> this.componentContainer.setPrefWidth(this.rightBox.getPrefWidth()));
+        this.rightBox.widthProperty().addListener(observable -> {
+            this.componentContainer.setPrefWidth(this.rightBox.getPrefWidth());
+            this.componentProperties.setPrefWidth(this.rightBox.getPrefWidth());
+        });
         VBox.setVgrow(this.componentContainer, Priority.ALWAYS);
+        VBox.setVgrow(this.componentProperties, Priority.ALWAYS);
     }
 
     /**
@@ -306,15 +310,18 @@ public class NeuralNetworkView extends BaseView<NeuralNetworkController> {
             this.root.removeEventHandler(DragEvent.DRAG_OVER, this::onDragOverRoot);
             this.dragOverIcon.setVisible(false);
 
+            // Retrieve data from container
             DragContainer container = (DragContainer) dragEvent.getDragboard().getContent(DragContainer.AddNode);
             if (container != null) {
                 if (container.getValue(StrCst.DRAG_CONTAINER_SCENE_COORDS) != null) {
-                    Component component = ComponentFactory.get(this.dragOverIcon.getType());
-
-                    //Client.getInstance().send(new CreateBeanRequest(component.getId(), TestBean.beanTypeId));
-
+                    Component<?> component = ComponentFactory.get(this.dragOverIcon.getType());
                     if (component != null) {
                         Point2D cursorPoint = container.getValue(StrCst.DRAG_CONTAINER_SCENE_COORDS);
+                        component.focusedProperty().addListener((observableValue, aFocused, isFocused) -> {
+                            if (isFocused){
+                                this.componentProperties.reset(component.getBeanProperties());
+                            }
+                        });
                         this.componentContainer.manageComponent(component, cursorPoint);
                     }
                 }
@@ -326,19 +333,19 @@ public class NeuralNetworkView extends BaseView<NeuralNetworkController> {
                 String sourceId = container.getValue(StrCst.DRAG_CONTAINER_SOURCE);
                 String targetId = container.getValue(StrCst.DRAG_CONTAINER_TARGET);
 
+                // If source and target are valid
                 if (sourceId != null && targetId != null) {
 
+                    // Add our link at the top of the rendering order so it's rendered first
                     Link link = new Link();
-
-                    //add our link at the top of the rendering order so it's rendered first
                     this.centerPane.getChildren().add(0, link);
 
                     // Retrieve source and target
-                    Component source = null;
-                    Component target = null;
+                    Component<?> source = null;
+                    Component<?> target = null;
                     for (Node n : this.centerPane.getChildren()) {
                         if (n instanceof Component){
-                            Component component = ((Component) n);
+                            Component<?> component = ((Component<?>) n);
 
                             if (component.getLeftLinkHandle().getId() == null && component.getRightLinkHandle().getId() == null) continue;
 
@@ -386,7 +393,7 @@ public class NeuralNetworkView extends BaseView<NeuralNetworkController> {
 
     /**
      * Handle icon dragged over onto the center pane
-     * @param dragEvent
+     * @param dragEvent The associated drag event
      */
     private void onDragOverCenter(DragEvent dragEvent) {
         // Allow any transfer mode
@@ -415,41 +422,30 @@ public class NeuralNetworkView extends BaseView<NeuralNetworkController> {
         dragEvent.consume();
     }
 
-    /**
-     * Reset the bean properties
-     */
-    private void displayBeanProperties(BeanProperties beanProperties){
-        this.componentProperties.reset(beanProperties);
-    }
-
     /*****************************************
      *
      * Update
      *
      *****************************************/
     /**
-     * Update the image
-     *
-     * @param label The image to display
+     * Display neural network component after bean's creation by the server
+     * @param componentId The component to display
+     * @param beanId The bean id given by the server
      */
-    public void updateLabel(int label) {
-        System.out.println("Nothing is done");
+    public void displayNeuralNetworkComponents(String componentId, int beanId){
+        Platform.runLater(() -> this.componentContainer.displayComponent(componentId, beanId));
     }
 
     /**
-     * Update the image
-     *
-     * @param image The image to display
+     * Display neural network component after bean's creation by the server
+     * @param componentId The component to display
      */
-    public void updateImage(BaseNDArray image) {
-        System.out.println("Nothing is done");
+    public void closeNeuralNetworkComponent(String componentId){
+        Platform.runLater(() -> this.componentContainer.removeComponent(componentId));
     }
 
-    /**
-     * Update the configuration
-     */
-    public void updateConfiguration(int nbLayers, HashMap<Integer, Integer> layers, double learningRate, boolean regularisationOn, double l1, double l2) {
-        System.out.println("Nothing is done");
+    public <T> void updateBeanProperty(int beanId, String propertyName, T newValue){
+        Platform.runLater(() -> this.componentContainer.updateBeanProperty(beanId, propertyName, newValue));
     }
 
     /*****************************************

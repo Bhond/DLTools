@@ -54,15 +54,6 @@ public class GetMNISTImageRequest extends Request {
     /**
      * Create a request that will be handled by the requestHandler
      * @param rawParams The raw parameters to decode
-     */
-    public GetMNISTImageRequest(byte[] rawParams) {
-        // Parent
-        super(EnumCst.RequestTypes.GET_MNIST_IMAGE, rawParams);
-    }
-
-    /**
-     * Create a request that will be handled by the requestHandler
-     * @param rawParams The raw parameters to decode
      * @param length The request's length
      */
     public GetMNISTImageRequest(byte[] rawParams, int length) {

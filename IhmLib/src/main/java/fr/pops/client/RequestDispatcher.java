@@ -22,10 +22,18 @@ package fr.pops.client;
 
 import fr.pops.controllers.controllermanager.ControllerManager;
 import fr.pops.controllers.viewcontrollers.BaseController;
-import fr.pops.controllers.viewcontrollers.NeuralNetworkController;
 import fr.pops.controllers.viewcontrollers.NetworkInfoController;
+import fr.pops.controllers.viewcontrollers.NeuralNetworkController;
 import fr.pops.controllers.viewcontrollers.StockController;
-import fr.pops.sockets.resquest.*;
+import fr.pops.sockets.resquest.GetCurrentStockInfoRequest;
+import fr.pops.sockets.resquest.GetNetworkInfoRequest;
+import fr.pops.sockets.resquest.PingRequest;
+import fr.pops.sockets.resquest.Request;
+import fr.pops.sockets.resquest.beanrequests.CreateBeanRequest;
+import fr.pops.sockets.resquest.beanrequests.DeleteBeanRequest;
+import fr.pops.sockets.resquest.beanrequests.UpdateBeanPropertyRequest;
+
+import java.util.List;
 
 public abstract class RequestDispatcher {
 
@@ -50,11 +58,14 @@ public abstract class RequestDispatcher {
             case GET_CURRENT_STOCK_INFO:
                 dispatchGetCurrentStockInfoRequest((GetCurrentStockInfoRequest) request);
                 break;
-            case GET_MNIST_IMAGE:
-                dispatchGetMNISTImageRequest((GetMNISTImageRequest) request);
+            case CREATE_BEAN:
+                dispatchCreateBeanRequest((CreateBeanRequest) request);
                 break;
-            case GET_MNIST_CONFIGURATION:
-                dispatchGetMNISTConfigurationRequest((GetMNISTConfiguration) request);
+            case DELETE_BEAN:
+                dispatchDeleteBeanRequest((DeleteBeanRequest) request);
+                break;
+            case UPDATE_BEAN_PROPERTY:
+                dispatchUpdateBeanPropertyRequest((UpdateBeanPropertyRequest<?>) request);
                 break;
         }
     }
@@ -97,30 +108,42 @@ public abstract class RequestDispatcher {
     }
 
     /**
-     * Dispatch GetMNISTImageRequest
+     * Dispatch the request
      * @param request The request to dispatch
      */
-    private static void dispatchGetMNISTImageRequest(GetMNISTImageRequest request) {
-        BaseController<?, ?> controller = ControllerManager.getInstance().getFirst(NeuralNetworkController.class);
-        if (controller != null){
-            ((NeuralNetworkController) controller).setLabel(request.getLabel());
-            ((NeuralNetworkController) controller).setImage(request.getImage());
+    private static void dispatchCreateBeanRequest(CreateBeanRequest request){
+        List<BaseController<?,?>> controllers = ControllerManager.getInstance().getAll(NeuralNetworkController.class);
+        if (controllers != null){
+            for (BaseController<?,?> controller : controllers){
+                ((NeuralNetworkController) controller).displayNeuralNetworkComponents(request.getComponentId(), request.getBeanId());
+            }
         }
     }
 
     /**
-     * Dispatch GetMNISTConfiguration
+     * Dispatch the request
      * @param request The request to dispatch
      */
-    private static void dispatchGetMNISTConfigurationRequest(GetMNISTConfiguration request) {
-        BaseController<?, ?> controller = ControllerManager.getInstance().getFirst(NeuralNetworkController.class);
-        if (controller != null){
-            ((NeuralNetworkController) controller).setConfiguration(request.getNbLayers(),
-                    request.getLayers(),
-                    request.getLearningRate(),
-                    request.isRegularisationOn(),
-                    request.getL1(),
-                    request.getL2());
+    private static void dispatchDeleteBeanRequest(DeleteBeanRequest request) {
+        List<BaseController<?,?>> controllers = ControllerManager.getInstance().getAll(NeuralNetworkController.class);
+        if (controllers != null){
+            for (BaseController<?,?> controller : controllers){
+                ((NeuralNetworkController) controller).closeNeuralNetworkComponent(request.getComponentId());
+            }
         }
     }
+
+    /**
+     * Dispatch the request
+     * @param request The request to dispatch
+     */
+    private static void dispatchUpdateBeanPropertyRequest(UpdateBeanPropertyRequest<?> request) {
+        List<BaseController<?,?>> controllers = ControllerManager.getInstance().getAll(NeuralNetworkController.class);
+        if (controllers != null){
+            for (BaseController<?,?> controller : controllers){
+                ((NeuralNetworkController) controller).updateBeanProperty(request.getBeanId(), request.getPropertyName(), request.getNewValue());
+            }
+        }
+    }
+
 }

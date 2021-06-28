@@ -36,14 +36,6 @@ public class DisconnectionRequest extends Request {
     /**
      * Ctor used to create a request when receiving one
      * @param rawParams The raw parameters to decode
-     */
-    public DisconnectionRequest(byte[] rawParams) {
-        super(EnumCst.RequestTypes.DISCONNECTION, rawParams);
-    }
-
-    /**
-     * Ctor used to create a request when receiving one
-     * @param rawParams The raw parameters to decode
      * @param length The request's length
      */
     public DisconnectionRequest(byte[] rawParams, int length) {

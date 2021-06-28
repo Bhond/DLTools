@@ -23,6 +23,8 @@ package fr.pops.sockets.resquest;
 import fr.pops.sockets.cst.EnumCst;
 import fr.pops.sockets.encodedecoder.EncoderDecoderHelper;
 import fr.pops.sockets.resquest.beanrequests.CreateBeanRequest;
+import fr.pops.sockets.resquest.beanrequests.DeleteBeanRequest;
+import fr.pops.sockets.resquest.beanrequests.UpdateBeanPropertyRequest;
 
 public class RequestFactory {
 
@@ -89,6 +91,10 @@ public class RequestFactory {
                 return new GetMNISTConfiguration(rawParams, length);
             case CREATE_BEAN:
                 return new CreateBeanRequest(rawParams, length);
+            case DELETE_BEAN:
+                return new DeleteBeanRequest(rawParams, length);
+            case UPDATE_BEAN_PROPERTY:
+                return new UpdateBeanPropertyRequest<>(rawParams, length);
             default:
                 return null;
         }

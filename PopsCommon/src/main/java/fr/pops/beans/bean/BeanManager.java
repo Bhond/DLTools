@@ -22,11 +22,14 @@ package fr.pops.beans.bean;
 
 import fr.pops.beans.beanobservable.BeanObservable;
 import fr.pops.beans.beanmodels.BeanModel;
+import fr.pops.beans.properties.Property;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unchecked")
 public final class BeanManager extends BeanObservable implements Serializable {
@@ -47,6 +50,7 @@ public final class BeanManager extends BeanObservable implements Serializable {
     // Beans
     private HashSet<Bean> beans = new HashSet<>();
     private List<BeanContainer<Bean>> containers = new LinkedList<>();
+    private Consumer<Property<?>> onPropertyUpdated;
 
     // Models
     private HashSet<BeanModel<? extends Bean>> models = new HashSet<>();
@@ -113,6 +117,11 @@ public final class BeanManager extends BeanObservable implements Serializable {
      * @param <T> The type of bean managed
      */
     public <T extends Bean> void addContainer(BeanContainer<T> container){
+        // Fill in with the already existing pertinent beans to the container
+        List<? extends Bean> pertinentBeans = this.beans.stream().filter((b) -> b.getClass() == container.getBeanClass()).collect(Collectors.toList());
+        container.addAllBean((List<T>) pertinentBeans);
+
+        // Add container to the managed ones
         this.containers.add((BeanContainer<Bean>) container);
     }
 
@@ -122,12 +131,13 @@ public final class BeanManager extends BeanObservable implements Serializable {
      *
      *****************************************/
     /**
-     * Remove a bean to the list holding all the beans
+     * Remove a bean from the list holding all the beans
      * Fires a property change on the containers which
      * listen to the  deletion of a bean
      * @param bean The bean to remove
      */
     public <T extends Bean> void removeBean(T bean){
+        // Remove bean from the managed ones
         this.beans.remove(bean);
 
         // Remove the bean to all of the containers used for this type of bean
@@ -136,6 +146,21 @@ public final class BeanManager extends BeanObservable implements Serializable {
                 container.removeBean(bean);
             }
         }
+    }
+
+    /**
+     * Remove a bean to the list holding all the beans
+     * Fires a property change on the containers which
+     * listen to the  deletion of a bean
+     * @param beanId The beanId of the bean to remove
+     */
+    public boolean removeBean(int beanId){
+        // Remove bean from the managed ones
+        List<Bean> beansToRemove = this.beans.stream().filter(((b) -> b.getId() == beanId)).collect(Collectors.toList());
+        for (Bean b : beansToRemove){
+            this.removeBean(b);
+        }
+        return beansToRemove.size() > 0;
     }
 
     /*****************************************
@@ -148,8 +173,10 @@ public final class BeanManager extends BeanObservable implements Serializable {
      * and a request should be sent to the server
      * to be displayed on the ihm if required
      */
-    public void onBeanUpdate(){
-
+    public void onPropertyUpdate(Property<?> property){
+        if (this.onPropertyUpdated != null){
+            this.onPropertyUpdated.accept(property);
+        }
     }
 
     /*****************************************
@@ -178,5 +205,18 @@ public final class BeanManager extends BeanObservable implements Serializable {
      */
     public static BeanManager getInstance() {
         return instance;
+    }
+
+    /*****************************************
+     *
+     * Setter
+     *
+     *****************************************/
+    /**
+     * Set the action to perform when a property has been updated
+     * @param onPropertyUpdated The action to perform
+     */
+    public void setOnPropertyUpdated(Consumer<Property<?>> onPropertyUpdated) {
+        this.onPropertyUpdated = onPropertyUpdated;
     }
 }

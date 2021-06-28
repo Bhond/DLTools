@@ -219,7 +219,7 @@ public class EncoderDecoderHelper {
      * of a double in the buffer starting from the cursor position
      * @return The double value parsed from the buffer
      */
-    public double decodeDouble(){
+    public Double decodeDouble(){
         return EncoderDecoder.decodeDouble(this.pull(Double.BYTES));
     }
 

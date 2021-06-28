@@ -52,15 +52,6 @@ public class PingRequest extends Request {
     /**
      * Create a request that will be handled by the requestHandler
      * @param rawParams The raw parameters to decode
-     */
-    public PingRequest(byte[] rawParams) {
-        // Parent
-        super(EnumCst.RequestTypes.PING, rawParams);
-    }
-
-    /**
-     * Create a request that will be handled by the requestHandler
-     * @param rawParams The raw parameters to decode
      * @param length The request's length
      */
     public PingRequest(byte[] rawParams, int length) {

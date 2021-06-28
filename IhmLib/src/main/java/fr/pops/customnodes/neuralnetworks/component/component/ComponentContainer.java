@@ -1,7 +1,11 @@
 package fr.pops.customnodes.neuralnetworks.component.component;
 
 import fr.pops.beans.bean.Bean;
+import fr.pops.beans.test.TestBean;
+import fr.pops.client.Client;
 import fr.pops.cst.StrCst;
+import fr.pops.customnodes.beanproperties.PropertyNode;
+import fr.pops.sockets.resquest.beanrequests.CreateBeanRequest;
 import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Point2D;
@@ -13,6 +17,8 @@ import javafx.scene.layout.Pane;
 import javafx.util.Callback;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ComponentContainer extends ListView<Component<?>> {
 
@@ -35,7 +41,7 @@ public class ComponentContainer extends ListView<Component<?>> {
         // Fields
         this.componentParent = componentParent;
         this.componentWaitingForBeanCreation = new HashMap<>();
-        this.displayedComponent = new FilteredList<>(componentParent.getChildren(), (child) -> child instanceof Component);
+        this.displayedComponent = new FilteredList<>(componentParent.getChildren(), (child) -> child instanceof Component<?>);
 
         this.displayedComponent.addListener((ListChangeListener<? super Node>) change -> {
             while (change.next()){
@@ -45,7 +51,7 @@ public class ComponentContainer extends ListView<Component<?>> {
                 }
                 //If items are added
                 for (Node n : change.getAddedSubList()) {
-                    this.getItems().add((Component) n);
+                    this.getItems().add((Component<?>) n);
                 }
             }
         });
@@ -62,10 +68,10 @@ public class ComponentContainer extends ListView<Component<?>> {
             public ListCell<Component<?>> call(ListView<Component<?>> nodeListView) {
                 return new ListCell<>() {
                     @Override
-                    protected void updateItem(Component node, boolean isEmpty) {
+                    protected void updateItem(Component<?> node, boolean isEmpty) {
                         super.updateItem(node, isEmpty);
                         if (node != null) {
-                            setText(node.getType().toString());
+                            setText(node.getTitle());
                         } else {
                             setText("");
                         }
@@ -83,27 +89,16 @@ public class ComponentContainer extends ListView<Component<?>> {
      * @param <T> The type of bean used by the component
      */
     public <T extends Bean> void manageComponent(Component<T> component, Point2D position2D){
-
-        // TODO: add this below
-//                        component.focusedProperty().addListener((observableValue, aFocused, isFocused) -> {
-//                            if (isFocused){
-//                                this.displayBeanProperties(component.getBeanProperties());
-//                                if (!this.componentProperties.isVisible()) this.componentProperties.setVisible(true);
-//                            }
-//                        });
-//                        this.centerPane.getChildren().add(component);
-//                        component.relocateToPoint(new Point2D(cursorPoint.getX() - 32, cursorPoint.getY() - 32));
-//                        component.requestFocus();
-
         // Wait for creation of the bean from the server
         this.componentWaitingForBeanCreation.put(component, position2D);
+        Client.getInstance().send(new CreateBeanRequest(component.getId(), TestBean.beanTypeId));
     }
 
     /**
      * Display the component on its parent
      * @param componentId The component's id to display
      */
-    public void displayComponent(String componentId){
+    public void displayComponent(String componentId, int beanId){
         // Find the component among the ones waiting for the server creation
         Component<? extends Bean> component = findWaitingComponent(componentId);
 
@@ -112,29 +107,34 @@ public class ComponentContainer extends ListView<Component<?>> {
             // Retrieve its coordinates
             Point2D position2D = this.componentWaitingForBeanCreation.get(component);
 
+            // Set the bean id
+            component.getBean().setId(beanId);
+
+            // Change title
+            component.setTitle(component.getType() + "_" + beanId);
+
             // Remove it from the hashmap
             this.componentWaitingForBeanCreation.remove(component);
-
-            // Add it to the displayed components
-            this.displayedComponent.add(component);
 
             // Add it to parent
             this.componentParent.getChildren().add(component);
 
             // Relocate it
             component.relocateToPoint(position2D);
+
+            // Request focus
+            component.requestFocus();
         }
     }
 
     /**
      * Remove component
-     * @param component The component to remove
+     * @param componentId The component to remove
      */
-    public void removeComponent(Component<?> component){
-        this.displayedComponent.remove(component);
-        this.componentParent.getChildren().remove(component);
+    public void removeComponent(String componentId){
+        List<Node> componentsToRemove = this.displayedComponent.stream().filter((n) -> n.getId().equals(componentId)).collect(Collectors.toList());
+        this.componentParent.getChildren().removeAll(componentsToRemove);
     }
-
 
     /**
      * Find the component waiting for bean creation by the server
@@ -150,5 +150,32 @@ public class ComponentContainer extends ListView<Component<?>> {
             }
         }
         return result;
+    }
+
+    /**
+     * Update the property of the given bean
+     * @param beanId The id of the bean to update
+     * @param propertyName The property's name
+     * @param newValue The property's new value
+     * @param <T> The type of the value to update
+     */
+    @SuppressWarnings("unchecked")
+    public <T> void updateBeanProperty(int beanId, String propertyName, T newValue){
+        // Find the corresponding component holding the bean to update
+        List<Node> componentToUpdate = this.displayedComponent.stream().filter((n) -> ((Component<?>)n).getBean().getId() == beanId).collect(Collectors.toList());
+        for (Node n : componentToUpdate){
+            Component<?> component = (Component<?>)n;
+//            for (Property<?> property : component.getBean().getProperties()){
+//                if (property.getName().equals(propertyName)){
+//                    ((Property<T>)property).setValue(newValue);
+//                }
+//            }
+            for (PropertyNode<?> property : component.getBeanProperties().getPropertyNodes()){
+                if (property.getName().equals(propertyName)){
+                    ((PropertyNode<T>)property).setValue(newValue);
+                    System.out.println("New value: " + newValue + " for " + propertyName);
+                }
+            }
+        }
     }
 }

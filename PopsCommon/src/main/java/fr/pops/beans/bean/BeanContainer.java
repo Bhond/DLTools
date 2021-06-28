@@ -90,6 +90,17 @@ public class BeanContainer<T extends Bean> extends BeanObservable {
 
     /**
      * Add bean to the container's list
+     * Triggers an event to inform that a bean has been added
+     * @param bean The bean to add
+     */
+    public void addAllBean(List<T> bean){
+        this.beans.addAll(bean);
+        // Old value is not interesting, hence null
+        this.support.firePropertyChange(BEAN_ADDED_LISTENER_TAG, null, bean);
+    }
+
+    /**
+     * Add bean to the container's list
      * Triggers an event to inform that a bean has been removed
      * @param bean The bean to remove
      */

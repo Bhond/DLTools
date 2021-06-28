@@ -20,13 +20,17 @@
 package fr.pops.customnodes.neuralnetworks.component.component;
 
 import fr.pops.beans.bean.Bean;
+import fr.pops.client.Client;
 import fr.pops.cst.DblCst;
 import fr.pops.cst.EnumCst;
 import fr.pops.cst.StrCst;
 import fr.pops.customnodes.beanproperties.BeanProperties;
 import fr.pops.customnodes.neuralnetworks.component.link.Link;
 import fr.pops.customnodes.neuralnetworks.component.link.LinkHandle;
+import fr.pops.sockets.resquest.beanrequests.DeleteBeanRequest;
 import fr.pops.utils.Utils;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -62,8 +66,9 @@ public abstract class Component<T extends Bean> extends AnchorPane {
     private VBox rootBox;
 
     // Title
+    private StringProperty titleProperty;
     private HBox titleBox;
-    private Label title;
+    private Label titleLbl;
     private Button closeComponentButton;
 
     // Drag parameters
@@ -182,10 +187,14 @@ public abstract class Component<T extends Bean> extends AnchorPane {
         });
 
         // Label
-        this.title = new Label(this.type.toString());
-        this.title.setAlignment(Pos.CENTER);
+        this.titleLbl = new Label(this.type.toString());
+        this.titleLbl.setAlignment(Pos.CENTER);
         this.titleBox.widthProperty().addListener(observable -> {
-            this.title.setPrefWidth(this.titleBox.getWidth() - this.closeComponentButton.getWidth());
+            this.titleLbl.setPrefWidth(this.titleBox.getWidth() - this.closeComponentButton.getWidth());
+        });
+        this.titleProperty = new SimpleStringProperty();
+        this.titleProperty.addListener((observableValue, s, newTitle) -> {
+            this.titleLbl.setText(newTitle);
         });
 
         // Close button
@@ -217,7 +226,7 @@ public abstract class Component<T extends Bean> extends AnchorPane {
      */
     private void buildHierarchy(){
         // Ttile
-        this.titleBox.getChildren().addAll(this.title, this.closeComponentButton);
+        this.titleBox.getChildren().addAll(this.titleLbl, this.closeComponentButton);
 
         // Header
         this.header.getChildren().addAll(this.leftLinkHandle, this.centralBox, this.rightLinkHandle);
@@ -283,7 +292,6 @@ public abstract class Component<T extends Bean> extends AnchorPane {
 
         // Title
         this.titleBox.setOnDragDetected((event) -> {
-            this.requestFocus();
             this.getParent().setOnDragOver(this::onContextDragOver);
             this.getParent().setOnDragDropped(this::onContextDragDropped);
             dragOffset = new Point2D(event.getX(), event.getY());
@@ -304,7 +312,8 @@ public abstract class Component<T extends Bean> extends AnchorPane {
 
         // Close button
         this.closeComponentButton.setOnMouseClicked(mouseEvent -> {
-            this.onCloseComponent();
+            Client.getInstance().send(new DeleteBeanRequest(this.getId(), this.bean.getId()));
+            //this.onCloseComponent();
         });
 
         // Link handles
@@ -318,9 +327,6 @@ public abstract class Component<T extends Bean> extends AnchorPane {
      * Deal with stuff when closing the component
      */
     private void onCloseComponent() {
-        // Remove contraction
-        //this.getParent().removeContraction();
-
         // Remove link and node
         this.removeLinkAndNode();
     }
@@ -399,7 +405,7 @@ public abstract class Component<T extends Bean> extends AnchorPane {
         // Setup drag content
         ClipboardContent content = new ClipboardContent();
         DragContainer container = new DragContainer();
-        Component linkHandleComponentParent = (Component) linkHandle.getParent().getParent().getParent(); // header -> rootBox -> this
+        Component linkHandleComponentParent = (Component<?>) linkHandle.getParent().getParent().getParent(); // header -> rootBox -> this
         container.addData(StrCst.DRAG_CONTAINER_SOURCE, linkHandle.getId());
         content.put(DragContainer.AddLink, container);
         linkHandleComponentParent.startDragAndDrop(TransferMode.ANY).setContent(content);
@@ -456,7 +462,7 @@ public abstract class Component<T extends Bean> extends AnchorPane {
         // Set up draggable link
         this.paneParent.getChildren().add(0, this.link);
         this.link.setVisible(false);
-        Component startHandleComponentParent = (Component) startHandle.getParent().getParent().getParent(); // header -> rootBox -> this
+        Component<?> startHandleComponentParent = (Component<?>) startHandle.getParent().getParent().getParent(); // header -> rootBox -> this
         Point2D startP = new Point2D(
                 startHandleComponentParent.getLayoutX() + startHandle.getLayoutX() + (startHandle.getWidth() / 2.0),
                 startHandleComponentParent.getLayoutY() + startHandleComponentParent.header.getLayoutY() + (startHandle.getHeight() / 2.0)
@@ -574,6 +580,13 @@ public abstract class Component<T extends Bean> extends AnchorPane {
     }
 
     /**
+     * @return The title of the component
+     */
+    public String getTitle() {
+        return this.titleProperty.get();
+    }
+
+    /**
      * @return The left handle where a link can be attached
      */
     public LinkHandle getLeftLinkHandle() {
@@ -588,9 +601,29 @@ public abstract class Component<T extends Bean> extends AnchorPane {
     }
 
     /**
+     * @return The bean attached to this component
+     */
+    public T getBean() {
+        return this.bean;
+    }
+
+    /**
      * @return The bean properties
      */
     public BeanProperties getBeanProperties() {
         return this.beanProperties;
+    }
+
+    /*****************************************
+     *
+     * Setter
+     *
+     *****************************************/
+    /**
+     * Set the title of the component
+     * @param title The new title of the component
+     */
+    public void setTitle(String title) {
+        this.titleProperty.setValue(title);
     }
 }

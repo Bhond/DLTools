@@ -1,10 +1,7 @@
 package fr.pops.controllers.viewcontrollers;
 
-import fr.pops.math.ndarray.BaseNDArray;
 import fr.pops.viewmodels.NeuralNetworkModel;
 import fr.pops.views.neuralnetwork.NeuralNetworkView;
-
-import java.util.HashMap;
 
 public class NeuralNetworkController extends BaseController<NeuralNetworkView, NeuralNetworkModel> {
 
@@ -43,30 +40,30 @@ public class NeuralNetworkController extends BaseController<NeuralNetworkView, N
      *
      *****************************************/
     /**
-     * Display the label of the image on the view
-     * @param label The label to display
+     * Display the component corresponding to the bean id received from the server
+     * @param componentId The id of the component to display
+     * @param beanId The bean id created by the server
      */
-    public void setLabel(int label){
-        this.view.updateLabel(label);
+    public void displayNeuralNetworkComponents(String componentId, int beanId){
+        this.view.displayNeuralNetworkComponents(componentId, beanId);
     }
 
     /**
-     * Display the image on the view
-     * @param image The image to display
+     * Close component after deletion by the server
+     * @param componentId The component's id to delete
      */
-    public void setImage(BaseNDArray image){
-        this.view.updateImage(image);
+    public void closeNeuralNetworkComponent(String componentId){
+        this.view.closeNeuralNetworkComponent(componentId);
     }
 
     /**
-     * Display the neural network configuration
-     * @param nbLayers The nb of layers
-     * @param learningRate The learning rate
-     * @param regularisationOn True is the regularisation is activated
-     * @param l1 The l1 learning rate
-     * @param l2 The l2 learning rate
+     * Update the property of the given bean
+     * @param beanId The id of the bean to update
+     * @param propertyName The property's name
+     * @param newValue The property's new value
+     * @param <T> The type of the value to update
      */
-    public void setConfiguration(int nbLayers, HashMap<Integer, Integer> layers, double learningRate, boolean regularisationOn, double l1, double l2){
-        this.view.updateConfiguration(nbLayers, layers, learningRate, regularisationOn, l1, l2);
+    public <T> void updateBeanProperty(int beanId, String propertyName, T newValue){
+        this.view.updateBeanProperty(beanId, propertyName, newValue);
     }
 }

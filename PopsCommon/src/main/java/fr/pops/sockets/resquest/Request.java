@@ -66,17 +66,6 @@ public abstract class Request {
      * Create a request that will be handle by the requestHandler
      * @param rawParams The raw Request in binary
      * @param type The type of the request, defined in EnumCst
-     */
-    protected Request(EnumCst.RequestTypes type, byte[] rawParams){
-        // Initialize the request
-        this.rawParams = rawParams;
-        this.type = type;
-    }
-
-    /**
-     * Create a request that will be handle by the requestHandler
-     * @param rawParams The raw Request in binary
-     * @param type The type of the request, defined in EnumCst
      * @param length The length of the request
      */
     protected Request(EnumCst.RequestTypes type, byte[] rawParams, int length){

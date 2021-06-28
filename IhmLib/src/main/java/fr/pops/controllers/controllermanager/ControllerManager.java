@@ -88,7 +88,7 @@ public class ControllerManager {
      * @param controllerClass The class of the controllers to look for
      * @return The controllers matching the class given in the inputs
      */
-    public List<BaseController<?,?>> getAll(Class<BaseController<?,?>> controllerClass){
+    public <controllerT extends BaseController<?,?>> List<BaseController<?,?>> getAll(Class<controllerT> controllerClass){
         return controllers.stream().filter(c -> c.getClass().equals(controllerClass)).collect(Collectors.toList());
     }
 

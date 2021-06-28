@@ -123,7 +123,7 @@ public abstract class Bean {
      * @param isInternal Define is the property is modifiable by the user
      */
     protected  DoubleProperty createProperty(String name, double defaultValue, boolean isComputed, boolean isInternal){
-        DoubleProperty property = new DoubleProperty(name, EnumCst.PropertyTypes.DOUBLE, defaultValue, isComputed, isInternal);
+        DoubleProperty property = new DoubleProperty(this.id, name, EnumCst.PropertyTypes.DOUBLE, defaultValue, isComputed, isInternal);
         this.properties.add(property);
         return property;
     }
@@ -136,7 +136,7 @@ public abstract class Bean {
      * @param isInternal Define is the property is modifiable by the user
      */
     protected  IntegerProperty createProperty(String name, int defaultValue, boolean isComputed, boolean isInternal){
-        IntegerProperty property = new IntegerProperty(name, EnumCst.PropertyTypes.INT, defaultValue, isComputed, isInternal);
+        IntegerProperty property = new IntegerProperty(this.id, name, EnumCst.PropertyTypes.INT, defaultValue, isComputed, isInternal);
         this.properties.add(property);
         return property;
     }
@@ -149,7 +149,7 @@ public abstract class Bean {
      * @param isInternal Define is the property is modifiable by the user
      */
     protected  StringProperty createProperty(String name, String defaultValue, boolean isComputed, boolean isInternal){
-        StringProperty property = new StringProperty(name, EnumCst.PropertyTypes.STRING, defaultValue, isComputed, isInternal);
+        StringProperty property = new StringProperty(this.id, name, EnumCst.PropertyTypes.STRING, defaultValue, isComputed, isInternal);
         this.properties.add(property);
         return property;
     }
@@ -162,7 +162,7 @@ public abstract class Bean {
      * @param isInternal Define is the property is modifiable by the user
      */
     protected BooleanProperty createProperty(String name, boolean defaultValue, boolean isComputed, boolean isInternal){
-        BooleanProperty property = new BooleanProperty(name, EnumCst.PropertyTypes.BOOLEAN, defaultValue, isComputed, isInternal);
+        BooleanProperty property = new BooleanProperty(this.id, name, EnumCst.PropertyTypes.BOOLEAN, defaultValue, isComputed, isInternal);
         this.properties.add(property);
         return property;
     }
@@ -191,5 +191,18 @@ public abstract class Bean {
      */
     public List<Property<?>> getProperties() {
         return this.properties;
+    }
+
+    /*****************************************
+     *
+     * Setter
+     *
+     *****************************************/
+    /**
+     * Set the bean id for clients receiving bean updates from the server
+     * @param id The id given the server where the bean manager is hosted
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 }

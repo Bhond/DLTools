@@ -16,7 +16,7 @@ public class TestBean extends Bean {
 	private String nameDefault = "Test";
 
 	private Property<Double> speed;
-	private Double speedDefault = 0.5d;
+	private Double speedDefault = 5d;
 
 	private Property<Boolean> isRunning;
 	private boolean isRunningDefault = true;
@@ -29,7 +29,7 @@ public class TestBean extends Bean {
 	 public TestBean(){
 		super(beanTypeId);
 		this.name = this.createProperty("name",nameDefault,false,false);
-		this.speed = this.createProperty("speed",speedDefault,false,true);
+		this.speed = this.createProperty("speed",speedDefault,true,false);
 		this.isRunning = this.createProperty("isRunning",isRunningDefault,true,false);
 	}
 

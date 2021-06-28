@@ -60,14 +60,6 @@ public class CreateBeanRequest extends Request {
     /**
      * Create a request that will be handle by the requestHandler
      * @param rawParams The raw Request in binary
-     */
-    private CreateBeanRequest(byte[] rawParams) {
-        super(EnumCst.RequestTypes.CREATE_BEAN, rawParams);
-    }
-
-    /**
-     * Create a request that will be handle by the requestHandler
-     * @param rawParams The raw Request in binary
      * @param length    The length of the request
      */
     public CreateBeanRequest(byte[] rawParams, int length) {

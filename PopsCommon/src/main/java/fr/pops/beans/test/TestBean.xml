@@ -10,8 +10,9 @@
         <Group name="Property">
             <Entry name="Name">speed</Entry>
             <Entry name="Type">double</Entry>
-            <Entry name="Default">0.5</Entry>
-            <Entry name="isInternal">true</Entry>
+            <Entry name="Default">5</Entry>
+            <Entry name="isInternal">false</Entry>
+            <Entry name="isComputed">true</Entry>
         </Group>
         <Group name="Property">
             <Entry name="Name">isRunning</Entry>

@@ -77,7 +77,7 @@ public abstract class GeneratorCst {
     public static final String BEAN_BEAN = "Bean";
     public static final String BEAN_MODEL = "Model";
     public static final String BEAN_ROOT_PACKAGE = "fr.pops.beans.";
-    public static final String BEAN_MODELS_PACKAGE_DOT = "fr.pops.beans.models.";
+    public static final String BEAN_MODELS_PACKAGE_DOT = "fr.pops.beans.beanmodels.";
 
     /*****************************************
      *

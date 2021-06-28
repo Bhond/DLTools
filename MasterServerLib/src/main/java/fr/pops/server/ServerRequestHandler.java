@@ -120,10 +120,13 @@ public class ServerRequestHandler extends RequestHandler {
             case GET_CURRENT_STOCK_INFO:
                 operation = EnumCst.RequestOperations.TRANSFER;
                 break;
-            case GET_MNIST_IMAGE:
+            case CREATE_BEAN:
                 operation = EnumCst.RequestOperations.TRANSFER;
                 break;
-            case GET_MNIST_CONFIGURATION:
+            case DELETE_BEAN:
+                operation = EnumCst.RequestOperations.TRANSFER;
+                break;
+            case UPDATE_BEAN_PROPERTY:
                 operation = EnumCst.RequestOperations.TRANSFER;
                 break;
             default:
@@ -146,11 +149,14 @@ public class ServerRequestHandler extends RequestHandler {
             case GET_CURRENT_STOCK_INFO:
                 toId = getOtherStockOrIhm(from);
                 break;
-            case GET_MNIST_IMAGE:
-                toId = getOtherMnistOrIhm(from);
+            case CREATE_BEAN:
+                toId = getOtherBeanOrIhm(from);
                 break;
-            case GET_MNIST_CONFIGURATION:
-                toId = getOtherMnistOrIhm(from);
+            case DELETE_BEAN:
+                toId = getOtherBeanOrIhm(from);
+                break;
+            case UPDATE_BEAN_PROPERTY:
+                toId = getOtherBeanOrIhm(from);
                 break;
             default:
                 toId = EnumCst.ClientTypes.DEFAULT.getId();
@@ -192,24 +198,24 @@ public class ServerRequestHandler extends RequestHandler {
 
     /**
      * Returns the appropriate receiver
-     * between the IHM and the Mnist clients
+     * between the IHM and the Bean clients
      * @param from Ihm client's id or Mnis client's id
      * @return The other id:
-     *          If from.id == Ihm.id return Mnist.id
-     *          If from.id == Mnist.id return Ihm.id
+     *          If from.id == Ihm.id return Bean.id
+     *          If from.id == Bean.id return Ihm.id
      */
-    private long getOtherMnistOrIhm(long from) {
+    private long getOtherBeanOrIhm(long from) {
         long toId;
         switch (EnumCst.ClientTypes.getType(from)){
             case IHM:
-                toId = EnumCst.ClientTypes.MNIST.getId();
+                toId = EnumCst.ClientTypes.BEAN.getId();
                 break;
-            case MNIST:
+            case BEAN:
                 toId = EnumCst.ClientTypes.IHM.getId();
                 break;
             default:
                 toId = EnumCst.ClientTypes.DEFAULT.getId();
-                System.out.println("Input sender is neither Ihm nor Stock client. Unable to transfer request.");
+                System.out.println("Input sender is neither Ihm nor Bean client. Unable to transfer request.");
                 break;
         }
         return toId;

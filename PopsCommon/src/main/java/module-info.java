@@ -22,6 +22,7 @@ open module PopsCommon {
 
     // Beans
     exports fr.pops.beans.bean;
+    exports fr.pops.beans.beanloop;
     exports fr.pops.beans.beanobservable;
     exports fr.pops.beans.properties;
     exports fr.pops.beans.test;

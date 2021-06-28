@@ -1,4 +1,4 @@
-package fr.pops.clients.mnistclient;
+package fr.pops.clients.beanclient;
 
 import fr.pops.sockets.communicationpipeline.CommunicationPipeline;
 import fr.pops.sockets.cst.EnumCst;
@@ -6,7 +6,7 @@ import fr.pops.sockets.resquest.Request;
 
 import java.nio.channels.SelectionKey;
 
-public class MNISTCommunicationPipeline extends CommunicationPipeline {
+public class BeanCommunicationPipeline extends CommunicationPipeline {
 
     /*****************************************
      *
@@ -17,7 +17,7 @@ public class MNISTCommunicationPipeline extends CommunicationPipeline {
      * Standard ctor
      * Nothing to be done
      */
-    public MNISTCommunicationPipeline(){
+    public BeanCommunicationPipeline(){
         // Nothing to be done
     }
 
@@ -38,7 +38,7 @@ public class MNISTCommunicationPipeline extends CommunicationPipeline {
         super.specificOp(key, request);
 
         // Select next operation depending on the request's type
-        EnumCst.RequestOperations operation = ((MNISTRequestHandler) this.client.getRequestHandler()).selectNextOperation(request);
+        EnumCst.RequestOperations operation = ((BeanRequestHandler) this.client.getRequestHandler()).selectNextOperation(request);
 
         // Perform next operation
         if (operation == EnumCst.RequestOperations.WRITE_BACK){

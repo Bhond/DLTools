@@ -39,7 +39,12 @@ public abstract class StrCst {
     public final static String LABEL_MINIMIZE_WINDOW_BUTTON = "A";
 
     // Menu bar
+    public final static String MENUBAR_LABEL_FILE = "File";
     public final static String MENUBAR_LABEL_VIEWS = "Views";
+
+    // File menu items
+    public final static String NAME_LOAD = "Load";
+    public final static String NAME_SAVE = "Save";
 
     // View names
     public final static String NAME_SERVER_VIEW = "Network info";
@@ -161,6 +166,7 @@ public abstract class StrCst {
     public final static String JSON_KEY_TYPE = "type";
 
     // Stock
+    public final static String JSON_KEY_SUBVIEWS = "subviews";
     public final static String JSON_KEY_QUOTE_INFOS = "quoteInfos";
     public final static String JSON_KEY_PRICE = "price";
     public final static String JSON_KEY_LAST_ACCESSED_TIME = "lastAccessedTime";

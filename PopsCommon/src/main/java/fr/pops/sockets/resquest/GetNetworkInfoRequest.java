@@ -54,15 +54,6 @@ public class GetNetworkInfoRequest extends Request{
     /**
      * Ctor used to create a request when receiving one
      * @param rawParams The raw parameters to decode
-     */
-    public GetNetworkInfoRequest(byte[] rawParams){
-        // Parent
-        super(EnumCst.RequestTypes.GET_NETWORK_INFO, rawParams);
-    }
-
-    /**
-     * Ctor used to create a request when receiving one
-     * @param rawParams The raw parameters to decode
      * @param length The request's length
      */
     public GetNetworkInfoRequest(byte[] rawParams, int length){

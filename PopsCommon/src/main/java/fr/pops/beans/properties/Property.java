@@ -21,6 +21,7 @@
  ******************************************************************************/
 package fr.pops.beans.properties;
 
+import fr.pops.beans.bean.BeanManager;
 import fr.pops.beans.beanobservable.BeanObservable;
 import fr.pops.commoncst.EnumCst;
 import fr.pops.commoncst.GeneratorCst;
@@ -36,7 +37,7 @@ public abstract class Property<T> extends BeanObservable implements Serializable
      *
      *****************************************/
     // Info
-    private int id;
+    private int beanId;
     private String name;
     private EnumCst.PropertyTypes type;
     private T value;
@@ -51,15 +52,16 @@ public abstract class Property<T> extends BeanObservable implements Serializable
     /**
      * Standard ctor
      * Private
-     * @param name The name of the property
-     * @param type The type of the property
-     * @param value The value of the property
+     * @param beanId     The id of the bean using this property
+     * @param name       The name of the property
+     * @param type       The type of the property
+     * @param value      The value of the property
      * @param isComputed Define is the property is computed by the model
      * @param isInternal Define is the property is modifiable by the user
      */
-    protected Property(String name, EnumCst.PropertyTypes type, T value, boolean isComputed, boolean isInternal){
+    protected Property(int beanId, String name, EnumCst.PropertyTypes type, T value, boolean isComputed, boolean isInternal){
         // Initialisation
-        onInit(name, type, value, isComputed, isInternal);
+        onInit(beanId, name, type, value, isComputed, isInternal);
     }
 
     /*****************************************
@@ -75,8 +77,9 @@ public abstract class Property<T> extends BeanObservable implements Serializable
      * @param isComputed Define is the property is computed by the model
      * @param isInternal Define is the property is modifiable by the user
      */
-    private void onInit(String name, EnumCst.PropertyTypes type, T value, boolean isComputed, boolean isInternal){
+    private void onInit(int beanId, String name, EnumCst.PropertyTypes type, T value, boolean isComputed, boolean isInternal){
         // Attributes
+        this.beanId = beanId;
         this.name= name;
         this.type = type;
         this.value = value;
@@ -101,7 +104,7 @@ public abstract class Property<T> extends BeanObservable implements Serializable
     private void onListenersChanged(PropertyChangeEvent event){
         // Observe changes on the value
         if (event.getPropertyName().equals(GeneratorCst.PROPERTY_VALUE)){
-            System.out.println("New value: " + event.getNewValue() + " for: " + this.name);
+            BeanManager.getInstance().onPropertyUpdate(this);
         }
     }
 
@@ -110,6 +113,13 @@ public abstract class Property<T> extends BeanObservable implements Serializable
      * Getter
      *
      *****************************************/
+    /**
+     * @return The id of the bean using this property
+     */
+    public int getBeanId() {
+        return this.beanId;
+    }
+
     /**
      * @return The name
      */
@@ -160,104 +170,4 @@ public abstract class Property<T> extends BeanObservable implements Serializable
         this.value = newValue;
         this.support.firePropertyChange(GeneratorCst.PROPERTY_VALUE, oldValue, newValue);
     }
-
-    /*****************************************
-     *
-     * Builder
-     *
-     *****************************************/
-    public static class PropertyBuilder<T> {
-
-        /*****************************************
-         *
-         * Attributes
-         *
-         *****************************************/
-        private String name = "";
-        private EnumCst.PropertyTypes type = EnumCst.PropertyTypes.OBJECT;
-        private T value = null;
-        private boolean isComputed = false;
-        private boolean isInternal = false;
-
-        /*****************************************
-         *
-         * Ctor
-         *
-         *****************************************/
-        /**
-         * Standard ctor
-         * Nothing to be done
-         */
-        public PropertyBuilder(){
-            // Nothing to be done
-        }
-
-        /*****************************************
-         *
-         * With methods
-         *
-         *****************************************/
-        /**
-         * Name of the property
-         * @param name The name of the property
-         * @return The builder itself
-         */
-        public PropertyBuilder<T> withName(String name){
-            this.name = name;
-            return this;
-        }
-
-        /**
-         * Type of the property
-         * @param type The type of the property
-         * @return The builder itself
-         */
-        public PropertyBuilder<T> withType(String type){
-            this.type = EnumCst.PropertyTypes.valueOf(type.toUpperCase());
-            return this;
-        }
-
-        /**
-         *
-         * @param defaultValue The default value of the property
-         * @return The builder itself
-         */
-        public PropertyBuilder<T> withDefaultValue(T defaultValue){
-            this.value = defaultValue;
-            return this;
-        }
-
-        /**
-         *
-         * Set the parameter isComputed of the property
-         * @param isComputed True if this property is only available for the model
-         * @return The builder itself
-         */
-        public PropertyBuilder<T> isComputed(boolean isComputed){
-            this.isComputed = isComputed;
-            return this;
-        }
-
-        /**
-         * Set the parameter isInternal of the property
-         * @param isInternal True if this property is only available for the model
-         * @return The builder itself
-         */
-        public PropertyBuilder<T> isInternal(boolean isInternal){
-            this.isInternal = isInternal;
-            return this;
-        }
-
-        /**
-         * Build the property
-         * @return A property object built with the parameters
-         *         defined by the with methods
-         */
-        public Property<T> build() {
-            //return new Property(this.name, this.type, this.value, this.isComputed, this.isInternal);
-            return null;
-        }
-
-    }
-
 }

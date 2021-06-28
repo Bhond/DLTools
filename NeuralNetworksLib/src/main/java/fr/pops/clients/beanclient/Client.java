@@ -1,15 +1,15 @@
-package fr.pops.clients.mnistclient;
+package fr.pops.clients.beanclient;
 
-import fr.pops.datareader.MNISTDataset;
+import fr.pops.beans.bean.Bean;
+import fr.pops.beans.bean.BeanCreator;
+import fr.pops.beans.bean.BeanManager;
+import fr.pops.beans.beanloop.BeanLoop;
 import fr.pops.jsonparser.IRecordable;
-import fr.pops.math.ArrayUtil;
-import fr.pops.math.ndarray.BaseNDArray;
-import fr.pops.nn.networks.*;
 import fr.pops.sockets.client.BaseClient;
 import fr.pops.sockets.cst.EnumCst;
+import fr.pops.sockets.resquest.beanrequests.UpdateBeanPropertyRequest;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 
 public class Client extends BaseClient implements IRecordable {
@@ -26,8 +26,6 @@ public class Client extends BaseClient implements IRecordable {
      * Attributes
      *
      *****************************************/
-    private MNISTDataset dataReader;
-    private Classifier neuralNetwork;
 
     /*****************************************
      *
@@ -39,10 +37,10 @@ public class Client extends BaseClient implements IRecordable {
      */
     private Client(){
         // Nothing to be done
-        super(EnumCst.ClientTypes.MNIST,
+        super(EnumCst.ClientTypes.BEAN,
                 new InetSocketAddress("127.0.0.1", 8163),
-                new MNISTRequestHandler(),
-                new MNISTCommunicationPipeline());
+                new BeanRequestHandler(),
+                new BeanCommunicationPipeline());
 
         // Initialize the client
         this.ontInit();
@@ -57,11 +55,10 @@ public class Client extends BaseClient implements IRecordable {
      * Initialize the client
      */
     private void ontInit(){
-        // Initialize data set
-        try {
-            this.dataReader = new MNISTDataset(fr.pops.popscst.cst.EnumCst.RunningMode.TRAINING);
-        } catch (IOException ignored){}
 
+        // Initialize the bean manager
+        BeanManager.getInstance().setOnPropertyUpdated((p) -> this.send(new UpdateBeanPropertyRequest<>(p)));
+        BeanLoop.getInstance().start();
     }
 
     /*****************************************
@@ -81,6 +78,24 @@ public class Client extends BaseClient implements IRecordable {
      * Methods
      *
      *****************************************/
+    /**
+     * Create bean
+     * @param beanTypeId The bean type id use to create
+     *                   the desired type of bean
+     * @return The created bean
+     */
+    public Bean onBeanCreationEvent(String beanTypeId){
+        return BeanCreator.getInstance().createBeanByReflection(beanTypeId);
+    }
+
+    /**
+     * Create bean
+     * @param beanId The bean's id to removed
+     * @return True if the given been has been successfully removed
+     */
+    public boolean onBeanDeletionEvent(int beanId){
+        return BeanManager.getInstance().removeBean(beanId);
+    }
 
     /*****************************************
      *
@@ -92,30 +107,6 @@ public class Client extends BaseClient implements IRecordable {
      */
     public static Client getInstance() {
         return instance;
-    }
-
-    /**
-     *
-     * @param idx The index of the label in the dataset to retrieve
-     * @return The label at the given index in the dataset
-     */
-    public int getLabel(int idx){
-        return ArrayUtil.maskedMax(this.dataReader.getLabel(idx).getData()).getKey();
-    }
-
-    /**
-     * @param idx The index of the image in the dataset to retrieve
-     * @return The image at the given index in the dataset
-     */
-    public BaseNDArray getImage(int idx){
-        return (BaseNDArray) this.dataReader.getSample(idx);
-    }
-
-    /**
-     * @return The neural network
-     */
-    public Classifier getNeuralNetwork() {
-        return this.neuralNetwork;
     }
 
     /*****************************************

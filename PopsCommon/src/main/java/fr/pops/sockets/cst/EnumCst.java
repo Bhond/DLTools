@@ -31,7 +31,7 @@ public abstract class EnumCst {
         DEFAULT(0L),
         IHM(  7596087841016572405L),
         STOCK(390208358890556977L),
-        MNIST(32482398725739523L);
+        BEAN(32482398725739523L);
 
         // Attributes
         private long id;
@@ -83,7 +83,9 @@ public abstract class EnumCst {
         GET_CURRENT_STOCK_INFO,
         GET_MNIST_IMAGE,
         GET_MNIST_CONFIGURATION,
-        CREATE_BEAN}
+        CREATE_BEAN,
+        DELETE_BEAN,
+        UPDATE_BEAN_PROPERTY}
 
     /*****************************************
      *

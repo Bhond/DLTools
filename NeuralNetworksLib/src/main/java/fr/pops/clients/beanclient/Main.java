@@ -1,4 +1,4 @@
-package fr.pops.clients.mnistclient;
+package fr.pops.clients.beanclient;
 
 public class Main {
 
