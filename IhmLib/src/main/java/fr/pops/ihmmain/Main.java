@@ -43,5 +43,6 @@ public class Main extends Application {
         Client client = Client.getInstance();
         client.init(stage, isStandAlone);
         client.start();
+
     }
 }

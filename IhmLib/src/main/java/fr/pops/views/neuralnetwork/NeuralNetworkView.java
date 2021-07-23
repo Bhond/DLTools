@@ -145,6 +145,7 @@ public class NeuralNetworkView extends BaseView<NeuralNetworkController> {
 
         // Drag icon
         this.dragOverIcon = new ComponentIcon();
+        this.dragOverIcon.setVisible(false);
     }
 
     /**
@@ -441,7 +442,10 @@ public class NeuralNetworkView extends BaseView<NeuralNetworkController> {
      * @param componentId The component to display
      */
     public void closeNeuralNetworkComponent(String componentId){
-        Platform.runLater(() -> this.componentContainer.removeComponent(componentId));
+        Platform.runLater(() -> {
+            this.componentContainer.removeComponent(componentId);
+            this.componentProperties.clear();
+        });
     }
 
     public <T> void updateBeanProperty(int beanId, String propertyName, T newValue){

@@ -2,6 +2,8 @@ open module PopsCommon {
     // Requires
     requires java.desktop;
     requires org.json;
+    requires io.vertx.core;
+    requires io.vertx.web.client;
 
     // Sockets
     exports fr.pops.sockets.communicationpipeline;

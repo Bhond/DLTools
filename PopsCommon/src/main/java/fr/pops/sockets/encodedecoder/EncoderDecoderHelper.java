@@ -23,6 +23,8 @@ package fr.pops.sockets.encodedecoder;
 
 import fr.pops.math.ndarray.BaseNDArray;
 import fr.pops.math.ndarray.Shape;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.buffer.impl.BufferImpl;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -36,6 +38,7 @@ public class EncoderDecoderHelper {
      * Attributes
      *
      *****************************************/
+    private Buffer bufferImpl = new BufferImpl();
     private List<Byte> bufferList = new LinkedList<>();
     private byte[] buffer;
     private int cursor;
@@ -100,6 +103,15 @@ public class EncoderDecoderHelper {
         this.cursor = 0;
     }
 
+    /**
+     * Reset the helper to decode a new message
+     * @param buffer The buffer to decode
+     */
+    public void reset(Buffer buffer){
+        this.bufferImpl = buffer;
+        this.cursor = 0;
+    }
+
     /*****************************************
      *
      * Buffer methods
@@ -113,7 +125,11 @@ public class EncoderDecoderHelper {
     private void put(byte[] arr, int size){
         int pos = this.cursor;
         for (byte b : arr){
-            this.buffer[pos] = b;
+            try {
+                this.buffer[pos] = b;
+            } catch (ArrayIndexOutOfBoundsException e){
+                e.printStackTrace();
+            }
             pos++;
         }
         this.cursor += size;
@@ -127,7 +143,11 @@ public class EncoderDecoderHelper {
         int pos = 0;
         byte[] arr = new byte[size];
         for (int i = this.cursor; i < this.cursor + size; i++){
-            arr[pos] = this.buffer[i];
+            try {
+                arr[pos] = this.buffer[i];
+            } catch (ArrayIndexOutOfBoundsException e){
+                e.printStackTrace();
+            }
             pos++;
         }
         this.cursor += size;
@@ -272,6 +292,30 @@ public class EncoderDecoderHelper {
     public String decodeString(){
         int length = this.decodeInt32();
         return EncoderDecoder.decodeString(this.pull(length));
+    }
+
+    /*****************************************
+     *
+     * ASCII
+     *
+     *****************************************/
+    /**
+     * Concatenate a binary representation
+     * of the given ASCII and the buffer
+     * @param ascii ASCII character to encode
+     */
+    public void encodeASCII(String ascii){
+        byte[] arr = EncoderDecoder.encodeString(ascii);
+        this.put(arr, arr.length);
+    }
+
+    /**
+     * Decode the given binary representation
+     * of a ASCII in the buffer starting from the cursor position
+     * @return The string parsed from the buffer
+     */
+    public String decodeASCII(){
+        return EncoderDecoder.decodeASCII(this.pull(1));
     }
 
     /*****************************************

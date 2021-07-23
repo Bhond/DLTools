@@ -19,18 +19,18 @@
  ******************************************************************************/
 package fr.pops.main;
 
-import fr.pops.cst.IntCst;
-import fr.pops.server.Server;
-
-import java.net.InetSocketAddress;
+import fr.pops.server.VertxServer;
 
 public class Main {
     
     public static void main(String[] args) {
         // Instantiate the server
-        Server server = Server.getInstance();
-        server.init(new InetSocketAddress(IntCst.SERVER_PORT));
-        server.run();
+//        Server server = Server.getInstance();
+//        server.init(new InetSocketAddress(IntCst.SERVER_PORT));
+//        server.run();
+
+        VertxServer server = new VertxServer();
+        server.start();
     }
     
 }

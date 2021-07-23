@@ -313,7 +313,10 @@ public class MainView extends BaseView<MainViewController> {
             tab.setText(view.getName());
             tab.setContent(view.getRoot());
             tab.getStyleClass().add("viewTab");
-            tab.setOnClosed((event -> this.views.remove(tab)));
+            tab.setOnClosed((event -> {
+
+                this.views.remove(tab);
+            }));
             this.viewsTabPane.getTabs().add(tab);
             this.viewsTabPane.getSelectionModel().select(tab);
             this.views.put(tab, view);

@@ -23,7 +23,7 @@ package fr.pops.client;
 
 import fr.pops.cst.StrCst;
 import fr.pops.ihmloop.IhmLoop;
-import fr.pops.sockets.client.BaseClient;
+import fr.pops.sockets.client.VertxBaseClient;
 import fr.pops.sockets.cst.EnumCst;
 import fr.pops.views.main.MainView;
 import javafx.scene.Parent;
@@ -32,9 +32,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.net.InetSocketAddress;
-
-public class Client extends BaseClient {
+public class Client extends VertxBaseClient {
 
     /*****************************************
      *
@@ -64,7 +62,7 @@ public class Client extends BaseClient {
      */
     public Client(){
         // Parent
-        super(EnumCst.ClientTypes.IHM, new InetSocketAddress("localhost", 8163), new IhmRequestHandler());
+        super(EnumCst.ClientTypes.IHM, new IhmRequestHandler());
     }
 
     /*****************************************
@@ -111,7 +109,7 @@ public class Client extends BaseClient {
      */
     public void start() {
         // Parent
-        super.start(this.isStandAlone);
+        super.start(); // EnumCst.RequestTypes.
 
         // Display the main view
         this.stage.show();

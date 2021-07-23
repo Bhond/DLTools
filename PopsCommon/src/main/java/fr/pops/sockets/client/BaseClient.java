@@ -131,9 +131,7 @@ public abstract class BaseClient {
             this.requestHandler = requestHandler;
             this.communicationPipeline = pipeline;
             this.communicationPipeline.onInit(this, this.channel, this.buffer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException ignored) {}
     }
 
     /*****************************************
@@ -147,6 +145,27 @@ public abstract class BaseClient {
     public void start(){
         // Start and run the communication pipeline to enable communication with the server
         this.communicationPipeline.run();
+//        Vertx vertx =  Vertx.vertx();
+//
+//        NetClientOptions optionsClient = new NetClientOptions()
+//                .setConnectTimeout(10000)
+//                .setReconnectAttempts(10)
+//                .setReconnectInterval(500);
+//        NetClient client = vertx.createNetClient(optionsClient);
+//        client.connect(8163, "localhost", res -> {
+//            if (res.succeeded()) {
+//                System.out.println("Connected!");
+//
+//                NetSocket clientSocket = res.result();
+//                clientSocket.handler(buffer -> {
+//                    System.out.println("Client receiving: " + buffer.toString());
+//                });
+//                byte[] toto = ByteBuffer.allocate(Double.BYTES).putDouble(123456.789123d).array();
+//                clientSocket.write( Buffer.buffer(toto) );
+//            } else {
+//                System.out.println("Failed to connect: " + res.cause().getMessage());
+//            }
+//        });
     }
 
     /**

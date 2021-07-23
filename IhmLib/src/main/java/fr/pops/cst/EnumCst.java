@@ -33,7 +33,7 @@ public abstract class EnumCst {
      * View
      *
      *****************************************/
-    public enum ModelSteppingFamily { FAMILY_1_ON_1, FAMILY_1_ON_10, FAMILY_1_ON_20, FAMILY_1_ON_100, FAMILY_1_ON_500, FAMILY_1_ON_1000 }
+    public enum ModelSteppingFamily { FAMILY_1_ON_1, FAMILY_1_ON_10, FAMILY_1_ON_20, FAMILY_1_ON_100, FAMILY_1_ON_500, FAMILY_1_ON_1000, FAMILY_1_ON_5000 }
 
     /*****************************************
      *

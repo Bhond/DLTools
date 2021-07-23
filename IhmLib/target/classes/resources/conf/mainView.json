@@ -1,8 +1,15 @@
 {
     "type": "MAIN",
     "class": "MainView",
-    "subviews": {"NeuralNetworkView": {
-        "type": "NEURAL_NETWORK",
-        "class": "NeuralNetworkView"
-    }}
+    "subviews": {
+        "NetworkInfoView": {
+            "type": "NETWORK_INFO",
+            "fields": {},
+            "class": "NetworkInfoView"
+        },
+        "NeuralNetworkView": {
+            "type": "NEURAL_NETWORK",
+            "class": "NeuralNetworkView"
+        }
+    }
 }

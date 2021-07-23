@@ -28,9 +28,12 @@ import fr.pops.cst.DoubleCst;
 import fr.pops.math.PopsMath;
 import fr.pops.sockets.cst.EnumCst;
 import fr.pops.sockets.resquest.Request;
+import io.vertx.core.net.NetServer;
+import io.vertx.core.net.NetSocket;
 
 import java.net.InetSocketAddress;
 import java.nio.channels.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -68,6 +71,18 @@ public class Server {
     // Communication
     private ServerSocketChannel serverChannel;
     private Selector selector;
+
+    /**
+     * TODO: New
+     */
+
+    private NetServer serverSocket;
+    private List<NetSocket> clientSockets = new ArrayList<>();
+
+    /**
+     * TODO: New
+     */
+
 
     // Clients
     private ServerRequestHandler requestHandler;
@@ -117,6 +132,25 @@ public class Server {
             this.serverChannel.register(this.selector, SelectionKey.OP_ACCEPT);
             this.serverChannel.bind(socketAddress);
 
+            /*
+             * TODO: new
+             */
+//            Vertx vertx = Vertx.vertx();
+//            NetServerOptions options = new NetServerOptions()
+//                    .setPort(8163)
+//                    .setHost("localhost");
+//            this.serverSocket =  vertx.createNetServer(options);
+//            this.serverSocket.connectHandler((socket) -> {
+//                System.out.println("Client connected: " + socket);
+//                socket.handler((buffer) -> {
+//                    System.out.println("Reading from client: " + buffer.toString());
+//                });
+//            });
+//            this.serverSocket.listen((res) -> {
+//                if (res.succeeded()){
+//                    System.out.println("Server is listening");
+//                }
+//            });
         } catch (Throwable ignored){}
 
     }

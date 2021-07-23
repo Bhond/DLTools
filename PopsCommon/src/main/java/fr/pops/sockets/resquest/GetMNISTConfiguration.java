@@ -1,6 +1,7 @@
 package fr.pops.sockets.resquest;
 
 import fr.pops.sockets.cst.EnumCst;
+import io.vertx.core.json.JsonObject;
 
 import java.util.HashMap;
 
@@ -31,6 +32,15 @@ public class GetMNISTConfiguration extends Request {
     public GetMNISTConfiguration() {
         // Parent
         super(EnumCst.RequestTypes.GET_MNIST_CONFIGURATION);
+    }
+
+    /**
+     * Ctor used to initialize the request with
+     * its content
+     * @param requestBody The request's body
+     */
+    public GetMNISTConfiguration(JsonObject requestBody) {
+        super(EnumCst.RequestTypes.GET_MNIST_CONFIGURATION, requestBody);
     }
 
     /**
@@ -80,9 +90,6 @@ public class GetMNISTConfiguration extends Request {
 
         // l2
         this.encoderDecoderHelper.encodeDouble(this.l2);
-
-        // Get encoded request
-        this.rawRequest = this.encoderDecoderHelper.getRawParams();
     }
 
     /**

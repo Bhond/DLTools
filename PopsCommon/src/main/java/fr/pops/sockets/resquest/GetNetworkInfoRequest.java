@@ -23,6 +23,7 @@
 package fr.pops.sockets.resquest;
 
 import fr.pops.sockets.cst.EnumCst;
+import io.vertx.core.json.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,15 @@ public class GetNetworkInfoRequest extends Request{
     public GetNetworkInfoRequest(){
         // Parent
         super(EnumCst.RequestTypes.GET_NETWORK_INFO);
+    }
+
+    /**
+     * Ctor used to initialize the request with
+     * its content
+     * @param requestBody The request's body
+     */
+    public GetNetworkInfoRequest(JsonObject requestBody) {
+        super(EnumCst.RequestTypes.GET_NETWORK_INFO, requestBody);
     }
 
     /**
@@ -81,9 +91,6 @@ public class GetNetworkInfoRequest extends Request{
         for (EnumCst.ClientTypes clientType : this.clientTypes) {
             this.encoderDecoderHelper.encodeLong64(clientType.getId());
         }
-
-        // Raw request
-        this.rawRequest = this.encoderDecoderHelper.getRawParams();
     }
 
     @Override

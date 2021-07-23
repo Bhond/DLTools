@@ -72,9 +72,9 @@ public class ServerRequestHandler extends RequestHandler {
      * @param key The SelectionKey of the client sending the request
      * @param request The request to be handled
      */
-    protected  void handle(SelectionKey key, Request request){
+    public void handle(SelectionKey key, Request request){
         this.currentKey = key;
-        this.handle(request);
+        super.handle(request);
     }
 
     /**

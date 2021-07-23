@@ -26,6 +26,7 @@ package fr.pops.sockets.resquest.beanrequests;
 
 import fr.pops.sockets.cst.EnumCst;
 import fr.pops.sockets.resquest.Request;
+import io.vertx.core.json.JsonObject;
 
 public class CreateBeanRequest extends Request {
 
@@ -58,6 +59,15 @@ public class CreateBeanRequest extends Request {
     }
 
     /**
+     * Ctor used to initialize the request with
+     * its content
+     * @param requestBody The request's body
+     */
+    public CreateBeanRequest(JsonObject requestBody) {
+        super(EnumCst.RequestTypes.CREATE_BEAN, requestBody);
+    }
+
+    /**
      * Create a request that will be handle by the requestHandler
      * @param rawParams The raw Request in binary
      * @param length    The length of the request
@@ -86,8 +96,6 @@ public class CreateBeanRequest extends Request {
 
         // Encode bean type id
         this.encoderDecoderHelper.encodeString(this.beanTypeId);
-
-        this.rawRequest = this.encoderDecoderHelper.getRawParams();
     }
 
     /**

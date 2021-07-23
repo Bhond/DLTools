@@ -1,6 +1,7 @@
 package fr.pops.sockets.resquest;
 
 import fr.pops.sockets.cst.EnumCst;
+import io.vertx.core.json.JsonObject;
 
 public class DisconnectionRequest extends Request {
 
@@ -31,6 +32,15 @@ public class DisconnectionRequest extends Request {
     public DisconnectionRequest(long clientId) {
         super(EnumCst.RequestTypes.DISCONNECTION);
         this.clientId = clientId;
+    }
+
+    /**
+     * Ctor used to initialize the request with
+     * its content
+     * @param requestBody The request's body
+     */
+    public DisconnectionRequest(JsonObject requestBody) {
+        super(EnumCst.RequestTypes.DISCONNECTION, requestBody);
     }
 
     /**

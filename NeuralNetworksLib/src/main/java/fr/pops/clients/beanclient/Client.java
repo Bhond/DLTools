@@ -5,14 +5,12 @@ import fr.pops.beans.bean.BeanCreator;
 import fr.pops.beans.bean.BeanManager;
 import fr.pops.beans.beanloop.BeanLoop;
 import fr.pops.jsonparser.IRecordable;
-import fr.pops.sockets.client.BaseClient;
+import fr.pops.sockets.client.VertxBaseClient;
 import fr.pops.sockets.cst.EnumCst;
 import fr.pops.sockets.resquest.beanrequests.UpdateBeanPropertyRequest;
 import org.json.JSONObject;
 
-import java.net.InetSocketAddress;
-
-public class Client extends BaseClient implements IRecordable {
+public class Client extends VertxBaseClient implements IRecordable {
 
     /*****************************************
      *
@@ -38,12 +36,10 @@ public class Client extends BaseClient implements IRecordable {
     private Client(){
         // Nothing to be done
         super(EnumCst.ClientTypes.BEAN,
-                new InetSocketAddress("127.0.0.1", 8163),
-                new BeanRequestHandler(),
-                new BeanCommunicationPipeline());
+                new BeanRequestHandler());
 
         // Initialize the client
-        this.ontInit();
+        this.onInit();
     }
 
     /*****************************************
@@ -54,8 +50,7 @@ public class Client extends BaseClient implements IRecordable {
     /**
      * Initialize the client
      */
-    private void ontInit(){
-
+    private void onInit(){
         // Initialize the bean manager
         BeanManager.getInstance().setOnPropertyUpdated((p) -> this.send(new UpdateBeanPropertyRequest<>(p)));
         BeanLoop.getInstance().start();

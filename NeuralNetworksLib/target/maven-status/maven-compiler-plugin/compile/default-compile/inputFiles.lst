@@ -1,6 +1,6 @@
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\nn\layers\InputLayer.java
+C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\clients\beanclient\BeanCommunicationPipeline.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\consoledisplay\ConsoleDisplay.java
-C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\singleton\Singleton.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\nn\networks\RNN.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\nn\weights\weightInit\WeightInitUniform.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\plotfactory\PlotFactory.java
@@ -8,7 +8,6 @@ C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\scorer\SequenceGenerator.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\nn\weights\weightInit\WeightInitRelu.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\speechrecognizer\SpeechRecognizer.java
-C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\clients\mnistclient\Client.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\nn\layers\Layer.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\nn\bias\Bias.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\datareader\CifarDataset.java
@@ -38,8 +37,7 @@ C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\nn\layers\ConvolutionLayer.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\popscst\defaultvalues\LayerDefaultValues.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\xmlparser\neuralnetworks\NeuralNetworkToXMLParser.java
-C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\clients\mnistclient\Main.java
-C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\clients\mnistclient\MNISTCommunicationPipeline.java
+C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\clients\beanclient\Main.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\datareader\DataReader.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\trainer\SequentialTrainer.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\nn\layers\RecurrentDenseLayer.java
@@ -48,10 +46,11 @@ C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\trainer\StandardTrainer.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\datareader\Sequence.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\datareader\MNISTDataset.java
+C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\clients\beanclient\BeanRequestHandler.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\solver\ISolver.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\plotfactory\PlotConfig.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\solver\StochasticGradientDescentThroughTime.java
-C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\clients\mnistclient\MNISTRequestHandler.java
+C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\clients\beanclient\Client.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\solver\StochasticGradientDescent.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\datareader\WaveReader.java
 C:\Users\Charles\Documents\WorkspaceJava\Pops\NeuralNetworksLib\src\main\java\fr\pops\optimizer\Optimizer.java

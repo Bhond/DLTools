@@ -22,7 +22,6 @@ package fr.pops.viewmodels;
 import fr.pops.client.Client;
 import fr.pops.controllers.viewcontrollers.NetworkInfoController;
 import fr.pops.cst.EnumCst;
-import fr.pops.sockets.resquest.GetNetworkInfoRequest;
 import fr.pops.sockets.resquest.PingRequest;
 
 public class NetworkInfoModel extends BaseModel<NetworkInfoController>{
@@ -40,7 +39,7 @@ public class NetworkInfoModel extends BaseModel<NetworkInfoController>{
         super();
 
         // Slow down the model
-        this.modelSteppingFamily = EnumCst.ModelSteppingFamily.FAMILY_1_ON_500;
+        this.modelSteppingFamily = EnumCst.ModelSteppingFamily.FAMILY_1_ON_1;
     }
 
     /*****************************************
@@ -59,8 +58,8 @@ public class NetworkInfoModel extends BaseModel<NetworkInfoController>{
         Client.getInstance().send(ping);
 
         // Send a get server info request
-        GetNetworkInfoRequest serverInfoRequest = new GetNetworkInfoRequest();
-        Client.getInstance().send(serverInfoRequest);
+//        GetNetworkInfoRequest serverInfoRequest = new GetNetworkInfoRequest();
+//        Client.getInstance().send(serverInfoRequest);
 
     }
 }

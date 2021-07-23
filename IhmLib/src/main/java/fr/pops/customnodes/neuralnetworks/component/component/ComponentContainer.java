@@ -173,7 +173,6 @@ public class ComponentContainer extends ListView<Component<?>> {
             for (PropertyNode<?> property : component.getBeanProperties().getPropertyNodes()){
                 if (property.getName().equals(propertyName)){
                     ((PropertyNode<T>)property).setValue(newValue);
-                    System.out.println("New value: " + newValue + " for " + propertyName);
                 }
             }
         }

@@ -22,6 +22,7 @@
 package fr.pops.sockets.resquest;
 
 import fr.pops.sockets.cst.EnumCst;
+import io.vertx.core.json.JsonObject;
 
 public class AuthenticateRequest extends Request{
 
@@ -57,6 +58,15 @@ public class AuthenticateRequest extends Request{
     }
 
     /**
+     * Ctor used to initialize the request with
+     * its content
+     * @param requestBody The request's body
+     */
+    public AuthenticateRequest(JsonObject requestBody) {
+        super(EnumCst.RequestTypes.AUTHENTICATE, requestBody);
+    }
+
+    /**
      * Ctor used to create a request when receiving one
      * @param rawParams The raw parameters to decode
      */
@@ -78,7 +88,6 @@ public class AuthenticateRequest extends Request{
 
         // Encode client id
         this.encoderDecoderHelper.encodeLong64(this.clientId);
-        this.rawRequest = this.encoderDecoderHelper.getRawParams();
     }
 
     /**

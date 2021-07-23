@@ -27,6 +27,7 @@ package fr.pops.sockets.resquest.beanrequests;
 import fr.pops.beans.properties.Property;
 import fr.pops.sockets.cst.EnumCst;
 import fr.pops.sockets.resquest.Request;
+import io.vertx.core.json.JsonObject;
 
 @SuppressWarnings("unchecked")
 public class UpdateBeanPropertyRequest<T> extends Request {
@@ -64,6 +65,15 @@ public class UpdateBeanPropertyRequest<T> extends Request {
     }
 
     /**
+     * Ctor used to initialize the request with
+     * its content
+     * @param requestBody The request's body
+     */
+    public UpdateBeanPropertyRequest(JsonObject requestBody) {
+        super(EnumCst.RequestTypes.UPDATE_BEAN_PROPERTY, requestBody);
+    }
+
+    /**
      * Create a request that will be handle by the requestHandler
      * @param rawParams The raw Request in binary
      * @param length    The length of the request
@@ -95,8 +105,6 @@ public class UpdateBeanPropertyRequest<T> extends Request {
 
         // Encode value depending on the property's type
         this.encodeValue();
-
-        this.rawRequest = this.encoderDecoderHelper.getRawParams();
     }
 
     /**

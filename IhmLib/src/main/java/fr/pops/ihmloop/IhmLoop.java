@@ -86,7 +86,7 @@ public class IhmLoop {
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
-            dt.set(dt.accumulateAndGet((double) this.frequency, Double::sum));
+            dt.set(dt.accumulateAndGet(this.frequency, Double::sum));
             this.runningTime = System.currentTimeMillis() - this.t0;
             this.stepCount++;
         }, this.initialDelay, this.timeDelay, TimeUnit.MILLISECONDS);
@@ -134,6 +134,9 @@ public class IhmLoop {
                 break;
             case FAMILY_1_ON_1000:
                 needsUpdate = this.stepCount % 1000 == 0;
+                break;
+            case FAMILY_1_ON_5000:
+                needsUpdate = this.stepCount % 5000 == 0;
                 break;
         }
         return needsUpdate;

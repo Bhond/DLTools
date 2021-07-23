@@ -35,7 +35,6 @@ public class BeanRequestHandler extends RequestHandler {
      */
     @Override
     protected void process(Request request) {
-
         switch (request.getType()){
             case CREATE_BEAN:
                 this.createBeanHandling((CreateBeanRequest) request);
@@ -43,6 +42,21 @@ public class BeanRequestHandler extends RequestHandler {
             case DELETE_BEAN:
                 this.deleteBeanHandling((DeleteBeanRequest) request);
                 break;
+        }
+    }
+
+    /**
+     * Post process request
+     * @param request The request to post process
+     */
+    @Override
+    public void postProcess(Request request){
+        // Select next operation depending on the request's type
+        EnumCst.RequestOperations operation = this.selectNextOperation(request);
+
+        // Perform next operation
+        if (operation == EnumCst.RequestOperations.WRITE_BACK){
+            Client.getInstance().send(request);
         }
     }
 

@@ -21,8 +21,9 @@
 package fr.pops.sockets.resquesthandler;
 
 import fr.pops.sockets.resquest.Request;
+import io.vertx.core.json.DecodeException;
 
-public abstract class RequestHandler {
+public abstract class RequestHandler{
 
     /*****************************************
      *
@@ -33,7 +34,9 @@ public abstract class RequestHandler {
      * Standard ctor
      * Nothing to be done
      */
-    protected RequestHandler(){}
+    public RequestHandler(){
+        // Nothing to be done
+    }
 
     /*****************************************
      *
@@ -44,12 +47,26 @@ public abstract class RequestHandler {
      * Handle the request
      * @param request The request to handle
      */
-    public final void handle(Request request){
-        // Decode request
-        request.decode();
+//    public final void handle(Request request){
+//        // Decode request
+//        request.decode();
+//
+//        // Process the request
+//        this.process(request);
+//    }
 
-        // Process the request
-        this.process(request);
+    /**
+     * Handle the Vertx buffer containing the request
+     * @param buffer The buffer containing the request to handle
+     */
+    public final void handle(Request request) {
+        try {
+            // Fill in request's fields
+            request.decodeBody();
+
+            // Process the request
+            this.process(request);
+        } catch (DecodeException ignored) {}
     }
 
     /**
@@ -57,6 +74,12 @@ public abstract class RequestHandler {
      * Not every request has to be processed depending on the client
      * @param request The request to process
      */
-    protected abstract void process(Request request);
+    protected void process(Request request){}
+
+    /**
+     * Post process request
+     * @param request The request to post process
+     */
+    public void postProcess(Request request){}
 
 }

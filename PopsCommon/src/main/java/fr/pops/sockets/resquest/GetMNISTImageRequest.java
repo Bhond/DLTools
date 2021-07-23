@@ -24,6 +24,7 @@ package fr.pops.sockets.resquest;
 
 import fr.pops.math.ndarray.BaseNDArray;
 import fr.pops.sockets.cst.EnumCst;
+import io.vertx.core.json.JsonObject;
 
 public class GetMNISTImageRequest extends Request {
 
@@ -49,6 +50,15 @@ public class GetMNISTImageRequest extends Request {
         // Parent
         super(EnumCst.RequestTypes.GET_MNIST_IMAGE);
         this.idx = idx;
+    }
+
+    /**
+     * Ctor used to initialize the request with
+     * its content
+     * @param requestBody The request's body
+     */
+    public GetMNISTImageRequest(JsonObject requestBody) {
+        super(EnumCst.RequestTypes.GET_MNIST_IMAGE, requestBody);
     }
 
     /**
@@ -86,9 +96,6 @@ public class GetMNISTImageRequest extends Request {
         if (this.image != null){
             this.encoderDecoderHelper.encodeBaseNDArray(this.image);
         }
-
-        // Get encoded request
-        this.rawRequest = this.encoderDecoderHelper.getRawParams();
     }
 
     /**

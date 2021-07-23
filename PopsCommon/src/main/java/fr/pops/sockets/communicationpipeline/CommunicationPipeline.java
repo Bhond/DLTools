@@ -105,7 +105,9 @@ public class CommunicationPipeline {
             this.selector = Selector.open();
             this.channel.register(this.selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
             this.buffer = buffer;
-        } catch (IOException ignored) {}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /*****************************************

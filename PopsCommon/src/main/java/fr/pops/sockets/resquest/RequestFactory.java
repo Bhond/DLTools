@@ -72,7 +72,7 @@ public class RequestFactory {
         int length = this.encoderDecoderHelper.decodeInt32();
         byte[] rawParams = this.encoderDecoderHelper.getRawParams();
         EnumCst.RequestTypes requestType = EnumCst.RequestTypes.values()[id];
-
+        //System.out.println(id + " ; " + length + " ; " + requestType);
         // Create the correct type of request
         switch (requestType){
             case AUTHENTICATE:

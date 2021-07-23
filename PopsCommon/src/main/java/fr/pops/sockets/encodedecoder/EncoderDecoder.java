@@ -131,11 +131,34 @@ public abstract class EncoderDecoder {
     }
 
     /**
-     * Decode boolean from string
+     * Decode String from string
      * @param rawParam Byte array representation of a string
      * @return The String contained in the input array
      */
     public static String decodeString(byte[] rawParam){
+        return new String(rawParam);
+    }
+
+    /*****************************************
+     *
+     * ASCII
+     *
+     *****************************************/
+    /**
+     * Encode String to byte array representation
+     * @param ascii The ASCII to encode in a byte array
+     * @return A byte array representation of the input byte array
+     */
+    public static byte[] encodeASCII(String ascii){
+        return ascii.getBytes();
+    }
+
+    /**
+     * Decode ASCII from string
+     * @param rawParam Byte array representation of a ASCII
+     * @return The ASCII contained in the input array
+     */
+    public static String decodeASCII(byte[] rawParam){
         return new String(rawParam);
     }
 }

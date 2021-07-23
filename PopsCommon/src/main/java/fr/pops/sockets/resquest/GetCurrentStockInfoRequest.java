@@ -22,6 +22,7 @@
 package fr.pops.sockets.resquest;
 
 import fr.pops.sockets.cst.EnumCst;
+import io.vertx.core.json.JsonObject;
 
 public class GetCurrentStockInfoRequest extends Request{
 
@@ -56,6 +57,15 @@ public class GetCurrentStockInfoRequest extends Request{
     public GetCurrentStockInfoRequest(String symbol){
         super(EnumCst.RequestTypes.GET_CURRENT_STOCK_INFO);
         this.stockName = symbol;
+    }
+
+    /**
+     * Ctor used to initialize the request with
+     * its content
+     * @param requestBody The request's body
+     */
+    public GetCurrentStockInfoRequest(JsonObject requestBody) {
+        super(EnumCst.RequestTypes.GET_CURRENT_STOCK_INFO, requestBody);
     }
 
     /**

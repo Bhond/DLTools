@@ -54,6 +54,13 @@ public abstract class BaseModel<controllerT extends BaseController<?,?>> {
      */
     public abstract void update(double dt);
 
+    /**
+     * Dispose the model
+     */
+    public final void dispose(){
+
+    }
+
     /*****************************************
      *
      * Getter

@@ -23,6 +23,7 @@
 package fr.pops.sockets.resquest;
 
 import fr.pops.sockets.cst.EnumCst;
+import io.vertx.core.json.JsonObject;
 
 public class PingRequest extends Request {
 
@@ -31,8 +32,8 @@ public class PingRequest extends Request {
      * Attributes
      *
      *****************************************/
-    private double t0 = 0.0d;
-    private double t1 = 0.0d;
+    public long t0 = 0L;
+    private long t1 = 0L;
 
     /*****************************************
      *
@@ -47,6 +48,15 @@ public class PingRequest extends Request {
         super(EnumCst.RequestTypes.PING);
         // Params
         this.t0 = System.currentTimeMillis();
+    }
+
+    /**
+     * Ctor used to initialize the request with
+     * its content
+     * @param requestBody The request's body
+     */
+    public PingRequest(JsonObject requestBody) {
+        super(EnumCst.RequestTypes.PING, requestBody);
     }
 
     /**
@@ -75,10 +85,7 @@ public class PingRequest extends Request {
         super.encode();
 
         // t0
-        this.encoderDecoderHelper.encodeDouble(this.t0);
-
-        // Get encoded request
-        this.rawRequest = this.encoderDecoderHelper.getRawParams();
+        this.encoderDecoderHelper.encodeLong64(this.t0);
     }
 
     /**
@@ -90,7 +97,7 @@ public class PingRequest extends Request {
         super.decode();
 
         // t0
-        this.t0 = this.encoderDecoderHelper.decodeDouble();
+        this.t0 = this.encoderDecoderHelper.decodeLong64();
     }
 
     /*****************************************
@@ -115,14 +122,14 @@ public class PingRequest extends Request {
      */
     @Override
     protected void setRequestLength() {
-        super.setRequestLength(Double.BYTES); // Delay
+        super.setRequestLength(Long.BYTES); // Delay
     }
 
     /**
      * Set the response delay
      * @param t1 The new time to compute the response delay
      */
-    public void setT1(double t1) {
+    public void setT1(Long t1) {
         this.t1 = t1;
     }
 }

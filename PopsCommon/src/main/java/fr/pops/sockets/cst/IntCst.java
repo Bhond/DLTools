@@ -26,11 +26,13 @@ public class IntCst {
      * Encoder / decoder
      *
      *****************************************/
+    public static final int BUFFER_1k_SIZE = 1024;
     public static final int BUFFER_8k_SIZE = 8192;
     public static final int BUFFER_16k_SIZE = 16384;
     public static final int BUFFER_32k_SIZE = 32768;
     public static final int BUFFER_65k_SIZE = 65536;
+    public static final int BUFFER_131k_SIZE = 131072;
 
-    public static final int BUFFER_SIZE = BUFFER_65k_SIZE;
+    public static final int BUFFER_SIZE = BUFFER_1k_SIZE;
 
 }
