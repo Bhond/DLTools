@@ -1,15 +1,9 @@
 {
     "type": "MAIN",
     "class": "MainView",
-    "subviews": {
-        "NetworkInfoView": {
-            "type": "NETWORK_INFO",
-            "fields": {},
-            "class": "NetworkInfoView"
-        },
-        "NeuralNetworkView": {
-            "type": "NEURAL_NETWORK",
-            "class": "NeuralNetworkView"
-        }
-    }
+    "subviews": {"StockView": {
+        "type": "STOCK",
+        "fields": {"quoteInfos": {}},
+        "class": "StockView"
+    }}
 }

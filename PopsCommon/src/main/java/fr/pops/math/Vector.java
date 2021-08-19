@@ -19,7 +19,6 @@
  ******************************************************************************/
 package fr.pops.math;
 
-import java.util.List;
 import java.util.function.Function;
 
 public class Vector {
@@ -30,9 +29,9 @@ public class Vector {
      *
      *****************************************/
     private boolean randomize = false;
-    private int m_size;
-    private double m_magnitude = 0;
-    private double[] m_value;
+    private int size;
+    private double magnitude = 0;
+    private double[] value;
 
     /*****************************************
      *
@@ -45,18 +44,18 @@ public class Vector {
      */
     public Vector(int size){
         if (size == 0){
-            this.m_size = size;
-            this.m_value = null;
-            this.m_magnitude = 0;
+            this.size = size;
+            this.value = null;
+            this.magnitude = 0;
             System.out.println("A vector has no size.");
         } else {
-            this.m_size = size;
-            this.m_value = new double[size];
+            this.size = size;
+            this.value = new double[size];
             for (int i = 0; i < size; i++){
                 if (randomize){
-                    this.m_value[i] = PopsMath.rand();
+                    this.value[i] = PopsMath.rand();
                 } else {
-                    this.m_value[i] = 0;
+                    this.value[i] = 0;
                 }
             }
             this.computeMagnitude();
@@ -72,7 +71,7 @@ public class Vector {
      * Compute the magnitude of the vector
      */
     private void computeMagnitude(){
-        this.m_magnitude = Vector.dot(this, this);
+        this.magnitude = Vector.dot(this, this);
     }
 
     /*****************************************
@@ -261,11 +260,11 @@ public class Vector {
      *
      *****************************************/
     private void setValue(double[] fltVec){
-        this.m_value = fltVec;
+        this.value = fltVec;
     }
 
     public void setValue(int i, double val){
-        this.m_value[i] = val;
+        this.value[i] = val;
     }
 
     /*****************************************
@@ -273,34 +272,27 @@ public class Vector {
      * Getters
      *
      *****************************************/
-    public int getSize(){return this.m_size;}
 
-    public double getMagnitude(){return this.m_magnitude;}
+    public int getSize(){return this.size;}
 
-    public double getValue(int i){return this.m_value[i];}
+    public double getMagnitude(){return this.magnitude;}
+
+    public double getValue(int i){return this.value[i];}
 
     /*****************************************
      *
      * Cast
      *
      *****************************************/
+    /**
+     * Cast double array to a vector
+     * @param dblVec The double array to cast
+     * @return The vector created from the double array
+     */
     public static Vector toVector(double[] dblVec){
         if (dblVec != null){
             Vector X = new Vector(dblVec.length);
             X.setValue(dblVec);
-
-            return X;
-        } else {
-            return null;
-        }
-    }
-
-    public static Vector toVector(List<Float> fltVec){
-        if (fltVec != null){
-            Vector X = new Vector(fltVec.size());
-            for(int i = 0; i < X.getSize(); i++){
-                X.setValue(i, fltVec.get(i));
-            }
 
             return X;
         } else {

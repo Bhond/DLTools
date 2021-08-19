@@ -29,5 +29,6 @@ open module PopsCommon {
     exports fr.pops.beans.properties;
     exports fr.pops.beans.test;
     exports fr.pops.sockets.resquest.beanrequests;
+    exports fr.pops.utils;
 
 }

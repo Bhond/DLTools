@@ -353,7 +353,7 @@ public class Matrix {
      *****************************************/
     /**
      * Build a matrix with every element is a random num number between 0 and 1
-     * @param M The matrix to randomize
+     * @param M The matrix to random
      * @return A matrix with every element is a random num number between 0 and 1
      */
     public static Matrix randomize(Matrix M){

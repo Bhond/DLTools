@@ -48,6 +48,9 @@ public abstract class PopsMath<T, R> implements Function<T, R> {
     // Classic randomized generation
     public static double rand(){ return 2 * Math.random() - 1; }
 
+    // Classic randomized generation
+    public static float randf(){ return 2 * (float)Math.random() - 1; }
+
     // Uniform distribution generation between min and max
     public static double rand(double min, double max){ return ((max - min) * new Random().nextDouble() + min); }
 
@@ -85,9 +88,17 @@ public abstract class PopsMath<T, R> implements Function<T, R> {
         return Math.min(Math.max(min, val), max);
     }
 
+    public static float clamp(float val, float min, float max){
+        return Math.min(Math.max(min, val), max);
+    }
+
     // Interpolation
     public static double lerp(double a, double b, double amt){
         return a + clamp(0d, 1d, amt) * (b - a);
+    }
+
+    public static float lerp(float a, float b, float amt){
+        return a + clamp(0.0f, 1.0f, amt) * (b - a);
     }
 
     /**

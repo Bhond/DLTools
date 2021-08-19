@@ -2,6 +2,10 @@ package fr.pops.utils;
 
 import fr.pops.math.PopsMath;
 import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Map;
 
 public abstract class Utils {
@@ -31,6 +35,25 @@ public abstract class Utils {
         return Utils.class.getResource(path).toString().substring(6);
     }
 
+    /**
+     * Load an entire file in a string
+     * @param path The path to the file
+     * @return The entire file parsed in a string
+     */
+    public static String loadAsString(String path) {
+        StringBuilder result = new StringBuilder();
+
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(Utils.class.getResourceAsStream(path)));
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                result.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            System.err.println("Couldn't find the file at " + path);
+        }
+        return result.toString();
+    }
     /*****************************************
      *
      * String formatter
@@ -98,6 +121,5 @@ public abstract class Utils {
                 PopsMath.lerp(col0[1], col1[1], linearCoeff),
                 PopsMath.lerp(col0[2], col1[2], linearCoeff),
         };
-
     }
 }

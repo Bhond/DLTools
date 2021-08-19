@@ -3,11 +3,9 @@ package fr.pops.server;
 import fr.pops.client.VertxClientSession;
 import fr.pops.sockets.cst.EnumCst;
 import fr.pops.sockets.resquest.Request;
-import fr.pops.sockets.resquest.RequestFactory;
 import fr.pops.sockets.resquest.VertxRequestFactory;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Vertx;
-import io.vertx.core.VertxOptions;
 import io.vertx.core.json.DecodeException;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.net.NetServer;
@@ -34,13 +32,7 @@ public class VertxServer extends AbstractVerticle {
     private VertxServerRequestHandler requestHandler;
 
     private HashMap<NetSocket, VertxClientSession> clientMap = new HashMap<>();
-    private List<Vertx> clientVertx = new ArrayList<>();
     private HashMap<Long, NetSocket> connectedClientsId = new HashMap<>();
-    private VertxOptions vertxOptions;
-
-    private final RequestFactory requestFactory = new RequestFactory();
-    private int counter = 0;
-    private long t0;
 
     /**
      * Standard ctor
@@ -60,12 +52,7 @@ public class VertxServer extends AbstractVerticle {
                 .setHost(SERVER_IP)
                 .setPort(SERVER_PORT);
 
-//        Config hazelcastConfig = new Config();
-//        ClusterManager clusterManager = new HazelcastClusterManager(hazelcastConfig);
-        this.vertxOptions = new VertxOptions();
-
         // Server
-        //this.server = vertx.createNetServer(this.options);
         for (int i = 0; i < NB_CORES_SERVER; i++){
             this.multiCoreServer.add(vertx.createNetServer(this.options));
         }
@@ -117,7 +104,6 @@ public class VertxServer extends AbstractVerticle {
                     this.postProcessRequest(request, netSocket);
                 }
             } catch (DecodeException ignored) {
-                // TODO: Handle the exception
                 //System.out.println("Decode exception raised when retrieving the request received: " + buffer);
             }
         });
@@ -143,9 +129,6 @@ public class VertxServer extends AbstractVerticle {
         switch (operation){
             case WRITE_BACK:
                 senderSocket.write(request.toPlainJson().toBuffer().appendString("\\n"));
-                // Old
-                //request.encode();
-                //this.clientMap.get(senderSocket).send(request);
                 break;
             case TRANSFER:
                 this.transfer(request, senderSocket);
@@ -165,9 +148,6 @@ public class VertxServer extends AbstractVerticle {
         if (this.isClientConnected(receiverId)) {
             NetSocket receiverSocket = this.connectedClientsId.get(receiverId);
             receiverSocket.write(request.toPlainJson().toBuffer().appendString("\\n"));
-            // Old
-//            request.encode();
-//            receiverSocket.write(Buffer.buffer(request.getRawRequest()));
         }
     }
 

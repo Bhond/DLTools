@@ -24,6 +24,7 @@
         <module name="StockLib" />
         <module name="NeuralNetworksLib" />
         <module name="PopsCommon" />
+        <module name="HoloPopsLib" />
         <module name="MasterServerLib" />
       </profile>
     </annotationProcessing>

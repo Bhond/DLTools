@@ -47,18 +47,6 @@ public abstract class RequestHandler{
      * Handle the request
      * @param request The request to handle
      */
-//    public final void handle(Request request){
-//        // Decode request
-//        request.decode();
-//
-//        // Process the request
-//        this.process(request);
-//    }
-
-    /**
-     * Handle the Vertx buffer containing the request
-     * @param buffer The buffer containing the request to handle
-     */
     public final void handle(Request request) {
         try {
             // Fill in request's fields

@@ -6,6 +6,8 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/../StockLib/pom.xml" />
+        <option value="$PROJECT_DIR$/../HoloPopsLib/pom.xml" />
+        <option value="$PROJECT_DIR$/HoloPopsLib/pom.xml" />
       </list>
     </option>
   </component>

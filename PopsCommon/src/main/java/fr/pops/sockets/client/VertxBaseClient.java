@@ -133,14 +133,6 @@ public class VertxBaseClient extends AbstractVerticle {
      *
      *****************************************/
     /**
-     * Handle the given request
-     * @param request The request to handle
-     */
-    public void handle(Request request) {
-        System.out.println("Not implemented yet...");
-    }
-
-    /**
      * Send the input request
      * @param request The request to send
      */

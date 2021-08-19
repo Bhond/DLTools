@@ -31,6 +31,7 @@ public abstract class EnumCst {
         DEFAULT(0L),
         IHM(  7596087841016572405L),
         STOCK(390208358890556977L),
+        HOLOPOPS(763383861187678882L),
         BEAN(32482398725739523L);
 
         // Attributes
