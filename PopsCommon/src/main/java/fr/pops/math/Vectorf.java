@@ -8,7 +8,7 @@
  *                        PP       OO  OO   PP          SS
  *                        PP        OOOO    PP       SSSS
  *
- * Name: Vector.java
+ * Name: Vectorf.java
  *
  * Description: Class defining the vectors with floating precision.
  *
@@ -64,21 +64,37 @@ public class Vectorf {
 
     /*****************************************
      *
-     * Algebraic ops
+     * Math
      *
      *****************************************/
     /**
      * Compute the magnitude of the vector
      */
-    private float length(){
+    public float length(){
         return Vectorf.dot(this, this);
     }
 
-    /*****************************************
-     *
-     * Math
-     *
-     *****************************************/
+    /**
+     * Normalize the input vector
+     * @param u The Vectorf to normalize
+     * @return The normalized Vectorf
+     */
+    public static Vectorf normalize(Vectorf u){
+        float length = u.length();
+        return Vector3f.apply(ui -> ui / length, u);
+    }
+
+    /**
+     * Safe Normalize the input vector
+     * @param u The Vectorf to normalize
+     * @return The normalized Vector3f if length != 0.0f
+     *         The input Vectorf otherwise
+     */
+    public static Vectorf safeNormalize(Vectorf u){
+        float length = u.length();
+        return length == 0.0f ? u : Vectorf.apply(ui -> ui / length, u);
+    }
+
     /* *
      * Return a new Vector corresponding to X + Y
      * */
@@ -274,7 +290,11 @@ public class Vectorf {
     public int getSize(){return this.size;}
 
     /**
-     * The value at index i
+     * @return The value array
+     */
+    public float[] getValue(){return this.value;}
+
+    /**
      * @param i The index to retrieve the value from
      * @return The value at the given index
      */

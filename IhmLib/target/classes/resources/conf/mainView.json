@@ -1,9 +1,0 @@
-{
-    "type": "MAIN",
-    "class": "MainView",
-    "subviews": {"StockView": {
-        "type": "STOCK",
-        "fields": {"quoteInfos": {}},
-        "class": "StockView"
-    }}
-}

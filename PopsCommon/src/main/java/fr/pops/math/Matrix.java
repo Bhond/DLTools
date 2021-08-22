@@ -377,12 +377,12 @@ public class Matrix {
      *****************************************/
     /**
      * Extract submatrix from A
-     * @param A
-     * @param startI
-     * @param startJ
-     * @param sizeI
-     * @param sizeJ
-     * @return
+     * @param A The matrix to extract
+     * @param startI Starting row
+     * @param startJ Starting column
+     * @param sizeI Number of rows to extract
+     * @param sizeJ Number of columns to extract
+     * @return The extracted matrix
      */
     public static Matrix extract(Matrix A, int startI, int startJ, int sizeI, int sizeJ){
         double[][] res = new double[sizeI][sizeJ];
@@ -402,9 +402,9 @@ public class Matrix {
 
     /**
      * Add padding all over matrix A
-     * @param A
-     * @param sizePadding
-     * @return
+     * @param A The matrix to pad
+     * @param sizePadding The number of rows and columns to add around the matrix
+     * @return The padded matrix
      */
     public static Matrix addPadding(Matrix A, int sizePadding){
 
@@ -428,6 +428,11 @@ public class Matrix {
      * Cast
      *
      *****************************************/
+    /**
+     * Cast given float array to matrix
+     * @param fltArr The float array to cast
+     * @return The Matrix4f buit from the array
+     */
     public static Matrix toMatrix(double[][] fltArr){
         Matrix M = null;
         if (fltArr != null){
@@ -437,6 +442,10 @@ public class Matrix {
         return M;
     }
 
+    /**
+     * Cast the matrix to a string representation of itself
+     * @return The representation of the matrix in a string format
+     */
     @Override
     public String toString(){
         String msg = " ";

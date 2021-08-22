@@ -1,13 +1,13 @@
 package fr.pops.holopopsmain;
 
-import fr.pops.window.Window;
+import fr.pops.client.Client;
 
 
 public class Main {
 
     public static void main(String[] args) {
-        Window wm = new Window();
-        wm.run();
+        Client client = new Client();
+        client.start();
     }
 
 }

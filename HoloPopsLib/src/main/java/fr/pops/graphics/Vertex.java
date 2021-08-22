@@ -42,9 +42,8 @@ public class Vertex {
      * Ctor
      * @param position A Vector3f representing the position of the vertex
      */
-    public Vertex(Vector3f position, Vector3f color, Vector2f textureCoord){
+    public Vertex(Vector3f position, Vector2f textureCoord){
         this.position = position;
-        this.color = color;
         this.textureCoord = textureCoord;
     }
 
@@ -58,13 +57,6 @@ public class Vertex {
      */
     public Vector3f getPosition() {
         return this.position;
-    }
-
-    /**
-     * @return The Vector3f representing the color of the vertex
-     */
-    public Vector3f getColor() {
-        return this.color;
     }
 
     /**

@@ -90,15 +90,15 @@ public class Mesh {
         this.vbo = this.storeData(positionBuffer, 0, 3);
 
         // CBO
-        FloatBuffer colorBuffer = MemoryUtil.memAllocFloat(vertices.length * 3);
-        float[] colorData = new float[this.vertices.length * 3];
-        for (int i = 0; i < vertices.length; i++){
-            colorData[i * 3] = vertices[i].getColor().x();
-            colorData[i * 3 + 1] = vertices[i].getColor().y();
-            colorData[i * 3 + 2] = vertices[i].getColor().z();
-        }
-        colorBuffer.put(colorData).flip();
-        this.cbo = this.storeData(colorBuffer, 1, 3);
+//        FloatBuffer colorBuffer = MemoryUtil.memAllocFloat(vertices.length * 3);
+//        float[] colorData = new float[this.vertices.length * 3];
+//        for (int i = 0; i < vertices.length; i++){
+//            colorData[i * 3] = vertices[i].getColor().x();
+//            colorData[i * 3 + 1] = vertices[i].getColor().y();
+//            colorData[i * 3 + 2] = vertices[i].getColor().z();
+//        }
+//        colorBuffer.put(colorData).flip();
+//        this.cbo = this.storeData(colorBuffer, 1, 3);
 
         // TBO
         FloatBuffer textureBuffer = MemoryUtil.memAllocFloat(vertices.length * 2);
@@ -200,9 +200,9 @@ public class Mesh {
      * @return The Color Buffer Object containing
      *          color data
      */
-    public int getCBO() {
-        return this.cbo;
-    }
+//    public int getCBO() {
+//        return this.cbo;
+//    }
 
     /**
      * @return The Texture Buffer Object containing

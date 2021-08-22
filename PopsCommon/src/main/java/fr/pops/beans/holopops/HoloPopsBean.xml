@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Group name="root">
+    <Entry name="Parent">Bean</Entry>
+    <Group name="Properties">
+        <Group name="Property">
+            <Entry name="Name">width</Entry>
+            <Entry name="Type">Integer</Entry>
+            <Entry name="Default">5</Entry>
+            <Entry name="isInternal">true</Entry>
+            <Entry name="isComputed">true</Entry>
+        </Group>
+        <Group name="Property">
+            <Entry name="Name">height</Entry>
+            <Entry name="Type">Integer</Entry>
+            <Entry name="Default">5</Entry>
+            <Entry name="isInternal">true</Entry>
+            <Entry name="isComputed">true</Entry>
+        </Group>
+    </Group>
+</Group>

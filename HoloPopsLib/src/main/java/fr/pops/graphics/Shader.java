@@ -19,9 +19,15 @@
  ******************************************************************************/
 package fr.pops.graphics;
 
+import fr.pops.math.Matrix4f;
+import fr.pops.math.Vector2f;
+import fr.pops.math.Vector3f;
 import fr.pops.utils.Utils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.system.MemoryUtil;
+
+import java.nio.FloatBuffer;
 
 public class Shader {
 
@@ -124,7 +130,88 @@ public class Shader {
      * Destroy the program
      */
     public void destroy(){
+        // Shaders
+        GL20.glDetachShader(this.programId, this.vertexId);
+        GL20.glDetachShader(this.programId, this.fragmentId);
+        GL20.glDeleteShader(this.vertexId);
+        GL20.glDeleteShader(this.fragmentId);
+
+        // Program
         GL20.glDeleteProgram(this.programId);
     }
 
+    /*****************************************
+     *
+     * Getter
+     *
+     *****************************************/
+    /**
+     * Retrieve the uniform location
+     * @param name Uniform's name
+     * @return Uniform's id
+     */
+    public int getUniformLocation(String name){
+        return GL20.glGetUniformLocation(this.programId, name);
+    }
+
+    /*****************************************
+     *
+     * Setters
+     *
+     *****************************************/
+    /**
+     * Set the uniform
+     * @param name Uniform's name
+     * @param value Uniform's value
+     */
+    public void setUniform(String name, float value){
+        GL20.glUniform1f(this.getUniformLocation(name), value);
+    }
+
+    /**
+     * Set the uniform
+     * @param name Uniform's name
+     * @param value Uniform's value
+     */
+    public void setUniform(String name, int value){
+        GL20.glUniform1i(this.getUniformLocation(name), value);
+    }
+
+    /**
+     * Set the uniform
+     * @param name Uniform's name
+     * @param value Uniform's value
+     */
+    public void setUniform(String name, boolean value){
+        GL20.glUniform1i(this.getUniformLocation(name), value ? 1 : 0);
+    }
+
+    /**
+     * Set the uniform
+     * @param name Uniform's name
+     * @param value Uniform's value
+     */
+    public void setUniform(String name, Vector2f value){
+        GL20.glUniform2f(this.getUniformLocation(name), value.x(), value.y());
+    }
+
+    /**
+     * Set the uniform
+     * @param name Uniform's name
+     * @param value Uniform's value
+     */
+    public void setUniform(String name, Vector3f value){
+        GL20.glUniform3f(this.getUniformLocation(name), value.x(), value.y(), value.z());
+    }
+
+    /**
+     * Set the uniform
+     * @param name Uniform's name
+     * @param value Uniform's value
+     */
+    public void setUniform(String name, Matrix4f value){
+        FloatBuffer matrix = MemoryUtil.memAllocFloat(Matrix4f.SIZE * Matrix4f.SIZE);
+        matrix.put(value.getValue()).flip();
+        GL20.glUniformMatrix4fv(this.getUniformLocation(name), true, matrix);
+    }
 }

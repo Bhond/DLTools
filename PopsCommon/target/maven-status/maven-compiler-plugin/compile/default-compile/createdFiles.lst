@@ -1,3 +1,4 @@
+fr\pops\sockets\resquest\VertxRequestFactory$1.class
 fr\pops\sockets\client\VertxBaseClient.class
 fr\pops\sockets\resquest\GetCurrentStockInfoRequest.class
 fr\pops\commoncst\EnumCst$ImageTypes.class
@@ -6,9 +7,11 @@ fr\pops\beans\beanmodels\BeanModel.class
 fr\pops\math\ndarray\Shape$1.class
 fr\pops\math\ndarray\Shape.class
 fr\pops\beans\bean\BeanManager.class
+fr\pops\math\Matrix4f.class
 fr\pops\math\ndarray\Shape$ShapeBuilder.class
 fr\pops\math\Specter.class
 fr\pops\commoncst\StrCst.class
+fr\pops\utils\Utils.class
 fr\pops\sockets\resquest\RequestFactory.class
 fr\pops\beans\bean\Bean.class
 fr\pops\sockets\resquest\beanrequests\UpdateBeanPropertyRequest$1.class
@@ -29,11 +32,13 @@ fr\pops\sockets\resquest\DisconnectionRequest.class
 fr\pops\beans\beanmodels\TestModel.class
 fr\pops\commoncst\EnumCst$CifarLabels.class
 fr\pops\jsonparser\IRecordable.class
+fr\pops\math\Vector2f.class
 fr\pops\sockets\client\BaseClient.class
 fr\pops\sockets\encodedecoder\EncoderDecoder.class
 fr\pops\sockets\cst\EnumCst$RequestTypes.class
 fr\pops\sockets\cst\EnumCst$ClientTypes.class
 fr\pops\beans\properties\StringProperty.class
+fr\pops\sockets\resquest\VertxRequestFactory.class
 fr\pops\commoncst\EnumCst$Optimizer.class
 fr\pops\commoncst\EnumCst$DActivationFunction.class
 fr\pops\beans\properties\DoubleProperty.class
@@ -46,6 +51,7 @@ fr\pops\beans\test\TestBean.class
 fr\pops\commoncst\GeneratorCst.class
 fr\pops\math\PopsMath$Function2Args.class
 fr\pops\commoncst\EnumCst$NeuralNetworkTypes.class
+fr\pops\math\Matrixf.class
 fr\pops\math\ndarray\BaseNDArray$BaseNDArrayBuilder.class
 fr\pops\math\ArrayUtil.class
 fr\pops\sockets\resquesthandler\RequestHandler.class
@@ -61,6 +67,7 @@ fr\pops\commoncst\EnumCst$WeightsInitMethod.class
 fr\pops\sockets\cst\IntCst.class
 fr\pops\commoncst\EnumCst.class
 fr\pops\math\ndarray\BaseNDArray.class
+fr\pops\math\Vectorf.class
 fr\pops\sockets\resquest\beanrequests\DeleteBeanRequest.class
 fr\pops\sockets\resquest\beanrequests\UpdateBeanPropertyRequest.class
 fr\pops\commoncst\EnumCst$Feature.class
@@ -73,6 +80,7 @@ fr\pops\generator\main\Main.class
 fr\pops\sockets\communicationpipeline\CommunicationPipeline.class
 fr\pops\math\FFT.class
 fr\pops\xmlparser\utils\XMLParserUtil.class
+fr\pops\math\Vector3f.class
 fr\pops\math\ndarray\INDArray.class
 fr\pops\commoncst\EnumCst$DataTypes.class
 fr\pops\sockets\encodedecoder\EncoderDecoderHelper.class
