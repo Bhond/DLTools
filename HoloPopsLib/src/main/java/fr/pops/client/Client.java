@@ -19,14 +19,21 @@
  ******************************************************************************/
 package fr.pops.client;
 
-import org.lwjgl.glfw.GLFW;
-import fr.pops.graphics.*;
+import fr.pops.graphics.Material;
+import fr.pops.graphics.Renderer;
+import fr.pops.graphics.Shader;
+import fr.pops.graphics.meshes.Mesh;
 import fr.pops.io.Input;
+import fr.pops.io.ModelLoader;
 import fr.pops.io.Window;
-import fr.pops.math.Vector2f;
 import fr.pops.math.Vector3f;
+import fr.pops.objects.Camera;
+import fr.pops.objects.GameObject;
 import fr.pops.sockets.client.VertxBaseClient;
 import fr.pops.sockets.cst.EnumCst;
+import fr.pops.utils.Utils;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL20;
 
 public class Client extends VertxBaseClient implements Runnable {
 
@@ -48,73 +55,10 @@ public class Client extends VertxBaseClient implements Runnable {
     private Shader shader;
     private Material mat = new Material("/textures/image.png");
     private Renderer renderer;
-    private Mesh mesh = new Mesh(new Vertex[]{
-            //Back face
-            new Vertex(new Vector3f(-0.5f,  0.5f, -0.5f), new Vector2f(0.0f, 0.0f)),
-            new Vertex(new Vector3f(-0.5f, -0.5f, -0.5f), new Vector2f(0.0f, 1.0f)),
-            new Vertex(new Vector3f( 0.5f, -0.5f, -0.5f), new Vector2f(1.0f, 1.0f)),
-            new Vertex(new Vector3f( 0.5f,  0.5f, -0.5f), new Vector2f(1.0f, 0.0f)),
-
-            //Front face
-            new Vertex(new Vector3f(-0.5f,  0.5f,  0.5f), new Vector2f(0.0f, 0.0f)),
-            new Vertex(new Vector3f(-0.5f, -0.5f,  0.5f), new Vector2f(0.0f, 1.0f)),
-            new Vertex(new Vector3f( 0.5f, -0.5f,  0.5f), new Vector2f(1.0f, 1.0f)),
-            new Vertex(new Vector3f( 0.5f,  0.5f,  0.5f), new Vector2f(1.0f, 0.0f)),
-
-            //Right face
-            new Vertex(new Vector3f( 0.5f,  0.5f, -0.5f), new Vector2f(0.0f, 0.0f)),
-            new Vertex(new Vector3f( 0.5f, -0.5f, -0.5f), new Vector2f(0.0f, 1.0f)),
-            new Vertex(new Vector3f( 0.5f, -0.5f,  0.5f), new Vector2f(1.0f, 1.0f)),
-            new Vertex(new Vector3f( 0.5f,  0.5f,  0.5f), new Vector2f(1.0f, 0.0f)),
-
-            //Left face
-            new Vertex(new Vector3f(-0.5f,  0.5f, -0.5f), new Vector2f(0.0f, 0.0f)),
-            new Vertex(new Vector3f(-0.5f, -0.5f, -0.5f), new Vector2f(0.0f, 1.0f)),
-            new Vertex(new Vector3f(-0.5f, -0.5f,  0.5f), new Vector2f(1.0f, 1.0f)),
-            new Vertex(new Vector3f(-0.5f,  0.5f,  0.5f), new Vector2f(1.0f, 0.0f)),
-
-            //Top face
-            new Vertex(new Vector3f(-0.5f,  0.5f,  0.5f), new Vector2f(0.0f, 0.0f)),
-            new Vertex(new Vector3f(-0.5f,  0.5f, -0.5f), new Vector2f(0.0f, 1.0f)),
-            new Vertex(new Vector3f( 0.5f,  0.5f, -0.5f), new Vector2f(1.0f, 1.0f)),
-            new Vertex(new Vector3f( 0.5f,  0.5f,  0.5f), new Vector2f(1.0f, 0.0f)),
-
-            //Bottom face
-            new Vertex(new Vector3f(-0.5f, -0.5f,  0.5f), new Vector2f(0.0f, 0.0f)),
-            new Vertex(new Vector3f(-0.5f, -0.5f, -0.5f), new Vector2f(0.0f, 1.0f)),
-            new Vertex(new Vector3f( 0.5f, -0.5f, -0.5f), new Vector2f(1.0f, 1.0f)),
-            new Vertex(new Vector3f( 0.5f, -0.5f,  0.5f), new Vector2f(1.0f, 0.0f)),
-    }, new int[] {
-            //Back face
-            0, 1, 3,
-            3, 1, 2,
-
-            //Front face
-            4, 5, 7,
-            7, 5, 6,
-
-            //Right face
-            8, 9, 11,
-            11, 9, 10,
-
-            //Left face
-            12, 13, 15,
-            15, 13, 14,
-
-            //Top face
-            16, 17, 19,
-            19, 17, 18,
-
-            //Bottom face
-            20, 21, 23,
-            23, 21, 22
-    }, mat);
-    private GameObject gameObject = new GameObject(new Vector3f(.5f, 0.0f, 0.0f),
-            new Vector3f(0.0f, .0f, .0f),
-            new Vector3f(1.0f, 1.0f, 1.0f),
-            this.mesh);
+    public Mesh mesh = ModelLoader.loadModel(Utils.getResourceWithoutFilePrefix("/models/bunny.stl"), "/textures/image.png");//new Grid(10, 10, 1, 1);
     private Camera camera = new Camera(new Vector3f(.0f, .0f, 1.0f),
-                                       new Vector3f(.0f, (float)Math.PI / 4, .0f));
+                                       new Vector3f(0, .0f, .0f));
+    public GameObject object = new GameObject(new Vector3f(0, 0, 0), new Vector3f( 0, 0, 0), new Vector3f(1, 1, 1), mesh);
 
     /*****************************************
      *
@@ -158,7 +102,8 @@ public class Client extends VertxBaseClient implements Runnable {
         while (!this.window.shouldClose() && !Input.isKeyDown(GLFW.GLFW_KEY_ESCAPE)) {
             update();
             render();
-            if (Input.isKeyDown(GLFW.GLFW_KEY_F11)) this.window.setFullscreen(!this.window.isFullscreen());
+            if (Input.isKeyDown(GLFW.GLFW_KEY_Z)) GL20.glPolygonMode(GL20.GL_FRONT_AND_BACK, GL20.GL_LINE);
+            if (Input.isKeyDown(GLFW.GLFW_KEY_F)) GL20.glPolygonMode(GL20.GL_FRONT_AND_BACK, GL20.GL_FILL);
         }
         close();
     }
@@ -178,7 +123,7 @@ public class Client extends VertxBaseClient implements Runnable {
      */
     private void update() {
         this.window.update();
-        this.camera.update();
+        camera.update();
         this.window.mouseState(Input.isButtonDown(GLFW.GLFW_MOUSE_BUTTON_LEFT));
     }
 
@@ -186,7 +131,7 @@ public class Client extends VertxBaseClient implements Runnable {
      * Render the meshes
      */
     private void render() {
-        this.renderer.renderMesh(gameObject, camera);
+        renderer.renderMesh(object, camera);
         this.window.swapBuffers();
     }
 

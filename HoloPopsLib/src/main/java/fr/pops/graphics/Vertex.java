@@ -30,7 +30,7 @@ public class Vertex {
      *
      *****************************************/
     private Vector3f position;
-    private Vector3f color;
+    private Vector3f normal;
     private Vector2f textureCoord;
 
     /*****************************************
@@ -42,8 +42,9 @@ public class Vertex {
      * Ctor
      * @param position A Vector3f representing the position of the vertex
      */
-    public Vertex(Vector3f position, Vector2f textureCoord){
+    public Vertex(Vector3f position, Vector3f normal,  Vector2f textureCoord){
         this.position = position;
+        this.normal = normal;
         this.textureCoord = textureCoord;
     }
 

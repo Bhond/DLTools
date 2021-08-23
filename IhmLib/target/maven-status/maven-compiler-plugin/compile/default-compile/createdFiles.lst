@@ -9,7 +9,6 @@ fr\pops\customnodes\neuralnetworks\component\component\ComponentFactory.class
 fr\pops\customnodes\beanproperties\BeanProperties.class
 fr\pops\customnodes\neuralnetworks\component\component\LocalInputComponent.class
 fr\pops\customnodes\neuralnetworks\component\link\LinkHandle$1.class
-fr\pops\utils\Utils.class
 fr\pops\customnodes\neuralnetworks\component\component\DenseLayerComponent.class
 fr\pops\viewmodels\NeuralNetworkModel.class
 fr\pops\customnodes\beanproperties\PropertyNode.class

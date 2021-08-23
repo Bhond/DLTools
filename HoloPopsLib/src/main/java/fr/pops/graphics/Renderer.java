@@ -20,8 +20,11 @@
 
 package fr.pops.graphics;
 
+import fr.pops.graphics.meshes.Mesh;
 import fr.pops.io.Window;
 import fr.pops.math.Matrix4f;
+import fr.pops.objects.Camera;
+import fr.pops.objects.GameObject;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
@@ -83,7 +86,11 @@ public class Renderer {
         this.shader.setUniform(TRANSFORM, Matrix4f.transform(object.getPosition(), object.getRotation(), object.getScale()));
         this.shader.setUniform(PROJECTION, this.window.getProjection());
         this.shader.setUniform(VIEW, Matrix4f.view(camera.getPosition(), camera.getRotation()));
-        GL11.glDrawElements(GL11.GL_TRIANGLES, object.getMesh().getIndices().length, GL11.GL_UNSIGNED_INT, 0);
+        if (object.getMesh().getRenderMode() == Mesh.RenderMode.TRIANGLES){
+            GL11.glDrawElements(GL11.GL_TRIANGLES, object.getMesh().getIndices().length, GL11.GL_UNSIGNED_INT, 0);
+        } else {
+            GL11.glDrawElements(GL11.GL_LINES, object.getMesh().getIndices().length, GL11.GL_UNSIGNED_INT, 0);
+        }
         this.shader.unbind();
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 

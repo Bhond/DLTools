@@ -201,7 +201,7 @@ public class Matrix4f extends Matrixf {
         Matrix4f rotZMatrix = Matrix4f.rotate(rotation.z(), Vector3f.Z_AXIS);
         Matrix4f rotationMatrix = Matrix4f.times(rotZMatrix, Matrix4f.times(rotYMatrix, rotXMatrix));
         // Return view
-        return Matrix4f.times(rotationMatrix, translationMatrix);
+        return Matrix4f.times(translationMatrix, rotationMatrix);
     }
 
     /*****************************************

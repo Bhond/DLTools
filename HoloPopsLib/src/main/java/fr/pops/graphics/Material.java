@@ -80,7 +80,7 @@ public class Material {
         IntBuffer channels = BufferUtils.createIntBuffer(1);
 
         // Image
-        STBImage.stbi_set_flip_vertically_on_load(true);
+        STBImage.stbi_set_flip_vertically_on_load(false);
         ByteBuffer image = STBImage.stbi_load(filePath, width, height, channels, 0);
         if (image != null){
             GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGB, width.get(0), height.get(0),
